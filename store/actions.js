@@ -66,7 +66,6 @@ export const expandExercise = (workouts, category, name, userId) => {
             category: category,
             name: name
         };
-        console.log(exercise);
         dispatch(expandExerciseBegin());
         dispatch(maxWeight(userId, category, name));
         axios.post(endpoint+'/api/workoutlog/log',exercise)
