@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { fetchExercises } from '../store/actions';
 
 const WorkoutScreen = props => {
-    const selectedWorkout = props.navigation.getParam('workout').toLowerCase();
-    const workouts = [
-        { category: 'Chest', name: 'Bench Press' },
-        { category: 'Chest', name: 'Incline Press' },
-        { category: 'Chest', name: 'Decline Press' },
-        { category: 'Chest', name: 'Pec Deck' },
-        { category: 'Chest', name: 'Pull over' },
-    ];
+    const selectedWorkout = props.navigation.getParam('workout');
+    const workouts = useSelector(state => state.workouts);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchExercises(selectedWorkout));
+    }, []);
+
     return (
         <View style={styles.container}>
             {workouts.map((workout, idx) => { 
-                return (workout.category.toLowerCase() == selectedWorkout ?
+                return (workout.category.toLowerCase() == selectedWorkout.toLowerCase() ?
                 <Button 
                     style={styles.button} 
                     key={idx} 
                     title={workout.name} 
-                    onPress={() => props.navigation.navigate({routeName: 'Workout', params: {
-                        workout: workout.name
+                    onPress={() => props.navigation.navigate({routeName: 'Exercise', params: {
+                        exercise: workout.name,
+                        workout: selectedWorkout
                     }})} /> : null)
             })}
         </View>
@@ -29,11 +32,7 @@ const WorkoutScreen = props => {
 WorkoutScreen.navigationOptions = navigationData => {
     const workoutTitle = navigationData.navigation.getParam('workout');
     return {
-        headerTitle: workoutTitle,
-        headerStyle: {
-            backgroundColor: '#343a40'
-        },
-        headerTintColor: 'bisque'
+        headerTitle: workoutTitle
     }
 }
 

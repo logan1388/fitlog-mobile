@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 
 const DashboardScreen = props => {
     const buttons = [
-        { title: 'CHEST', workout: 'chest' },
-        { title: 'LEGS', workout: 'legs' },
-        { title: 'SHOULDER', workout: 'shoulder' },
-        { title: 'BACK', workout: 'back' },
-        { title: 'BICEPS', workout: 'biceps' },
-        { title: 'TRICEPS', workout: 'triceps' },
+        { title: 'Chest', workout: 'chest' },
+        { title: 'Leg', workout: 'legs' },
+        { title: 'Shoulder', workout: 'shoulder' },
+        { title: 'Back', workout: 'back' },
+        { title: 'Biceps', workout: 'biceps' },
+        { title: 'Triceps', workout: 'triceps' },
     ];
 
     return (
@@ -17,7 +17,7 @@ const DashboardScreen = props => {
                 <Button 
                     style={styles.button} 
                     key={idx} 
-                    title={button.title} 
+                    title={button.title.toUpperCase()} 
                     onPress={() => props.navigation.navigate({routeName: 'Workout', params: {
                         workout: button.title
                     }})} />)}
@@ -27,10 +27,6 @@ const DashboardScreen = props => {
 
 DashboardScreen.navigationOptions = {
     headerTitle: 'FITLOG',
-    headerStyle: {
-        backgroundColor: '#343a40'
-    },
-    headerTintColor: 'bisque',
     headerTitleStyle: {
         textAlign: 'center'
     }
