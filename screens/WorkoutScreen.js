@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList } from 'react-native';
 import { fetchExercises } from '../store/actions';
 
 const WorkoutScreen = props => {
@@ -12,20 +12,30 @@ const WorkoutScreen = props => {
         dispatch(fetchExercises(selectedWorkout));
     }, []);
 
+    function Item({ title, category }) {
+        return (
+            <View style={styles.container}>
+                {category.toLowerCase() == selectedWorkout.toLowerCase() ?
+                    <Button
+                        title={title}
+                        onPress={() => props.navigation.navigate({
+                            routeName: 'Exercise', params: {
+                                exercise: title,
+                                workout: selectedWorkout
+                            }
+                        })} /> : null}
+            </View>
+        )
+    }
+
     return (
-        <View style={styles.container}>
-            {workouts.map((workout, idx) => { 
-                return (workout.category.toLowerCase() == selectedWorkout.toLowerCase() ?
-                <Button 
-                    style={styles.button} 
-                    key={idx} 
-                    title={workout.name} 
-                    onPress={() => props.navigation.navigate({routeName: 'Exercise', params: {
-                        exercise: workout.name,
-                        workout: selectedWorkout
-                    }})} /> : null)
-            })}
-        </View>
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                data={workouts}
+                renderItem={({ item }) => <Item title={item.name} category={item.category} />}
+                keyExtractor={item => item.name}
+            />
+        </SafeAreaView>
     );
 }
 
@@ -41,8 +51,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        paddingVertical: 50,
-        paddingHorizontal: 50
+        paddingVertical: 20,
+        paddingHorizontal: 10
     },
     button: {
     }
