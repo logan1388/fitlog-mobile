@@ -64,13 +64,15 @@ const WorkoutInput = props => {
                         onChange={value => setWeight(value)} 
                         type='up-down'
                         totalHeight={60}
-                        upDownButtonsBackgroundColor='lightgrey'/>
+                        upDownButtonsBackgroundColor='darkgrey'/>
                 </View>
                 <View style={{ marginHorizontal: 20 }}>
                     <Text style={styles.label}>Unit</Text>
                     <RadioForm
                         radio_props={unitRadio}
-                        initial={0}
+                        initial={unit}
+                        buttonColor= 'black'
+                        selectedButtonColor='black'
                         onPress={(value) => setUnit(value)} />
                 </View>
                 <View>
@@ -81,12 +83,13 @@ const WorkoutInput = props => {
                         onChange={value => setCount(value)} 
                         type='up-down'
                         totalHeight={60}
-                        upDownButtonsBackgroundColor='lightgrey'/>
+                        upDownButtonsBackgroundColor='darkgrey'/>
                 </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15 }}>
                 <Button
                     title='ADD'
+                    color='darkgrey'
                     disabled={!(weight > 0 && count > 0)}
                     onPress={() => addLog(weight, unit, count)}
                 />
