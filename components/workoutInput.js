@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button, Picker } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import RadioForm from 'react-native-simple-radio-button';
 import { addExerciseLog } from '../store/actions';
-import NumericInput from 'react-native-numeric-input'
+import NumericInput from 'react-native-numeric-input';
 
 const WorkoutInput = props => {
     const [weight, setWeight] = useState(0);
-    const [unit, setUnit] = useState('lbs');
+    const [unit, setUnit] = useState(0);
     const [count, setCount] = useState(0);
     const dispatch = useDispatch();
+    let unitRadio = [
+        { label: 'lbs', value: 0 },
+        { label: 'kgs', value: 1 }
+    ];
 
     const getTimestamp = () => {
         var date = new Date().getDate();
@@ -28,7 +33,7 @@ const WorkoutInput = props => {
 
     const resetInput = () => {
         setWeight(0);
-        setUnit('lbs');
+        setUnit(0);
         setCount(0);
     }
 
@@ -41,7 +46,7 @@ const WorkoutInput = props => {
             "name": props.name,
             "date": timestamp,
             "weight": weight,
-            "unit": unit,
+            "unit": unit === 0 ? 'lbs' : 'kgs',
             "count": count
         };
         resetInput();
@@ -50,34 +55,52 @@ const WorkoutInput = props => {
 
     return (
         <View>
-            <View style={{ flexDirection: 'row', paddingBottom: 10, justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', paddingBottom: 15, justifyContent: 'center' }}>
                 <View>
-                    <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Weight</Text>
-                    <NumericInput value={weight} onChange={value => setWeight(value)} />
+                    <Text style={styles.label}>Weight</Text>
+                    <NumericInput
+                        initValue={weight}
+                        value={weight}
+                        onChange={value => setWeight(value)} 
+                        type='up-down'
+                        totalHeight={60}
+                        upDownButtonsBackgroundColor='lightgrey'/>
                 </View>
-                <View style={{ paddingHorizontal: 20 }}>
-                    <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Unit</Text>
-                    <Picker
-                        selectedValue={unit}
-                        style={{ height: 50, width: 90, }}
-                        onValueChange={(itemValue, itemIndex) => setUnit(itemValue)}>
-                        <Picker.Item label="lbs" value="lbs" />
-                        <Picker.Item label="kgs" value="kgs" />
-                    </Picker>
+                <View style={{ marginHorizontal: 20 }}>
+                    <Text style={styles.label}>Unit</Text>
+                    <RadioForm
+                        radio_props={unitRadio}
+                        initial={0}
+                        onPress={(value) => setUnit(value)} />
                 </View>
                 <View>
-                    <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Count</Text>
-                    <NumericInput value={count} onChange={value => setCount(value)} />
+                    <Text style={styles.label}>Count</Text>
+                    <NumericInput
+                        initValue={count}
+                        value={count}
+                        onChange={value => setCount(value)} 
+                        type='up-down'
+                        totalHeight={60}
+                        upDownButtonsBackgroundColor='lightgrey'/>
                 </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15 }}>
                 <Button
                     title='ADD'
-                    disabled={!(weight>0 && count>0)}
-                    onPress={() => addLog(weight, unit, count)} />
+                    disabled={!(weight > 0 && count > 0)}
+                    onPress={() => addLog(weight, unit, count)}
+                />
             </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    label: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10
+    }
+})
 
 export default WorkoutInput;
