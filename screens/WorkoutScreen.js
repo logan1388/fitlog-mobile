@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { fetchExercises } from '../store/actions';
+import BackImg from '../assets/FITLOG.jpg';
 
 const WorkoutScreen = props => {
     const selectedWorkout = props.navigation.getParam('workout');
@@ -25,18 +26,21 @@ const WorkoutScreen = props => {
                             }
                         })} >
                         <Text style={styles.buttonText}>{title}</Text>
-                        </TouchableOpacity> : null}
+                    </TouchableOpacity> : null}
             </View>
         )
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <FlatList
-                data={workouts}
-                renderItem={({ item }) => <Item title={item.name} category={item.category} />}
-                keyExtractor={item => item.name}
-            />
+        <SafeAreaView style={{ flex: 1 }}>
+            <ImageBackground source={BackImg} style={styles.image}>
+                <FlatList
+                    style={styles.innerContainer}
+                    data={workouts}
+                    renderItem={({ item }) => <Item title={item.name} category={item.category} />}
+                    keyExtractor={item => item.name}
+                />
+            </ImageBackground>
         </SafeAreaView>
     );
 }
@@ -51,10 +55,8 @@ WorkoutScreen.navigationOptions = navigationData => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         justifyContent: 'space-between',
-        paddingVertical: 20,
-        paddingHorizontal: 10
+        paddingVertical: 20
     },
     button: {
         backgroundColor: 'darkgrey',
@@ -62,9 +64,18 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonText: {
-        textAlign: 'center', 
+        textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 16
+    },
+    image: {
+        flex: 1
+    },
+    innerContainer: {
+        paddingVertical: 30,
+        paddingHorizontal: 10,
+        backgroundColor: 'rgba(238, 238, 238, 0.8)',
+        height: '100%'
     }
 });
 
