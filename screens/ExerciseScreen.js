@@ -35,17 +35,18 @@ const ExerciseScreen = props => {
                         <Text style={styles.maxwtText}>Count: </Text>
                         <Text>{maxWt.count}</Text>
                     </Text>}
-                    {tableData && tableData.length > 0 &&
+                    {tableData && tableData.length > 0 ?
                         <React.Fragment>
                             <Table borderStyle={{ borderWidth: 1, borderColor: 'transparent' }}>
-                                <Row data={tableHead} style={styles.head} flexArr={[2, 1, 1, 1]} textStyle={styles.text} />
+                                <Row data={tableHead} style={styles.head} flexArr={[2, 1, 1, 1]} textStyle={styles.headText} />
                             </Table>
                             <ScrollView>
                                 <Table borderStyle={{ borderWidth: 1, borderColor: 'transparent' }}>
                                     <Rows data={tableData} textStyle={styles.text} style={styles.row} flexArr={[2, 1, 1, 1]} />
                                 </Table>
                             </ScrollView>
-                        </React.Fragment>}
+                        </React.Fragment> : 
+                        <Text style={styles.start}>Start Logging!</Text>}
                 </View>
             </ImageBackground>
         </View>
@@ -82,8 +83,15 @@ const styles = StyleSheet.create({
     maxwt: { height: 40, textAlign: 'center' },
     maxwtText: { fontWeight: 'bold' },
     head: { height: 40, backgroundColor: 'lightgrey' },
+    headText: { margin: 6, textAlign: 'center', fontWeight: 'bold' },
     text: { margin: 6, textAlign: 'center' },
-    row: { height: 40 }
+    row: { height: 40 },
+    start: {
+        flex: 1,
+        textAlign: 'center',
+        marginTop: 90,
+        fontWeight: 'bold'
+    },
 });
 
 export default ExerciseScreen;

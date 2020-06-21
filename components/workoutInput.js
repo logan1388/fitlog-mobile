@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 import { addExerciseLog } from '../store/actions';
 import NumericInput from 'react-native-numeric-input';
@@ -61,17 +61,18 @@ const WorkoutInput = props => {
                     <NumericInput
                         initValue={weight}
                         value={weight}
-                        onChange={value => setWeight(value)} 
+                        onChange={value => setWeight(value)}
                         type='up-down'
                         totalHeight={60}
-                        upDownButtonsBackgroundColor='darkgrey'/>
+                        borderColor='darkgrey'
+                        upDownButtonsBackgroundColor='darkgrey' />
                 </View>
                 <View style={{ marginHorizontal: 20 }}>
                     <Text style={styles.label}>Unit</Text>
                     <RadioForm
                         radio_props={unitRadio}
                         initial={unit}
-                        buttonColor= 'black'
+                        buttonColor='black'
                         selectedButtonColor='black'
                         onPress={(value) => setUnit(value)} />
                 </View>
@@ -80,19 +81,19 @@ const WorkoutInput = props => {
                     <NumericInput
                         initValue={count}
                         value={count}
-                        onChange={value => setCount(value)} 
+                        onChange={value => setCount(value)}
                         type='up-down'
                         totalHeight={60}
-                        upDownButtonsBackgroundColor='darkgrey'/>
+                        borderColor='darkgrey'
+                        upDownButtonsBackgroundColor='darkgrey' />
                 </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15 }}>
-                <Button
-                    title='ADD'
-                    color='darkgrey'
-                    disabled={!(weight > 0 && count > 0)}
-                    onPress={() => addLog(weight, unit, count)}
-                />
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => weight > 0 && count > 0 && addLog(weight, unit, count)}>
+                    <Text style={{ fontWeight: 'bold' }}>ADD</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -103,6 +104,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 10
+    },
+    button: {
+        backgroundColor: 'darkgrey',
+        paddingHorizontal: 20,
+        paddingVertical: 10
     }
 })
 

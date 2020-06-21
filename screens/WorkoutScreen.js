@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { fetchExercises } from '../store/actions';
 
 const WorkoutScreen = props => {
@@ -16,14 +16,16 @@ const WorkoutScreen = props => {
         return (
             <View style={styles.container}>
                 {category.toLowerCase() == selectedWorkout.toLowerCase() ?
-                    <Button
-                        title={title}
+                    <TouchableOpacity
+                        style={styles.button}
                         onPress={() => props.navigation.navigate({
                             routeName: 'Exercise', params: {
                                 exercise: title,
                                 workout: selectedWorkout
                             }
-                        })} /> : null}
+                        })} >
+                        <Text style={styles.buttonText}>{title}</Text>
+                        </TouchableOpacity> : null}
             </View>
         )
     }
@@ -55,6 +57,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     button: {
+        backgroundColor: 'darkgrey',
+        paddingVertical: 25,
+        alignItems: 'center'
+    },
+    buttonText: {
+        textAlign: 'center', 
+        fontWeight: 'bold',
+        fontSize: 16
     }
 });
 
