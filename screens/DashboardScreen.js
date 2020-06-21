@@ -1,36 +1,45 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 
 const DashboardScreen = props => {
     const buttons = [
-        { title: 'CHEST', workout: 'chest' },
-        { title: 'LEGS', workout: 'legs' },
-        { title: 'SHOULDER', workout: 'shoulder' },
-        { title: 'BACK', workout: 'back' },
-        { title: 'BICEPS', workout: 'biceps' },
-        { title: 'TRICEPS', workout: 'triceps' },
+        { title: 'Chest', workout: 'chest' },
+        { title: 'Leg', workout: 'legs' },
+        { title: 'Shoulder', workout: 'shoulder' },
+        { title: 'Back', workout: 'back' },
+        { title: 'Biceps', workout: 'biceps' },
+        { title: 'Triceps', workout: 'triceps' },
     ];
 
+    function Item({ title }) {
+        return (
+            <View style={styles.container}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => props.navigation.navigate({
+                        routeName: 'Workout', params: {
+                            workout: title
+                        }
+                    })} >
+                    <Text style={styles.buttonText}>{title.toUpperCase()}</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     return (
-        <View style={styles.container}>
-            {buttons.map((button, idx) => 
-                <Button 
-                    style={styles.button} 
-                    key={idx} 
-                    title={button.title} 
-                    onPress={() => props.navigation.navigate({routeName: 'Workout', params: {
-                        workout: button.title
-                    }})} />)}
-        </View>
+        <SafeAreaView style={styles.container}>
+            <FlatList
+                data={buttons}
+                renderItem={({ item }) => <Item title={item.title} />}
+                keyExtractor={item => item.title}
+            />
+        </SafeAreaView>
     );
 }
 
 DashboardScreen.navigationOptions = {
     headerTitle: 'FITLOG',
-    headerStyle: {
-        backgroundColor: '#343a40'
-    },
-    headerTintColor: 'bisque',
     headerTitleStyle: {
         textAlign: 'center'
     }
@@ -41,10 +50,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        paddingVertical: 50,
-        paddingHorizontal: 50
+        paddingVertical: 20,
+        paddingHorizontal: 10
     },
     button: {
+        backgroundColor: 'darkgrey',
+        paddingVertical: 25,
+        alignItems: 'center'
+    },
+    buttonText: {
+        textAlign: 'center', 
+        fontWeight: 'bold',
+        fontSize: 16
     }
 });
 
