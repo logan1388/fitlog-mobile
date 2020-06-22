@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
 import { expandExercise, maxWeight } from '../store/actions';
 import { Table, Row, Rows } from 'react-native-table-component';
-import WorkoutInput from '../components/workoutInput';
+import WorkoutInput from '../components/WorkoutInput';
 import BackImg from '../assets/back-workout.jpg';
 
 const ExerciseScreen = props => {
