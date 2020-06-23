@@ -1,15 +1,19 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { enableScreens } from 'react-native-screens';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import Navigator from './navigation/Navigator';
-import reducer from './store/reducer';
+import fitlogReducer from './store/reducers/reducer';
 import thunk from 'redux-thunk';
 
 enableScreens();
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const rootReducer = combineReducers({
+  fitlogReducer: fitlogReducer 
+})
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default function App() {
   return (

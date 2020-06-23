@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
-import { expandExercise, maxWeight } from '../store/actions';
+import { expandExercise, maxWeight } from '../store/actions/actions';
 import { Table, Row, Rows } from 'react-native-table-component';
 import WorkoutInput from '../components/WorkoutInput';
 import BackImg from '../assets/back-workout.jpg';
 
 const ExerciseScreen = props => {
     const selectedExercise = props.navigation.getParam('exercise');
-    const logs = useSelector(state => state.logs);
-    const workouts = useSelector(state => state.workouts);
-    const maxWt = useSelector(state => state.maxWeight);
+    const logs = useSelector(state => state.fitlogReducer.logs);
+    const workouts = useSelector(state => state.fitlogReducer.workouts);
+    const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
     const category = props.navigation.getParam('workout');
-    const userId = '5d7d6ce9e31bed84d467cdbe';
+    const userId = '5dfecbdd39d8760019968d04';
     const dispatch = useDispatch();
 
     const tableHead = ['Date & Time', 'Weight', 'Unit', 'Count'];
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     maxwt: { height: 40, textAlign: 'center' },
     maxwtText: { fontWeight: 'bold' },
-    head: { height: 40, backgroundColor: 'lightgrey' },
+    head: { height: 40, backgroundColor: 'darkgrey' },
     headText: { margin: 6, textAlign: 'center', fontWeight: 'bold' },
     text: { margin: 6, textAlign: 'center' },
     row: { height: 40 },

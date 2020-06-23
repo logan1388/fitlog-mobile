@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
-import { fetchExercises } from '../store/actions';
+import { fetchExercises } from '../store/actions/actions';
 import BackImg from '../assets/FITLOG.jpg';
 
 const WorkoutScreen = props => {
     const selectedWorkout = props.navigation.getParam('workout');
-    const workouts = useSelector(state => state.workouts);
+    const workouts = useSelector(state => state.fitlogReducer.workouts);
     const dispatch = useDispatch();
 
     useEffect(() => {

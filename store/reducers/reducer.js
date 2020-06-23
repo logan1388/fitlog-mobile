@@ -21,7 +21,7 @@ import {
     FETCH_WORKOUTHISTORY,
     FETCH_ACTIVITY,
     FETCH_MAXWEIGHT
-} from "../store/actions";
+} from "../actions/actions";
 
 const initialState = {
     user: {},

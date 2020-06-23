@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
-import { addExerciseLog } from '../store/actions';
+import { addExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 
 const WorkoutInput = props => {
@@ -39,7 +39,7 @@ const WorkoutInput = props => {
 
     addLog = (weight, unit, count) => {
         let timestamp = getTimestamp();
-        let id = '5d7d6ce9e31bed84d467cdbe';
+        let id = '5dfecbdd39d8760019968d04';
         let exerciseLog = {
             "userId": id,
             "category": props.category,

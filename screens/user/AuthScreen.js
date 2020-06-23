@@ -1,43 +1,120 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Card from '../../components/Card';
 import BackImg from '../../assets/FITLOG.jpg';
 
 const AuthScreen = props => {
-    const [input1, setInput1] = useState('');
-    const [input2, setInput2] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [register, setRegister] = useState(false);
+    const [fullName, setFullName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [authMessage, setAuthMessage] = useState('');
+
+    const signup = () => setRegister(true);
 
     return (
-        <View style={styles.container}>
-            <ImageBackground source={BackImg} style={styles.image}>
-                <View style={styles.innerContainer}>
-                    <Card style={styles.card}>
-                        <View style={styles.inputContainer}>
-                            <View>
-                                <Text>Email</Text>
-                                <TextInput
-                                    style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                                    placeholder='Email'
-                                    onChangeText={text => setInput1(text)}
-                                    value={input1} />
-                            </View>
-                            <View style={{ paddingTop: 15 }}>
-                                <Text>Password</Text>
-                                <TextInput
-                                    style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                                    placeholder='Password'
-                                    onChangeText={text => setInput2(text)}
-                                    value={input2} />
-                            </View>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <Button title='Login' />
-                            <Button title='Sign up' />
-                        </View>
-                    </Card>
-                </View>
-            </ImageBackground>
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.container}>
+                <ImageBackground source={BackImg} style={styles.image}>
+                    <View style={styles.innerContainer}>
+                        <Card style={styles.card}>
+                            {!register && authMessage === '' &&
+                                <React.Fragment>
+                                    <View style={styles.inputContainer}>
+                                        <View>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='Email'
+                                                onChangeText={text => setEmail(text)}
+                                                value={email} />
+                                        </View>
+                                        <View style={{ paddingTop: 15 }}>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='Password'
+                                                onChangeText={text => setPassword(text)}
+                                                value={password} />
+                                        </View>
+                                    </View>
+                                    <View style={styles.buttonContainer}>
+                                        <TouchableOpacity style={styles.button}>
+                                            <Text style={{ fontWeight: 'bold' }}>Login</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.button}
+                                            onPress={signup}>
+                                            <Text style={{ fontWeight: 'bold' }}>Sign up</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </React.Fragment>}
+                            {register &&
+                                <React.Fragment>
+                                    <View style={styles.inputContainer}>
+                                        <View>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='Full Name'
+                                                onChangeText={text => setFullName(text)}
+                                                value={fullName} />
+                                        </View>
+                                        <View style={{ paddingTop: 15 }}>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='User Name'
+                                                onChangeText={text => setUserName(text)}
+                                                value={userName} />
+                                        </View>
+                                        <View style={{ paddingTop: 15 }}>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='Email'
+                                                onChangeText={text => setEmail(text)}
+                                                value={email} />
+                                        </View>
+                                        <View style={{ paddingTop: 15 }}>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='Password'
+                                                onChangeText={text => setPassword(text)}
+                                                value={password} />
+                                        </View>
+                                        <View style={{ paddingTop: 15 }}>
+                                            <TextInput
+                                                style={styles.textInput}
+                                                placeholder='Confirm Password'
+                                                onChangeText={text => setConfirmPassword(text)}
+                                                value={confirmPassword} />
+                                        </View>
+                                    </View>
+                                    <View style={{ paddingHorizontal: 30, marginTop: 30 }}>
+                                        <TouchableOpacity style={styles.button} onPress={() => {
+                                            setAuthMessage('Register success!');
+                                            setRegister(false);
+                                        }}>
+                                            <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Register</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </React.Fragment>}
+                            {authMessage !== '' &&
+                                <React.Fragment>
+                                    <View style={styles.inputContainer}>
+                                        <View style={{ paddingTop: 15 }}>
+                                            <Text style={{ textAlign: 'center' }}>{authMessage}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ paddingHorizontal: 30, marginTop: 30 }}>
+                                        <TouchableOpacity style={styles.button}
+                                            onPress={() => setAuthMessage('')}>
+                                            <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Back to login</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </React.Fragment>}
+                        </Card>
+                    </View>
+                </ImageBackground>
+            </View>
+        </TouchableWithoutFeedback>
     )
 };
 
@@ -55,9 +132,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between'
     },
-    image: {
-        flex: 1
-    },
+    image: { flex: 1 },
     innerContainer: {
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
         height: '100%',
@@ -74,8 +149,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold'
     },
-    inputContainer: {
-        width: '100%'
+    inputContainer: { width: '100%' },
+    textInput: {
+        height: 40,
+        borderColor: 'grey',
+        borderBottomWidth: 1
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -83,6 +161,11 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 30,
         marginTop: 30
+    },
+    button: {
+        backgroundColor: 'darkgrey',
+        paddingHorizontal: 20,
+        paddingVertical: 10
     }
 });
 
