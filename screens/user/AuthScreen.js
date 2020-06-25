@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Card from '../../components/Card';
 import BackImg from '../../assets/FITLOG.jpg';
+import { useDispatch, useSelector } from 'react-redux';
+import * as authActions from '../../store/actions/auth';
 
 const AuthScreen = props => {
     const [email, setEmail] = useState('');
@@ -12,7 +14,18 @@ const AuthScreen = props => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [authMessage, setAuthMessage] = useState('');
 
+    const dispatch = useDispatch();
     const signup = () => setRegister(true);
+    const login = async () => {
+        try {
+            await dispatch(authActions.login(email, password));
+            //const user = useSelector(state => state.fitlogReducer.user);
+            //console.log('User ',user);
+            props.navigation.navigate('Navigator');
+        } catch (err) {
+
+        }
+    };
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -39,7 +52,9 @@ const AuthScreen = props => {
                                         </View>
                                     </View>
                                     <View style={styles.buttonContainer}>
-                                        <TouchableOpacity style={styles.button}>
+                                        <TouchableOpacity style={styles.button}
+                                            disabled={!(email && password)}
+                                            onPress={() => login()}>
                                             <Text style={{ fontWeight: 'bold' }}>Login</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.button}

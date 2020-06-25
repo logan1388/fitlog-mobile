@@ -11,6 +11,7 @@ const ExerciseScreen = props => {
     const logs = useSelector(state => state.fitlogReducer.logs);
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
+    const user = useSelector(state => state.fitlogReducer.user);
     const category = props.navigation.getParam('workout');
     const userId = '5dfecbdd39d8760019968d04';
     const dispatch = useDispatch();

@@ -10,6 +10,12 @@ import {
     ADD_EXERCISELOG_SUCCESS,
     ADD_EXERCISELOG_FAILURE,
     LOGIN_BEGIN,
+    FETCH_WORKOUTHISTORY,
+    FETCH_ACTIVITY,
+    FETCH_MAXWEIGHT
+} from "../actions/actions";
+
+import {
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
     REGISTER_RESET,
@@ -18,10 +24,7 @@ import {
     LOGOUT_SUCCESS,
     CLEAR_REGISTERERROR,
     CLEAR_LOGINERROR,
-    FETCH_WORKOUTHISTORY,
-    FETCH_ACTIVITY,
-    FETCH_MAXWEIGHT
-} from "../actions/actions";
+} from '../actions/auth';
 
 const initialState = {
     user: {},
@@ -147,6 +150,7 @@ export default function fitlogReducer(
             };
 
         case LOGIN_SUCCESS:
+            console.log(action.payload);
             return {
                 ...state,
                 loading: false,
