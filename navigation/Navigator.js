@@ -48,11 +48,10 @@ const tabScreenConfig = {
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return (
-                    <Ionicons name="ios-home" size={25} color={Colors.headerFontColor} />
+                    <Ionicons name="ios-home" size={25} color={tabInfo.tintColor} />
                 );
             },
-            //   tabBarColor: Colors.primaryColor
-            title: 'Home',
+            title: 'Home'
         }
     },
     Workouts: {
@@ -60,20 +59,18 @@ const tabScreenConfig = {
         navigationOptions: {
             tabBarIcon: tabInfo => {
                 return (
-                    <MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerFontColor} />
+                    <MaterialCommunityIcons name="dumbbell" size={25} color={tabInfo.tintColor} />
                 );
             },
-            //   tabBarColor: Colors.primaryColor
-            title: 'Workouts',
+            title: 'Workouts'
         }
     },
     Notes: {
         screen: NotesNavigator,
         navigationOptions: {
             tabBarIcon: tabInfo => {
-                return <Ionicons name="ios-book" size={25} color={Colors.headerFontColor} />;
+                return <Ionicons name="ios-book" size={25} color={tabInfo.tintColor} />;
             },
-            //   tabBarColor: Colors.accentColor
             title: 'Notes'
         }
     }
@@ -82,7 +79,8 @@ const tabScreenConfig = {
 const DashboardTabNavigator =
     Platform.OS === 'android'
         ? createMaterialBottomTabNavigator(tabScreenConfig, {
-            activeTintColor: Colors.headerFontColor,
+            activeColor: Colors.headerFontColor,
+            inactiveColor: Colors.buttonColor,
             shifting: false,
             barStyle: {
                 backgroundColor: Colors.headerBackground
@@ -90,7 +88,11 @@ const DashboardTabNavigator =
         })
         : createBottomTabNavigator(tabScreenConfig, {
             tabBarOptions: {
-                activeTintColor: Colors.buttonColor
+                activeTintColor: Colors.headerFontColor,
+                inactiveTintColor: Colors.buttonColor,
+                tabStyle: {
+                    backgroundColor: Colors.headerBackground
+                }
             }
         });
 
