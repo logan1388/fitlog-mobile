@@ -7,13 +7,13 @@ import WorkoutScreen from '../screens/WorkoutScreen';
 import ExerciseScreen from '../screens/ExerciseScreen';
 import AuthScreen from '../screens/user/AuthScreen';
 import NotesScreen from '../screens/NotesScreen';
-import { useDispatch } from 'react-redux';
 import { SafeAreaView, Button, View, Platform } from 'react-native';
-import * as authActions from '../store/actions/auth';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import HomeScreen from '../screens/HomeScreen';
+import Planner from '../screens/Planner';
+import AwardsScreen from '../screens/AwardsScreen';
 
 const defaultStackNavOptions = {
     headerStyle: {
@@ -36,6 +36,18 @@ const HomeNavigator = createStackNavigator({
     defaultNavigationOptions: defaultStackNavOptions
 });
 
+const PlannerNavigator = createStackNavigator({
+    Planner: Planner
+}, {
+    defaultNavigationOptions: defaultStackNavOptions
+});
+
+const AwardsNavigator = createStackNavigator({
+    Awards: AwardsScreen
+}, {
+    defaultNavigationOptions: defaultStackNavOptions
+});
+
 const NotesNavigator = createStackNavigator({
     Notes: NotesScreen
 }, {
@@ -54,6 +66,16 @@ const tabScreenConfig = {
             title: 'Home'
         }
     },
+    Planner: {
+        screen: PlannerNavigator,
+        navigationOptions: {
+            tabBarIcon: tabInfo => {
+                return (
+                    <FontAwesome name="calendar" size={25} color={tabInfo.tintColor} />);
+            },
+            title: 'Planner'
+        }
+    },
     Workouts: {
         screen: DashboardNavigator,
         navigationOptions: {
@@ -63,6 +85,16 @@ const tabScreenConfig = {
                 );
             },
             title: 'Workouts'
+        }
+    },
+    Awards: {
+        screen: AwardsNavigator,
+        navigationOptions: {
+            tabBarIcon: tabInfo => {
+                return (
+                    <FontAwesome name="trophy" size={25} color={tabInfo.tintColor} />);
+            },
+            title: 'Awards'
         }
     },
     Notes: {

@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import BackImg from '../assets/back-workout.jpg';
 
-const NotesScreen = props => {
+const AwardsScreen = props => {
     return (
         <View style={styles.container}>
             <ImageBackground source={BackImg} style={styles.image}>
                 <View style={styles.innerContainer}>
-                    <Text>Notes!</Text>
+                    <Text >Awards!</Text>
                 </View>
             </ImageBackground>
         </View>
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
     image: {
         flex: 1
     }
-})
+});
 
-export default NotesScreen;
+export default AwardsScreen;

@@ -31,16 +31,16 @@ const HomeScreen = props => {
             <ImageBackground source={BackImg} style={styles.image}>
                 <View style={styles.innerContainer}>
                     <View style={{ width: '100%', alignItems: 'center' }}>
-                        <View>
+                        <View style={{ width: '100%' }}>
                             <Text style={{ fontWeight: 'bold', textAlign: 'center', marginVertical: 10 }}>Previous Workout</Text>
                             <Card style={styles.card}>{prevWorkout}</Card>
                         </View>
-                        <View>
+                        <View style={{ width: '100%' }}>
                             <Text style={{ fontWeight: 'bold', textAlign: 'center', marginVertical: 10 }}>Last 5 Workouts</Text>
                             <Card style={styles.card}>{history}</Card>
                         </View>
                     </View>
-                    <View style={{ width: '100%', alignItems: 'center' }}>
+                    <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15 }}>
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => props.navigation.navigate({
@@ -77,16 +77,15 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     card: {
-        width: 300,
-        maxWidth: '80%',
         justifyContent: 'space-between',
-        backgroundColor: 'darkgrey'
+        backgroundColor: 'darkgrey',
+        marginHorizontal: 15
     },
     button: {
         backgroundColor: 'darkgrey',
         paddingVertical: 25,
-        width: 300,
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%'
     },
     buttonText: {
         textAlign: 'center',
