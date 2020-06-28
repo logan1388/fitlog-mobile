@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import DashboardScreen from '../screens/DashboardScreen';
 import WorkoutScreen from '../screens/WorkoutScreen';
@@ -12,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { SafeAreaView, Button, View, Platform } from 'react-native';
 import * as authActions from '../store/actions/auth';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import HomeScreen from '../screens/HomeScreen';
 
@@ -24,10 +23,15 @@ const defaultStackNavOptions = {
 };
 
 const DashboardNavigator = createStackNavigator({
-    Home: HomeScreen,
     Dashboard: DashboardScreen,
     Workout: WorkoutScreen,
     Exercise: ExerciseScreen
+}, {
+    defaultNavigationOptions: defaultStackNavOptions
+});
+
+const HomeNavigator = createStackNavigator({
+    Home: HomeScreen
 }, {
     defaultNavigationOptions: defaultStackNavOptions
 });
@@ -40,23 +44,35 @@ const NotesNavigator = createStackNavigator({
 
 const tabScreenConfig = {
     Home: {
+        screen: HomeNavigator,
+        navigationOptions: {
+            tabBarIcon: tabInfo => {
+                return (
+                    <Ionicons name="ios-home" size={25} color={Colors.headerFontColor} />
+                );
+            },
+            //   tabBarColor: Colors.primaryColor
+            title: 'Home',
+        }
+    },
+    Workouts: {
         screen: DashboardNavigator,
         navigationOptions: {
-              tabBarIcon: tabInfo => {
+            tabBarIcon: tabInfo => {
                 return (
-                  <Ionicons name="ios-home" size={25} color={tabInfo.tintColor} />
+                    <MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerFontColor} />
                 );
-              },
+            },
             //   tabBarColor: Colors.primaryColor
-            title: 'Dashboard',
+            title: 'Workouts',
         }
     },
     Notes: {
         screen: NotesNavigator,
         navigationOptions: {
-              tabBarIcon: tabInfo => {
-                return <Ionicons name="ios-book" size={25} color={tabInfo.tintColor} />;
-              },
+            tabBarIcon: tabInfo => {
+                return <Ionicons name="ios-book" size={25} color={Colors.headerFontColor} />;
+            },
             //   tabBarColor: Colors.accentColor
             title: 'Notes'
         }
