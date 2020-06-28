@@ -14,6 +14,7 @@ import * as authActions from '../store/actions/auth';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
+import HomeScreen from '../screens/HomeScreen';
 
 const defaultStackNavOptions = {
     headerStyle: {
@@ -23,6 +24,7 @@ const defaultStackNavOptions = {
 };
 
 const DashboardNavigator = createStackNavigator({
+    Home: HomeScreen,
     Dashboard: DashboardScreen,
     Workout: WorkoutScreen,
     Exercise: ExerciseScreen

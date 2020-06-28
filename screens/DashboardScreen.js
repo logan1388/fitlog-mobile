@@ -39,10 +39,7 @@ const DashboardScreen = props => {
 }
 
 DashboardScreen.navigationOptions = {
-    headerTitle: 'FITBOOK',
-    headerTitleStyle: {
-        textAlign: 'center'
-    }
+    headerTitle: 'Workouts'
 }
 
 const styles = StyleSheet.create({
