@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 
 const DashboardScreen = props => {
     const buttons = [
@@ -39,7 +39,7 @@ const DashboardScreen = props => {
 }
 
 DashboardScreen.navigationOptions = {
-    headerTitle: 'FITLOG',
+    headerTitle: 'FITBOOK',
     headerTitleStyle: {
         textAlign: 'center'
     }
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonText: {
-        textAlign: 'center', 
+        textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 16
     }

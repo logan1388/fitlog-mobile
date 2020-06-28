@@ -34,12 +34,14 @@ const WorkoutScreen = props => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={BackImg} style={styles.image}>
+                <View style={styles.bg}>
                 <FlatList
                     style={styles.innerContainer}
                     data={workouts}
                     renderItem={({ item }) => <Item title={item.name} category={item.category} />}
                     keyExtractor={item => item.name}
                 />
+                </View>
             </ImageBackground>
         </SafeAreaView>
     );
@@ -53,10 +55,17 @@ WorkoutScreen.navigationOptions = navigationData => {
 }
 
 const styles = StyleSheet.create({
+    outerContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+        paddingVertical: 20,
+        paddingHorizontal: 10
+    },
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        paddingVertical: 20
+        paddingVertical: 15
     },
     button: {
         backgroundColor: 'darkgrey',
@@ -71,11 +80,14 @@ const styles = StyleSheet.create({
     image: {
         flex: 1
     },
-    innerContainer: {
-        paddingVertical: 30,
-        paddingHorizontal: 10,
+    bg: {
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
-        height: '100%'
+        height: '100%',
+        paddingBottom: 20
+    },
+    innerContainer: {
+        paddingVertical: 10,
+        paddingHorizontal: 10
     }
 });
 

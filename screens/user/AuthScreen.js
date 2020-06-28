@@ -135,7 +135,7 @@ const AuthScreen = props => {
 
 AuthScreen.navigationOptions = navigationData => {
     return {
-        headerTitle: 'FITLOG',
+        headerTitle: 'FITBOOK',
         headerTitleStyle: {
             textAlign: 'center'
         }
