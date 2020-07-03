@@ -43,8 +43,7 @@ const HomeScreen = props => {
                     <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15 }}>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => props.navigation.navigate({
-                                routeName: 'Dashboard'})} >
+                            onPress={() => props.navigation.navigate('Workouts')} >
                             <Text style={styles.buttonText}>Today's workout</Text>
                         </TouchableOpacity>
                     </View>
@@ -54,12 +53,13 @@ const HomeScreen = props => {
     );
 }
 
-HomeScreen.navigationOptions = {
+export const screenOptions = { 
     headerTitle: 'FITBOOK',
     headerTitleStyle: {
         textAlign: 'center'
     }
 };
+
 
 const styles = StyleSheet.create({
     outerContainer: {

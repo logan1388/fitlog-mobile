@@ -5,7 +5,8 @@ import { fetchExercises } from '../store/actions/actions';
 import BackImg from '../assets/FITLOG.jpg';
 
 const WorkoutScreen = props => {
-    const selectedWorkout = props.navigation.getParam('workout');
+    const selectedWorkout = props.route.params.workout;
+    //const selectedWorkout = props.navigation.getParam('workout');
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const dispatch = useDispatch();
 
@@ -19,12 +20,15 @@ const WorkoutScreen = props => {
                 {category.toLowerCase() == selectedWorkout.toLowerCase() ?
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => props.navigation.navigate({
-                            routeName: 'Exercise', params: {
-                                exercise: title,
-                                workout: selectedWorkout
-                            }
-                        })} >
+                        onPress={() => {
+                            props.navigation.navigate('ExerciseScreen', {
+                                screen: 'Exercise',
+                                params: {
+                                    exercise: title,
+                                    workout: selectedWorkout
+                                }
+                            })
+                        }} >
                         <Text style={styles.buttonText}>{title}</Text>
                     </TouchableOpacity> : null}
             </View>
@@ -35,22 +39,21 @@ const WorkoutScreen = props => {
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={BackImg} style={styles.image}>
                 <View style={styles.bg}>
-                <FlatList
-                    style={styles.innerContainer}
-                    data={workouts}
-                    renderItem={({ item }) => <Item title={item.name} category={item.category} />}
-                    keyExtractor={item => item.name}
-                />
+                    <FlatList
+                        style={styles.innerContainer}
+                        data={workouts}
+                        renderItem={({ item }) => <Item title={item.name} category={item.category} />}
+                        keyExtractor={item => item.name}
+                    />
                 </View>
             </ImageBackground>
         </SafeAreaView>
     );
 }
 
-WorkoutScreen.navigationOptions = navigationData => {
-    const workoutTitle = navigationData.navigation.getParam('workout');
+export const screenOptions = navigationData => {
     return {
-        headerTitle: workoutTitle
+        headerTitle: navigationData.route.params.workout
     }
 }
 

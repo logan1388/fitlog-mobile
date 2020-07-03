@@ -133,7 +133,7 @@ const AuthScreen = props => {
     )
 };
 
-AuthScreen.navigationOptions = navigationData => {
+export const screenOptions = navigationData => {
     return {
         headerTitle: 'FITBOOK',
         headerTitleStyle: {

@@ -7,12 +7,14 @@ import WorkoutInput from '../components/WorkoutInput';
 import BackImg from '../assets/back-workout.jpg';
 
 const ExerciseScreen = props => {
-    const selectedExercise = props.navigation.getParam('exercise');
+    const selectedExercise = props.route.params ? props.route.params.exercise : null;
+    //const selectedExercise = props.navigation.getParam('exercise');
     const logs = useSelector(state => state.fitlogReducer.logs);
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
     const user = useSelector(state => state.fitlogReducer.user);
-    const category = props.navigation.getParam('workout');
+    const category = props.route.params ? props.route.params.workout : null;
+    //const category = props.navigation.getParam('workout');
     const userId = '5dfecbdd39d8760019968d04';
     const dispatch = useDispatch();
 
@@ -54,10 +56,10 @@ const ExerciseScreen = props => {
     );
 }
 
-ExerciseScreen.navigationOptions = navigationData => {
-    const exerciseTitle = navigationData.navigation.getParam('exercise');
+export const screenOptions = navigationData => {
+    console.log('Navigation data: ', navigationData);
     return {
-        headerTitle: exerciseTitle
+        headerTitle: navigationData.route.params.params.exercise
     }
 }
 

@@ -41,7 +41,7 @@ export const fetchExercises = (workout) => {
 
 export const expandExercise = (workouts, category, name, userId) => {
     return (dispatch, getState) => {
-        console.log('Get state ', getState());
+        // console.log('Get state ', getState());
         workouts.map(e => {
             if(e.name !== name && e.open === true){
                 e.open = false;

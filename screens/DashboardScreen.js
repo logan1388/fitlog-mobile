@@ -16,11 +16,11 @@ const DashboardScreen = props => {
             <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => props.navigation.navigate({
-                        routeName: 'Workout', params: {
+                    onPress={() => {
+                        props.navigation.navigate('Workout', {
                             workout: title
-                        }
-                    })} >
+                        });
+                    }} >
                     <Text style={styles.buttonText}>{title.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>
@@ -38,9 +38,7 @@ const DashboardScreen = props => {
     );
 }
 
-DashboardScreen.navigationOptions = {
-    headerTitle: 'Workouts'
-}
+export const screenOptions = { headerTitle: 'Workouts' };
 
 const styles = StyleSheet.create({
     container: {

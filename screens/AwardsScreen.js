@@ -7,7 +7,7 @@ const AwardsScreen = props => {
         <View style={styles.container}>
             <ImageBackground source={BackImg} style={styles.image}>
                 <View style={styles.innerContainer}>
-                    <Text >Awards!</Text>
+                    <Text>Awards!</Text>
                 </View>
             </ImageBackground>
         </View>
