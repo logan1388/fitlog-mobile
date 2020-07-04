@@ -37,7 +37,14 @@ const NotesNavigator = () => {
 
 const TopTab = createMaterialTopTabNavigator();
 const ExerciseTabNavigator = () => {
-    return <TopTab.Navigator>
+    return <TopTab.Navigator
+        tabBarOptions={{
+            activeTintColor: Colors.headerFontColor,
+            inactiveTintColor: Colors.buttonColor,
+            style: { backgroundColor: Colors.headerBackground },
+            indicatorStyle: { backgroundColor: Colors.headerFontColor }
+        }}
+    >
         <TopTab.Screen name='Exercise' component={ExerciseScreen} />
         {/* <TopTab.Screen name='Notes' component={NotesNavigator}/> */}
         <TopTab.Screen name='Awards' component={AwardsNavigator} />

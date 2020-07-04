@@ -41,11 +41,11 @@ const ExerciseScreen = props => {
                     {tableData && tableData.length > 0 ?
                         <React.Fragment>
                             <Table borderStyle={{ borderWidth: 1, borderColor: 'transparent' }}>
-                                <Row data={tableHead} style={styles.head} flexArr={[2, 1, 1, 1]} textStyle={styles.headText} />
+                                <Row data={tableHead} style={styles.head} flexArr={[3, 1, 1, 1]} textStyle={styles.headText} />
                             </Table>
                             <ScrollView>
                                 <Table borderStyle={{ borderWidth: 1, borderColor: 'transparent' }}>
-                                    <Rows data={tableData} textStyle={styles.text} style={styles.row} flexArr={[2, 1, 1, 1]} />
+                                    <Rows data={tableData} textStyle={styles.text} style={styles.row} flexArr={[3, 1, 1, 1]} />
                                 </Table>
                             </ScrollView>
                         </React.Fragment> : 
