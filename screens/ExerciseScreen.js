@@ -1,11 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import {
+    StyleSheet, Text, View, ImageBackground, SafeAreaView, FlatList, Modal,
+    TouchableHighlight, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard
+} from 'react-native';
 import { expandExercise, maxWeight } from '../store/actions/actions';
 import WorkoutInput from '../components/WorkoutInput';
 import BackImg from '../assets/back-workout.jpg';
 import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';
+import moment from 'moment';
 
 const ExerciseScreen = props => {
     const selectedExercise = props.route.params ? props.route.params.exercise : null;
@@ -16,15 +20,65 @@ const ExerciseScreen = props => {
     const category = props.route.params ? props.route.params.workout : null;
     const userId = '5dfecbdd39d8760019968d04';
     const dispatch = useDispatch();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [notes, setNotes] = useState('');
 
     useEffect(() => {
         dispatch(expandExercise(workouts, category, selectedExercise, userId));
         dispatch(maxWeight(userId, category, selectedExercise));
     }, []);
 
+    const addNotes = log => {
+        console.log(log);
+        console.log(maxWt);
+        setModalVisible(true);
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground source={BackImg} style={styles.image}>
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                    }}
+                >
+                    {/* <TouchableOpacity
+                        style={styles.centeredView}
+                        activeOpacity={1}
+                        onPressOut={() => {
+                            setNotes('');
+                            setModalVisible(!modalVisible);
+                        }}
+                    > */}
+                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <TextInput
+                                        style={{ borderColor: 'gray', borderWidth: 1, width: '100%', height: 90 }}
+                                        placeholder='Notes'
+                                        multiline
+                                        numberOfLines={4}
+                                        maxLength={100}
+                                        onChangeText={text => setNotes(text)}
+                                        value={notes}
+                                    />
+                                    <TouchableHighlight
+                                        style={{ ...styles.openButton, backgroundColor: "lightgrey" }}
+                                        onPress={() => {
+                                            setNotes('');
+                                            setModalVisible(!modalVisible);
+                                        }}
+                                    >
+                                        <Text style={styles.textStyle}>Hide Modal</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    {/* </TouchableOpacity> */}
+                </Modal>
                 <View style={styles.innerContainer}>
                     <WorkoutInput category={category} name={selectedExercise} logs={logs} workouts={workouts} />
                     {maxWt && <Text style={styles.maxwt}>
@@ -40,8 +94,11 @@ const ExerciseScreen = props => {
                                 data={logs}
                                 renderItem={({ item }) =>
                                     <View style={styles.logs}>
-                                        <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" /></View>
-                                        <View style={{ flex: 1 }}><FontAwesome name="trophy" size={25} color={Colors.buttonColor} /></View>
+                                        <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>
+                                        <View style={{ flex: 1 }}>
+                                            {item.weight === maxWt.weight && item.count === maxWt.count && item.date === moment(maxWt.date).utc().format('MM/DD/YY HH:mm') ? 
+                                            <FontAwesome name="trophy" size={25} color={Colors.buttonColor} /> : null}
+                                        </View>
                                         <View style={{ flex: 2 }}><Text>{item.date}</Text></View>
                                         <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
                                         <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
@@ -75,14 +132,14 @@ const styles = StyleSheet.create({
     },
     image: { flex: 1 },
     overlay: { backgroundColor: 'rgba(255,0,0,0.5)' },
-    maxwt: { 
-        height: 40, 
-        textAlign: 'center' 
+    maxwt: {
+        height: 40,
+        textAlign: 'center'
     },
     maxwtText: { fontWeight: 'bold' },
-    text: { 
-        margin: 6, 
-        textAlign: 'center' 
+    text: {
+        margin: 6,
+        textAlign: 'center'
     },
     start: {
         flex: 1,
@@ -97,6 +154,42 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomWidth: 1,
         borderBottomColor: 'darkgrey'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    modalView: {
+        backgroundColor: "white",
+        width: 250,
+        borderRadius: 10,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    openButton: {
+        backgroundColor: "#F194FF",
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        marginTop: 15
+    },
+    textStyle: {
+        color: "black",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
     }
 });
 

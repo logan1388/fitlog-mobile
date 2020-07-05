@@ -12,7 +12,8 @@ import {
     LOGIN_BEGIN,
     FETCH_WORKOUTHISTORY,
     FETCH_ACTIVITY,
-    FETCH_MAXWEIGHT
+    FETCH_MAXWEIGHT,
+    FETCH_WORKOUTSUMMARY
 } from "../actions/actions";
 
 import {
@@ -31,6 +32,7 @@ const initialState = {
     workouts: [],
     logs: [],
     workoutHistory: [],
+    workoutSummary: [],
     activity: [],
     loading: false,
     error: null,
@@ -126,6 +128,13 @@ export default function fitlogReducer(
                 ...state,
                 loading: false,
                 workoutHistory: action.payload.workoutHist
+            };
+
+        case FETCH_WORKOUTSUMMARY:
+            return {
+                ...state,
+                loading: false,
+                workoutSummary: action.payload.workoutSummary
             };
 
         case FETCH_ACTIVITY:

@@ -19,6 +19,7 @@ export const ADD_EXERCISELOG_SUCCESS = "ADD_EXERCISELOG_SUCCESS";
 export const ADD_EXERCISELOG_FAILURE = "ADD_EXERCISELOG_FAILURE";
 
 export const FETCH_WORKOUTHISTORY = "FETCH_WORKOUTHISTORY";
+export const FETCH_WORKOUTSUMMARY = "FETCH_WORKOUTSUMMARY";
 export const FETCH_ACTIVITY = "FETCH_ACTIVITY";
 export const FETCH_MAXWEIGHT = "FETCH_MAXWEIGHT";
 
@@ -133,15 +134,26 @@ export const maxWeight = (userId, category, name) => {
     }
 }
 
-export const workoutHistory = (userId) => {
+export const workoutHistory = userId => {
     return dispatch => {
-        let param = {
-            userId: userId
-        }
+        let param = { userId: userId };
         axios.post(endpoint+'/api/workout/workoutHistory', param)
             .then(res => {
                 let workoutHist = res.data;
                 dispatch(workoutHistorySuccess(workoutHist));
+            })
+            .catch(error => console.log(error));
+    }
+}
+
+export const workoutSummary = userId => {
+    return dispatch => {
+        let param = { userId: userId };
+        axios.post(endpoint+'/api/workout/workoutSummary', param)
+            .then(res => {
+                let workoutSummary = res.data;
+                console.log(workoutSummary);
+                dispatch(workoutSummarySuccess(workoutSummary));
             })
             .catch(error => console.log(error));
     }
@@ -212,6 +224,11 @@ export const addExerciseLogFailure = error => ({
 export const workoutHistorySuccess = workoutHist => ({
     type: FETCH_WORKOUTHISTORY,
     payload: { workoutHist }
+});
+
+export const workoutSummarySuccess = workoutSummary => ({
+    type: FETCH_WORKOUTSUMMARY,
+    payload: { workoutSummary }
 });
 
 export const activitySuccess = activity => ({
