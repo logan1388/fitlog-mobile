@@ -103,7 +103,7 @@ const ExerciseScreen = props => {
                                         <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
                                         <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
                                     </View>}
-                                keyExtractor={item => item.date}
+                                keyExtractor={item => item._id}
                             />
                         </View>
                     </SafeAreaView>

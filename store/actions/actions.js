@@ -88,6 +88,7 @@ export const addExerciseLog = (exerciseLog, logToBeUpdated, workouts) => {
         .then(res => {
             dispatch(addMaxWeight(exerciseLog, workouts));
             dispatch(addTodayWorkout(exerciseLog.userId, exerciseLog.category, exerciseLog.date));
+            dispatch(workoutSummary(exerciseLog.userId))
             return logToBeUpdated;
         })
         .catch(error => dispatch(addExerciseLogFailure(error)));
