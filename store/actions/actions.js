@@ -26,7 +26,7 @@ export const FETCH_MAXWEIGHT = "FETCH_MAXWEIGHT";
 export const fetchExercises = (workout) => {
     return dispatch => {
         dispatch(fetchExercisesBegin());
-        axios.get(endpoint+'/api/exercises/'+workout)
+        axios.get(`${endpoint}/api/exercises/${workout}`)
         .then(res => {
                 var exercises = res.data;
                 exercises.map(e => {

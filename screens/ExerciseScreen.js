@@ -29,9 +29,15 @@ const ExerciseScreen = props => {
     }, []);
 
     const addNotes = log => {
+        console.log('Add Notes!');
         console.log(log);
-        console.log(maxWt);
         setModalVisible(true);
+    }
+
+    const saveNotes = () => {
+        notes && console.log('Saved');
+        setNotes('');
+        setModalVisible(!modalVisible);
     }
 
     return (
@@ -45,39 +51,27 @@ const ExerciseScreen = props => {
                         Alert.alert("Modal has been closed.");
                     }}
                 >
-                    {/* <TouchableOpacity
-                        style={styles.centeredView}
-                        activeOpacity={1}
-                        onPressOut={() => {
-                            setNotes('');
-                            setModalVisible(!modalVisible);
-                        }}
-                    > */}
-                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
-                                    <TextInput
-                                        style={{ borderColor: 'gray', borderWidth: 1, width: '100%', height: 90 }}
-                                        placeholder='Notes'
-                                        multiline
-                                        numberOfLines={4}
-                                        maxLength={100}
-                                        onChangeText={text => setNotes(text)}
-                                        value={notes}
-                                    />
-                                    <TouchableHighlight
-                                        style={{ ...styles.openButton, backgroundColor: "lightgrey" }}
-                                        onPress={() => {
-                                            setNotes('');
-                                            setModalVisible(!modalVisible);
-                                        }}
-                                    >
-                                        <Text style={styles.textStyle}>Hide Modal</Text>
-                                    </TouchableHighlight>
-                                </View>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <TextInput
+                                    style={{ borderColor: 'gray', borderWidth: 1, width: '100%', height: 90 }}
+                                    placeholder='Notes'
+                                    multiline
+                                    numberOfLines={4}
+                                    maxLength={100}
+                                    onChangeText={text => setNotes(text)}
+                                    value={notes}
+                                />
+                                <TouchableHighlight
+                                    style={{ ...styles.openButton, backgroundColor: "lightgrey" }}
+                                    onPress={() => saveNotes()}
+                                >
+                                    <Text style={styles.textStyle}>{notes ? 'Save' : 'Close'}</Text>
+                                </TouchableHighlight>
                             </View>
-                        </TouchableWithoutFeedback>
-                    {/* </TouchableOpacity> */}
+                        </View>
+                    </TouchableWithoutFeedback>
                 </Modal>
                 <View style={styles.innerContainer}>
                     <WorkoutInput category={category} name={selectedExercise} logs={logs} workouts={workouts} />
@@ -96,8 +90,8 @@ const ExerciseScreen = props => {
                                     <View style={styles.logs}>
                                         <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>
                                         <View style={{ flex: 1 }}>
-                                            {item.weight === maxWt.weight && item.count === maxWt.count && item.date === moment(maxWt.date).utc().format('MM/DD/YY HH:mm') ? 
-                                            <FontAwesome name="trophy" size={25} color={Colors.buttonColor} /> : null}
+                                            {item.weight === maxWt.weight && item.count === maxWt.count && item.date === moment(maxWt.date).utc().format('MM/DD/YY HH:mm') ?
+                                                <FontAwesome name="trophy" size={25} color={Colors.buttonColor} /> : null}
                                         </View>
                                         <View style={{ flex: 2 }}><Text>{item.date}</Text></View>
                                         <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
@@ -177,7 +171,7 @@ const styles = StyleSheet.create({
     },
     openButton: {
         backgroundColor: "#F194FF",
-        borderRadius: 20,
+        borderRadius: 10,
         padding: 10,
         elevation: 2,
         marginTop: 15

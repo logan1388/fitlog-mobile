@@ -9,11 +9,11 @@ const Card = props => {
 
 const styles = StyleSheet.create({
     container: {
-        shadowColor: 'darkgrey',
+        shadowColor: 'black',
         shadowOffset: { width: 0, height: 6 },
         shadowRadius: 6,
         shadowOpacity: 0.8,
-        elevation: 5,
+        elevation: 8,
         backgroundColor: 'white',
         padding: 30
     }
