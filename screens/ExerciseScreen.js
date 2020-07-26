@@ -17,6 +17,7 @@ const ExerciseScreen = props => {
     const logs = useSelector(state => state.fitlogReducer.logs);
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
+    const maxReps = useSelector(state => state.fitlogReducer.maxReps);
     const user = useSelector(state => state.fitlogReducer.user);
     const category = props.route.params ? props.route.params.workout : null;
     const userId = '5dfecbdd39d8760019968d04';
@@ -86,13 +87,24 @@ const ExerciseScreen = props => {
                 </Modal>
                 <View style={styles.innerContainer}>
                     <WorkoutInput category={category} name={selectedExercise} logs={logs} workouts={workouts} />
-                    {maxWt && <Text style={styles.maxwt}>
-                        <Text style={styles.maxwtText}>Max Weight: </Text>
-                        <Text>{maxWt.weight} </Text>
-                        <Text>{maxWt.unit} </Text>
-                        <Text style={styles.maxwtText}>Count: </Text>
-                        <Text>{maxWt.count}</Text>
-                    </Text>}
+                    <View style={{ flexDirection: 'row' }}>
+                        {maxWt && <View style={styles.maxwt}>
+                            <Text style={styles.maxwtText}>Max Weight</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text>{maxWt.weight} </Text>
+                                <Text>{maxWt.unit} </Text>
+                                <Text>{maxWt.count} reps</Text>
+                            </View>
+                        </View>}
+                        {maxReps && <View style={styles.maxwt}>
+                            <Text style={styles.maxwtText}>Max Reps</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text>{maxReps.count} reps</Text>
+                                <Text>{maxReps.unit} </Text>
+                                <Text>{maxReps.weight}</Text>
+                            </View>
+                        </View>}
+                    </View>
                     <SafeAreaView style={{ flex: 1 }}>
                         <View>
                             <FlatList
@@ -101,13 +113,15 @@ const ExerciseScreen = props => {
                                     <View style={styles.logs}>
                                         {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View> :
                                             <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>}
-                                        <View style={{ flex: 1 }}>
+                                        <View style={{ flex: 2 }}>
                                             {item.weight === maxWt.weight && item.count === maxWt.count && item.date === moment(maxWt.date).utc().format('MM/DD/YY HH:mm') ?
-                                                <FontAwesome name="trophy" size={25} color={Colors.buttonColor} /> : null}
+                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <FontAwesome name="trophy" size={25} color={Colors.buttonColor} />
+                                                </View> : null}
                                         </View>
-                                        <View style={{ flex: 2 }}><Text>{item.date}</Text></View>
-                                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
-                                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                                        <View style={{ flex: 2.5 }}><Text>{item.date}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
                                     </View>}
                                 keyExtractor={item => item._id}
                             />
@@ -139,10 +153,14 @@ const styles = StyleSheet.create({
     image: { flex: 1 },
     overlay: { backgroundColor: 'rgba(255,0,0,0.5)' },
     maxwt: {
-        height: 40,
+        height: 50,
+        textAlign: 'center',
+        flex: 3
+    },
+    maxwtText: { 
+        fontWeight: 'bold',
         textAlign: 'center'
     },
-    maxwtText: { fontWeight: 'bold' },
     text: {
         margin: 6,
         textAlign: 'center'

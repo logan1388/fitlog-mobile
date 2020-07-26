@@ -13,6 +13,7 @@ import {
     FETCH_WORKOUTHISTORY,
     FETCH_ACTIVITY,
     FETCH_MAXWEIGHT,
+    FETCH_MAXREPS,
     FETCH_WORKOUTSUMMARY
 } from "../actions/actions";
 
@@ -40,7 +41,8 @@ const initialState = {
     registerError: null,
     isAuthenticated: false,
     register: false,
-    maxWeight: null
+    maxWeight: null,
+    maxReps: null
 };
 
 export default function fitlogReducer(
@@ -149,6 +151,13 @@ export default function fitlogReducer(
                 ...state,
                 loading: false,
                 maxWeight: action.payload.maxWeight
+            };
+
+        case FETCH_MAXREPS:
+            return {
+                ...state,
+                loading: false,
+                maxReps: action.payload.maxReps
             };
 
         case LOGIN_BEGIN:
