@@ -27,7 +27,7 @@ export const fetchExercises = (workout) => {
     return dispatch => {
         dispatch(fetchExercisesBegin());
         axios.get(`${endpoint}/api/exercises/${workout}`)
-        .then(res => {
+            .then(res => {
                 var exercises = res.data;
                 exercises.map(e => {
                     e.open = false;
@@ -38,13 +38,13 @@ export const fetchExercises = (workout) => {
             })
             .catch(error => dispatch(fetchExercisesFailure(error)));
     };
-}
+};
 
 export const expandExercise = (workouts, category, name, userId) => {
     return (dispatch, getState) => {
         // console.log('Get state ', getState());
         workouts.map(e => {
-            if(e.name !== name && e.open === true){
+            if (e.name !== name && e.open === true) {
                 e.open = false;
                 e.log = null;
             }
@@ -56,8 +56,8 @@ export const expandExercise = (workouts, category, name, userId) => {
         };
         dispatch(expandExerciseBegin());
         dispatch(maxWeight(userId, category, name));
-        axios.post(endpoint+'/api/workoutlog/log',exercise)
-        .then(res => {
+        axios.post(endpoint + '/api/workoutlog/log', exercise)
+            .then(res => {
                 var logs = res.data;
                 logs.map(log => {
                     log.date = moment(log.date).utc().format('MM/DD/YY HH:mm')
@@ -67,33 +67,33 @@ export const expandExercise = (workouts, category, name, userId) => {
             })
             .catch(error => dispatch(expandExerciseFailure(error)));
     };
-}
+};
 
 export const closeExpandExercise = (workouts, exercise) => {
     return dispatch => {
-        workouts.map(e =>  {
-            if(e.name !== exercise){
+        workouts.map(e => {
+            if (e.name !== exercise) {
                 e.open = false;
                 e.log = null;
             }
         });
         dispatch(closeExpandExerciseSuccess(workouts));
-    }  
-}
+    }
+};
 
 export const addExerciseLog = (exerciseLog, logToBeUpdated, workouts) => {
     return dispatch => {
         logToBeUpdated.push(exerciseLog);
-        axios.post(endpoint+'/api/workoutlog/',exerciseLog)
-        .then(res => {
-            dispatch(addMaxWeight(exerciseLog, workouts));
-            dispatch(addTodayWorkout(exerciseLog.userId, exerciseLog.category, exerciseLog.date));
-            dispatch(workoutSummary(exerciseLog.userId))
-            return logToBeUpdated;
-        })
-        .catch(error => dispatch(addExerciseLogFailure(error)));
+        axios.post(endpoint + '/api/workoutlog/', exerciseLog)
+            .then(res => {
+                dispatch(addMaxWeight(exerciseLog, workouts));
+                dispatch(addTodayWorkout(exerciseLog.userId, exerciseLog.category, exerciseLog.date));
+                dispatch(workoutSummary(exerciseLog.userId))
+                return logToBeUpdated;
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
     }
-}
+};
 
 export const addTodayWorkout = (userId, category, date) => {
     return dispatch => {
@@ -102,23 +102,23 @@ export const addTodayWorkout = (userId, category, date) => {
             category: category,
             date: date
         }
-        axios.post(endpoint+'/api/workout/',workout)
-        .then(res => {
-            console.log(res);
-        })
-        .catch(error => console.log(error));
+        axios.post(endpoint + '/api/workout/', workout)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => console.log(error));
     }
-}
+};
 
 export const addMaxWeight = (exerciseLog, workouts) => {
     return dispatch => {
-        axios.post(endpoint+'/api/maxweight/',exerciseLog)
-        .then(res => {
-            dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
-        })
-        .catch(error => dispatch(addExerciseLogFailure(error)));
+        axios.post(endpoint + '/api/maxweight/', exerciseLog)
+            .then(res => {
+                dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
     }
-}
+};
 
 export const maxWeight = (userId, category, name) => {
     return dispatch => {
@@ -127,30 +127,30 @@ export const maxWeight = (userId, category, name) => {
             "category": category,
             "name": name
         };
-        axios.post(endpoint+'/api/maxweight/weight',maxWeightRequest)
-        .then(res => {
-            dispatch(fetchMaxWeightSuccess(res.data));
-        })
-        .catch(error => dispatch(addExerciseLogFailure(error)));
+        axios.post(endpoint + '/api/maxweight/weight', maxWeightRequest)
+            .then(res => {
+                dispatch(fetchMaxWeightSuccess(res.data));
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
     }
-}
+};
 
 export const workoutHistory = userId => {
     return dispatch => {
         let param = { userId: userId };
-        axios.post(endpoint+'/api/workout/workoutHistory', param)
+        axios.post(endpoint + '/api/workout/workoutHistory', param)
             .then(res => {
                 let workoutHist = res.data;
                 dispatch(workoutHistorySuccess(workoutHist));
             })
             .catch(error => console.log(error));
     }
-}
+};
 
 export const workoutSummary = userId => {
     return dispatch => {
         let param = { userId: userId };
-        axios.post(endpoint+'/api/workout/workoutSummary', param)
+        axios.post(endpoint + '/api/workout/workoutSummary', param)
             .then(res => {
                 let workoutSummary = res.data;
                 console.log(workoutSummary);
@@ -158,14 +158,14 @@ export const workoutSummary = userId => {
             })
             .catch(error => console.log(error));
     }
-}
+};
 
-export const activities = (userId) => {
+export const activities = userId => {
     return dispatch => {
         let param = {
             userId: userId
         }
-        axios.post(endpoint+'/api/workoutlog/logs', param)
+        axios.post(endpoint + '/api/workoutlog/logs', param)
             .then(res => {
                 console.log(res);
                 let activity = res.data;
@@ -173,7 +173,22 @@ export const activities = (userId) => {
             })
             .catch(error => console.log(error));
     }
-}
+};
+
+export const saveNote = (id, category, note) => {
+    return dispatch => {
+        let param = {
+            id: id,
+            category: category,
+            note: note
+        }
+        axios.put(endpoint + '/api/workoutlog/note', param)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => console.log(error));
+    }
+};
 
 export const fetchExercisesBegin = () => ({
     type: FETCH_EXERCISES_BEGIN

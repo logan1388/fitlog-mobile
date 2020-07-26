@@ -10,6 +10,7 @@ import BackImg from '../assets/back-workout.jpg';
 import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import moment from 'moment';
+import { saveNote } from '../store/actions/actions';
 
 const ExerciseScreen = props => {
     const selectedExercise = props.route.params ? props.route.params.exercise : null;
@@ -22,6 +23,7 @@ const ExerciseScreen = props => {
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
     const [notes, setNotes] = useState('');
+    const [noteLog, setNoteLog] = useState({});
 
     useEffect(() => {
         dispatch(expandExercise(workouts, category, selectedExercise, userId));
@@ -29,13 +31,14 @@ const ExerciseScreen = props => {
     }, []);
 
     const addNotes = log => {
-        console.log('Add Notes!');
-        console.log(log);
+        setNotes(log.note);
+        setNoteLog(log);
         setModalVisible(true);
     }
 
     const saveNotes = () => {
-        notes && console.log('Saved');
+        dispatch(saveNote(noteLog._id, noteLog.category, notes));
+        logs.map(log => log._id === noteLog._id && (log.note = notes));
         setNotes('');
         setModalVisible(!modalVisible);
     }
@@ -63,12 +66,20 @@ const ExerciseScreen = props => {
                                     onChangeText={text => setNotes(text)}
                                     value={notes}
                                 />
-                                <TouchableHighlight
-                                    style={{ ...styles.openButton, backgroundColor: "lightgrey" }}
-                                    onPress={() => saveNotes()}
-                                >
-                                    <Text style={styles.textStyle}>{notes ? 'Save' : 'Close'}</Text>
-                                </TouchableHighlight>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <TouchableHighlight
+                                        style={{ ...styles.openButton, backgroundColor: "lightgrey", marginRight: 15 }}
+                                        onPress={() => saveNotes()}
+                                    >
+                                        <Text style={styles.textStyle}>Save</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        style={{ ...styles.openButton, backgroundColor: "lightgrey" }}
+                                        onPress={() => setModalVisible(!modalVisible)}
+                                    >
+                                        <Text style={styles.textStyle}>Close</Text>
+                                    </TouchableHighlight>
+                                </View>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
@@ -88,7 +99,8 @@ const ExerciseScreen = props => {
                                 data={logs}
                                 renderItem={({ item }) =>
                                     <View style={styles.logs}>
-                                        <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>
+                                        {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View> :
+                                            <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>}
                                         <View style={{ flex: 1 }}>
                                             {item.weight === maxWt.weight && item.count === maxWt.count && item.date === moment(maxWt.date).utc().format('MM/DD/YY HH:mm') ?
                                                 <FontAwesome name="trophy" size={25} color={Colors.buttonColor} /> : null}
