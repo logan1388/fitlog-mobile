@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
-import { addExerciseLog } from '../store/actions';
+import { addExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 
 const WorkoutInput = props => {
@@ -39,7 +39,7 @@ const WorkoutInput = props => {
 
     addLog = (weight, unit, count) => {
         let timestamp = getTimestamp();
-        let id = '5d7d6ce9e31bed84d467cdbe';
+        let id = '5dfecbdd39d8760019968d04';
         let exerciseLog = {
             "userId": id,
             "category": props.category,
@@ -54,48 +54,50 @@ const WorkoutInput = props => {
     }
 
     return (
-        <View>
-            <View style={{ flexDirection: 'row', paddingBottom: 15, justifyContent: 'center' }}>
-                <View>
-                    <Text style={styles.label}>Weight</Text>
-                    <NumericInput
-                        initValue={weight}
-                        value={weight}
-                        onChange={value => setWeight(value)}
-                        type='up-down'
-                        totalHeight={60}
-                        borderColor='darkgrey'
-                        upDownButtonsBackgroundColor='darkgrey' />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View>
+                <View style={{ flexDirection: 'row', paddingBottom: 15, justifyContent: 'center' }}>
+                    <View>
+                        <Text style={styles.label}>Weight</Text>
+                        <NumericInput
+                            initValue={weight}
+                            value={weight}
+                            onChange={value => setWeight(value)}
+                            type='up-down'
+                            totalHeight={60}
+                            borderColor='darkgrey'
+                            upDownButtonsBackgroundColor='darkgrey' />
+                    </View>
+                    <View style={{ marginHorizontal: 20 }}>
+                        <Text style={styles.label}>Unit</Text>
+                        <RadioForm
+                            radio_props={unitRadio}
+                            initial={unit}
+                            buttonColor='black'
+                            selectedButtonColor='black'
+                            onPress={(value) => setUnit(value)} />
+                    </View>
+                    <View>
+                        <Text style={styles.label}>Count</Text>
+                        <NumericInput
+                            initValue={count}
+                            value={count}
+                            onChange={value => setCount(value)}
+                            type='up-down'
+                            totalHeight={60}
+                            borderColor='darkgrey'
+                            upDownButtonsBackgroundColor='darkgrey' />
+                    </View>
                 </View>
-                <View style={{ marginHorizontal: 20 }}>
-                    <Text style={styles.label}>Unit</Text>
-                    <RadioForm
-                        radio_props={unitRadio}
-                        initial={unit}
-                        buttonColor='black'
-                        selectedButtonColor='black'
-                        onPress={(value) => setUnit(value)} />
-                </View>
-                <View>
-                    <Text style={styles.label}>Count</Text>
-                    <NumericInput
-                        initValue={count}
-                        value={count}
-                        onChange={value => setCount(value)}
-                        type='up-down'
-                        totalHeight={60}
-                        borderColor='darkgrey'
-                        upDownButtonsBackgroundColor='darkgrey' />
+                <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15 }}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => weight > 0 && count > 0 && addLog(weight, unit, count)}>
+                        <Text style={{ fontWeight: 'bold' }}>ADD</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15 }}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => weight > 0 && count > 0 && addLog(weight, unit, count)}>
-                    <Text style={{ fontWeight: 'bold' }}>ADD</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 

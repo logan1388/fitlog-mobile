@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import { endpoint } from '../config';
+import { endpoint } from '../../config';
 
 export const FETCH_EXERCISES_BEGIN = "FETCH_EXERCISES_BEGIN";
 export const FETCH_EXERCISES_SUCCESS = "FETCH_EXERCISES_SUCCESS";
@@ -18,29 +18,16 @@ export const ADD_EXERCISELOG_BEGIN = "ADD_EXERCISELOG_BEGIN";
 export const ADD_EXERCISELOG_SUCCESS = "ADD_EXERCISELOG_SUCCESS";
 export const ADD_EXERCISELOG_FAILURE = "ADD_EXERCISELOG_FAILURE";
 
-export const LOGIN_BEGIN = "LOGIN_BEGIN";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILURE = "LOGIN_FAILURE";
-
-export const REGISTER_RESET = "REGISTER_RESET";
-export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
-export const REGISTER_FAILURE = "REGISTER_FAILURE";
-
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-
-export const CLEAR_REGISTERERROR = "CLEAR_REGISTERERROR";
-export const CLEAR_LOGINERROR = "CLEAR_LOGINERROR";
-
 export const FETCH_WORKOUTHISTORY = "FETCH_WORKOUTHISTORY";
+export const FETCH_WORKOUTSUMMARY = "FETCH_WORKOUTSUMMARY";
 export const FETCH_ACTIVITY = "FETCH_ACTIVITY";
-
-export const FETCH_MAXWEIGHT = "FETCH_MAXWEIGHT";
+export const FETCH_BESTSETS = "FETCH_BESTSETS";
 
 export const fetchExercises = (workout) => {
     return dispatch => {
         dispatch(fetchExercisesBegin());
-        axios.get(endpoint+'/api/exercises/'+workout)
-        .then(res => {
+        axios.get(`${endpoint}/api/exercises/${workout}`)
+            .then(res => {
                 var exercises = res.data;
                 exercises.map(e => {
                     e.open = false;
@@ -51,12 +38,13 @@ export const fetchExercises = (workout) => {
             })
             .catch(error => dispatch(fetchExercisesFailure(error)));
     };
-}
+};
 
 export const expandExercise = (workouts, category, name, userId) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        // console.log('Get state ', getState());
         workouts.map(e => {
-            if(e.name !== name && e.open === true){
+            if (e.name !== name && e.open === true) {
                 e.open = false;
                 e.log = null;
             }
@@ -67,9 +55,9 @@ export const expandExercise = (workouts, category, name, userId) => {
             name: name
         };
         dispatch(expandExerciseBegin());
-        dispatch(maxWeight(userId, category, name));
-        axios.post(endpoint+'/api/workoutlog/log',exercise)
-        .then(res => {
+        dispatch(bestSets(userId, category, name));
+        axios.post(endpoint + '/api/workoutlog/log', exercise)
+            .then(res => {
                 var logs = res.data;
                 logs.map(log => {
                     log.date = moment(log.date).utc().format('MM/DD/YY HH:mm')
@@ -79,32 +67,33 @@ export const expandExercise = (workouts, category, name, userId) => {
             })
             .catch(error => dispatch(expandExerciseFailure(error)));
     };
-}
+};
 
 export const closeExpandExercise = (workouts, exercise) => {
     return dispatch => {
-        workouts.map(e =>  {
-            if(e.name !== exercise){
+        workouts.map(e => {
+            if (e.name !== exercise) {
                 e.open = false;
                 e.log = null;
             }
         });
         dispatch(closeExpandExerciseSuccess(workouts));
-    }  
-}
+    }
+};
 
 export const addExerciseLog = (exerciseLog, logToBeUpdated, workouts) => {
     return dispatch => {
         logToBeUpdated.push(exerciseLog);
-        axios.post(endpoint+'/api/workoutlog/',exerciseLog)
-        .then(res => {
-            dispatch(addMaxWeight(exerciseLog, workouts));
-            dispatch(addTodayWorkout(exerciseLog.userId, exerciseLog.category, exerciseLog.date));
-            return logToBeUpdated;
-        })
-        .catch(error => dispatch(addExerciseLogFailure(error)));
+        axios.post(endpoint + '/api/workoutlog/', exerciseLog)
+            .then(res => {
+                dispatch(addBestSets(exerciseLog, workouts));
+                dispatch(addTodayWorkout(exerciseLog.userId, exerciseLog.category, exerciseLog.date));
+                dispatch(workoutSummary(exerciseLog.userId))
+                return logToBeUpdated;
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
     }
-}
+};
 
 export const addTodayWorkout = (userId, category, date) => {
     return dispatch => {
@@ -113,101 +102,70 @@ export const addTodayWorkout = (userId, category, date) => {
             category: category,
             date: date
         }
-        axios.post(endpoint+'/api/workout/',workout)
-        .then(res => {
-            console.log(res);
-        })
-        .catch(error => console.log(error));
+        axios.post(endpoint + '/api/workout/', workout)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => console.log(error));
     }
-}
+};
 
-export const login = (email, password, history) => {    
+export const addBestSets = (exerciseLog, workouts) => {
     return dispatch => {
-        dispatch(loginBegin());
-        let loginRequest = {
-            "email": email,
-            "password": password
-        }
-        axios.post(endpoint+'/api/users/authenticate/',loginRequest)
-        .then(res => {
-            localStorage.setItem('user', JSON.stringify(res));
-            dispatch(loginSuccess(res.data.user));
-            history.push('/Dashboard');
-            return res.data.user;
-        })
-        .catch(error => dispatch(loginFailure(error)));
+        axios.post(endpoint + '/api/bestset/', exerciseLog)
+            .then(res => {
+                dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
     }
-}
+};
 
-export const register = (name, username, email, password, history) => {    
+export const bestSets = (userId, category, name) => {
     return dispatch => {
-        let registerRequest = {
-            "name": name,
-            "username": username,
-            "email": email,
-            "password": password
-        }
-        axios.post(endpoint+'/api/users/',registerRequest)
-        .then(res => {
-            dispatch(registerSuccess());
-            history.push('/');
-        })
-        .catch(error => dispatch(registerFailure(error)));
-    }
-}
-
-export const logout = () => {
-    return dispatch => {
-        localStorage.removeItem('user');
-        dispatch(logoutSuccess());
-    }
-}
-
-export const addMaxWeight = (exerciseLog, workouts) => {
-    return dispatch => {
-        axios.post(endpoint+'/api/maxweight/',exerciseLog)
-        .then(res => {
-            dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
-        })
-        .catch(error => dispatch(addExerciseLogFailure(error)));
-    }
-}
-
-export const maxWeight = (userId, category, name) => {
-    return dispatch => {
-        let maxWeightRequest = {
+        let bestSetsRequest = {
             "userId": userId,
             "category": category,
             "name": name
         };
-        axios.post(endpoint+'/api/maxweight/weight',maxWeightRequest)
-        .then(res => {
-            dispatch(fetchMaxWeightSuccess(res.data));
-        })
-        .catch(error => dispatch(addExerciseLogFailure(error)));
+        axios.post(endpoint + '/api/bestset/set', bestSetsRequest)
+            .then(res => {
+                dispatch(fetchBestSetsSuccess(res.data.maxWeight, res.data.maxReps, res.data.bestSet));
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
     }
-}
+};
 
-export const workoutHistory = (userId) => {
+export const workoutHistory = userId => {
     return dispatch => {
-        let param = {
-            userId: userId
-        }
-        axios.post(endpoint+'/api/workout/workoutHistory', param)
+        let param = { userId: userId };
+        axios.post(endpoint + '/api/workout/workoutHistory', param)
             .then(res => {
                 let workoutHist = res.data;
                 dispatch(workoutHistorySuccess(workoutHist));
             })
             .catch(error => console.log(error));
     }
-}
+};
 
-export const activities = (userId) => {
+export const workoutSummary = userId => {
+    return dispatch => {
+        let param = { userId: userId };
+        axios.post(endpoint + '/api/workout/workoutSummary', param)
+            .then(res => {
+                let workoutSummary = res.data;
+                console.log(workoutSummary);
+                dispatch(workoutSummarySuccess(workoutSummary));
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const activities = userId => {
     return dispatch => {
         let param = {
             userId: userId
         }
-        axios.post(endpoint+'/api/workoutlog/logs', param)
+        axios.post(endpoint + '/api/workoutlog/logs', param)
             .then(res => {
                 console.log(res);
                 let activity = res.data;
@@ -215,7 +173,22 @@ export const activities = (userId) => {
             })
             .catch(error => console.log(error));
     }
-}
+};
+
+export const saveNote = (id, category, note) => {
+    return dispatch => {
+        let param = {
+            id: id,
+            category: category,
+            note: note
+        }
+        axios.put(endpoint + '/api/workoutlog/note', param)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => console.log(error));
+    }
+};
 
 export const fetchExercisesBegin = () => ({
     type: FETCH_EXERCISES_BEGIN
@@ -264,48 +237,14 @@ export const addExerciseLogFailure = error => ({
     payload: { error }
 });
 
-export const loginBegin = () => ({
-    type: LOGIN_BEGIN
-});
-
-export const loginSuccess = user => ({
-    type: LOGIN_SUCCESS,
-    payload: { user }
-});
-
-export const loginFailure = error => ({
-    type: LOGIN_FAILURE,
-    payload: { error }
-});
-
-export const logoutSuccess = () => ({
-    type: LOGOUT_SUCCESS
-});
-
-export const registerReset = () => ({
-    type: REGISTER_RESET
-});
-
-export const registerSuccess = () => ({
-    type: REGISTER_SUCCESS
-});
-
-export const registerFailure = (error) => ({
-    type: REGISTER_FAILURE,
-    payload: { error }
-});
-
-export const clearRegisterErrorMsg = () => ({
-    type: CLEAR_REGISTERERROR
-});
-
-export const clearLoginErrorMsg = () => ({
-    type: CLEAR_LOGINERROR
-})
-
 export const workoutHistorySuccess = workoutHist => ({
     type: FETCH_WORKOUTHISTORY,
     payload: { workoutHist }
+});
+
+export const workoutSummarySuccess = workoutSummary => ({
+    type: FETCH_WORKOUTSUMMARY,
+    payload: { workoutSummary }
 });
 
 export const activitySuccess = activity => ({
@@ -313,7 +252,7 @@ export const activitySuccess = activity => ({
     payload: { activity }
 });
 
-export const fetchMaxWeightSuccess = maxWeight => ({
-    type: FETCH_MAXWEIGHT,
-    payload: { maxWeight }
+export const fetchBestSetsSuccess = (maxWeight, maxReps, bestSet) => ({
+    type: FETCH_BESTSETS,
+    payload: { maxWeight, maxReps, bestSet }
 });

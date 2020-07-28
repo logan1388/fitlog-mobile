@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 
 const DashboardScreen = props => {
     const buttons = [
@@ -16,11 +16,11 @@ const DashboardScreen = props => {
             <View style={styles.container}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => props.navigation.navigate({
-                        routeName: 'Workout', params: {
+                    onPress={() => {
+                        props.navigation.navigate('Workout', {
                             workout: title
-                        }
-                    })} >
+                        });
+                    }} >
                     <Text style={styles.buttonText}>{title.toUpperCase()}</Text>
                 </TouchableOpacity>
             </View>
@@ -38,12 +38,7 @@ const DashboardScreen = props => {
     );
 }
 
-DashboardScreen.navigationOptions = {
-    headerTitle: 'FITLOG',
-    headerTitleStyle: {
-        textAlign: 'center'
-    }
-}
+export const screenOptions = { headerTitle: 'Workouts' };
 
 const styles = StyleSheet.create({
     container: {
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonText: {
-        textAlign: 'center', 
+        textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 16
     }

@@ -10,6 +10,13 @@ import {
     ADD_EXERCISELOG_SUCCESS,
     ADD_EXERCISELOG_FAILURE,
     LOGIN_BEGIN,
+    FETCH_WORKOUTHISTORY,
+    FETCH_ACTIVITY,
+    FETCH_BESTSETS,
+    FETCH_WORKOUTSUMMARY
+} from "../actions/actions";
+
+import {
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
     REGISTER_RESET,
@@ -18,16 +25,14 @@ import {
     LOGOUT_SUCCESS,
     CLEAR_REGISTERERROR,
     CLEAR_LOGINERROR,
-    FETCH_WORKOUTHISTORY,
-    FETCH_ACTIVITY,
-    FETCH_MAXWEIGHT
-} from "../store/actions";
+} from '../actions/auth';
 
 const initialState = {
     user: {},
     workouts: [],
     logs: [],
     workoutHistory: [],
+    workoutSummary: [],
     activity: [],
     loading: false,
     error: null,
@@ -35,7 +40,9 @@ const initialState = {
     registerError: null,
     isAuthenticated: false,
     register: false,
-    maxWeight: null
+    maxWeight: null,
+    maxReps: null,
+    bestSet: null
 };
 
 export default function fitlogReducer(
@@ -125,6 +132,13 @@ export default function fitlogReducer(
                 workoutHistory: action.payload.workoutHist
             };
 
+        case FETCH_WORKOUTSUMMARY:
+            return {
+                ...state,
+                loading: false,
+                workoutSummary: action.payload.workoutSummary
+            };
+
         case FETCH_ACTIVITY:
             return {
                 ...state,
@@ -132,11 +146,13 @@ export default function fitlogReducer(
                 activity: action.payload.activity
             };
 
-        case FETCH_MAXWEIGHT:
+        case FETCH_BESTSETS:
             return {
                 ...state,
                 loading: false,
-                maxWeight: action.payload.maxWeight
+                maxWeight: action.payload.maxWeight,
+                maxReps: action.payload.maxReps,
+                bestSet: action.payload.bestSet
             };
 
         case LOGIN_BEGIN:
@@ -147,6 +163,7 @@ export default function fitlogReducer(
             };
 
         case LOGIN_SUCCESS:
+            console.log(action.payload);
             return {
                 ...state,
                 loading: false,
