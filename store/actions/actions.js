@@ -21,8 +21,7 @@ export const ADD_EXERCISELOG_FAILURE = "ADD_EXERCISELOG_FAILURE";
 export const FETCH_WORKOUTHISTORY = "FETCH_WORKOUTHISTORY";
 export const FETCH_WORKOUTSUMMARY = "FETCH_WORKOUTSUMMARY";
 export const FETCH_ACTIVITY = "FETCH_ACTIVITY";
-export const FETCH_MAXWEIGHT = "FETCH_MAXWEIGHT";
-export const FETCH_MAXREPS = "FETCH_MAXREPS";
+export const FETCH_BESTSETS = "FETCH_BESTSETS";
 
 export const fetchExercises = (workout) => {
     return dispatch => {
@@ -56,8 +55,7 @@ export const expandExercise = (workouts, category, name, userId) => {
             name: name
         };
         dispatch(expandExerciseBegin());
-        dispatch(maxWeight(userId, category, name));
-        dispatch(maxReps(userId, category, name));
+        dispatch(bestSets(userId, category, name));
         axios.post(endpoint + '/api/workoutlog/log', exercise)
             .then(res => {
                 var logs = res.data;
@@ -88,8 +86,7 @@ export const addExerciseLog = (exerciseLog, logToBeUpdated, workouts) => {
         logToBeUpdated.push(exerciseLog);
         axios.post(endpoint + '/api/workoutlog/', exerciseLog)
             .then(res => {
-                dispatch(addMaxWeight(exerciseLog, workouts));
-                dispatch(addMaxReps(exerciseLog, workouts));
+                dispatch(addBestSets(exerciseLog, workouts));
                 dispatch(addTodayWorkout(exerciseLog.userId, exerciseLog.category, exerciseLog.date));
                 dispatch(workoutSummary(exerciseLog.userId))
                 return logToBeUpdated;
@@ -113,9 +110,9 @@ export const addTodayWorkout = (userId, category, date) => {
     }
 };
 
-export const addMaxWeight = (exerciseLog, workouts) => {
+export const addBestSets = (exerciseLog, workouts) => {
     return dispatch => {
-        axios.post(endpoint + '/api/maxweight/', exerciseLog)
+        axios.post(endpoint + '/api/bestset/', exerciseLog)
             .then(res => {
                 dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
             })
@@ -123,41 +120,16 @@ export const addMaxWeight = (exerciseLog, workouts) => {
     }
 };
 
-export const maxWeight = (userId, category, name) => {
+export const bestSets = (userId, category, name) => {
     return dispatch => {
-        let maxWeightRequest = {
+        let bestSetsRequest = {
             "userId": userId,
             "category": category,
             "name": name
         };
-        axios.post(endpoint + '/api/maxweight/weight', maxWeightRequest)
+        axios.post(endpoint + '/api/bestset/set', bestSetsRequest)
             .then(res => {
-                dispatch(fetchMaxWeightSuccess(res.data));
-            })
-            .catch(error => dispatch(addExerciseLogFailure(error)));
-    }
-};
-
-export const addMaxReps = (exerciseLog, workouts) => {
-    return dispatch => {
-        axios.post(endpoint + '/api/maxreps/', exerciseLog)
-            .then(res => {
-                dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
-            })
-            .catch(error => dispatch(addExerciseLogFailure(error)));
-    }
-};
-
-export const maxReps = (userId, category, name) => {
-    return dispatch => {
-        let maxRepsRequest = {
-            "userId": userId,
-            "category": category,
-            "name": name
-        };
-        axios.post(endpoint + '/api/maxreps/reps', maxRepsRequest)
-            .then(res => {
-                dispatch(fetchMaxRepsSuccess(res.data));
+                dispatch(fetchBestSetsSuccess(res.data.maxWeight, res.data.maxReps, res.data.bestSet));
             })
             .catch(error => dispatch(addExerciseLogFailure(error)));
     }
@@ -280,12 +252,7 @@ export const activitySuccess = activity => ({
     payload: { activity }
 });
 
-export const fetchMaxWeightSuccess = maxWeight => ({
-    type: FETCH_MAXWEIGHT,
-    payload: { maxWeight }
-});
-
-export const fetchMaxRepsSuccess = maxReps => ({
-    type: FETCH_MAXREPS,
-    payload: { maxReps }
+export const fetchBestSetsSuccess = (maxWeight, maxReps, bestSet) => ({
+    type: FETCH_BESTSETS,
+    payload: { maxWeight, maxReps, bestSet }
 });

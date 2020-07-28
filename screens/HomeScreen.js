@@ -80,7 +80,7 @@ const HomeScreen = props => {
                                     <Text style={styles.buttonText}>Start Tracking</Text>
                                 </TouchableOpacity>
                             </View>}
-                        <View style={{ width: '100%', alignItems: 'center' }}>
+                        <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
                             <View style={{ width: '100%' }}>
                                 <Text style={styles.text}>Last 5 Workouts</Text>
                                 <Card style={styles.card}>{history}</Card>

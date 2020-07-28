@@ -17,7 +17,8 @@ const ExerciseScreen = props => {
     const logs = useSelector(state => state.fitlogReducer.logs);
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
-    const maxReps = useSelector(state => state.fitlogReducer.maxReps);
+    const maxRps = useSelector(state => state.fitlogReducer.maxReps);
+    const bestSet = useSelector(state => state.fitlogReducer.bestSet);
     const user = useSelector(state => state.fitlogReducer.user);
     const category = props.route.params ? props.route.params.workout : null;
     const userId = '5dfecbdd39d8760019968d04';
@@ -28,7 +29,6 @@ const ExerciseScreen = props => {
 
     useEffect(() => {
         dispatch(expandExercise(workouts, category, selectedExercise, userId));
-        dispatch(maxWeight(userId, category, selectedExercise));
     }, []);
 
     const addNotes = log => {
@@ -88,6 +88,14 @@ const ExerciseScreen = props => {
                 <View style={styles.innerContainer}>
                     <WorkoutInput category={category} name={selectedExercise} logs={logs} workouts={workouts} />
                     <View style={{ flexDirection: 'row' }}>
+                        {bestSet && <View style={styles.maxwt}>
+                            <Text style={styles.maxwtText}>Best Set</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text>{bestSet.weight} </Text>
+                                <Text>{bestSet.unit} </Text>
+                                <Text>{bestSet.count} reps</Text>
+                            </View>
+                        </View>}
                         {maxWt && <View style={styles.maxwt}>
                             <Text style={styles.maxwtText}>Max Weight</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -96,12 +104,12 @@ const ExerciseScreen = props => {
                                 <Text>{maxWt.count} reps</Text>
                             </View>
                         </View>}
-                        {maxReps && <View style={styles.maxwt}>
+                        {maxRps && <View style={styles.maxwt}>
                             <Text style={styles.maxwtText}>Max Reps</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <Text>{maxReps.count} reps</Text>
-                                <Text>{maxReps.unit} </Text>
-                                <Text>{maxReps.weight}</Text>
+                                <Text>{maxRps.weight} </Text>
+                                <Text>{maxRps.unit} </Text>
+                                <Text>{maxRps.count} reps</Text>
                             </View>
                         </View>}
                     </View>
@@ -114,7 +122,7 @@ const ExerciseScreen = props => {
                                         {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View> :
                                             <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>}
                                         <View style={{ flex: 2 }}>
-                                            {item.weight === maxWt.weight && item.count === maxWt.count && item.date === moment(maxWt.date).utc().format('MM/DD/YY HH:mm') ?
+                                            {bestSet && item.weight === bestSet.weight && item.count === bestSet.count && item.date === moment(bestSet.date).utc().format('MM/DD/YY HH:mm') ?
                                                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                                     <FontAwesome name="trophy" size={25} color={Colors.buttonColor} />
                                                 </View> : null}
@@ -157,7 +165,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         flex: 3
     },
-    maxwtText: { 
+    maxwtText: {
         fontWeight: 'bold',
         textAlign: 'center'
     },
