@@ -10,6 +10,16 @@ export const REGISTER_FAILURE = "REGISTER_FAILURE";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const CLEAR_REGISTERERROR = "CLEAR_REGISTERERROR";
 export const CLEAR_LOGINERROR = "CLEAR_LOGINERROR";
+export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
+
+let timer;
+
+export const authenticate = (userId, token, expiryTime) => {
+    return dispatch => {
+        dispatch(setLogoutTimer(expiryTime));
+        dispatch({ type: AUTHENTICATE, userId: userId, token: token });
+    };
+};
 
 const saveDataToStorage = (userId, token) => {
     AsyncStorage.setItem('user', JSON.stringify({
@@ -18,27 +28,32 @@ const saveDataToStorage = (userId, token) => {
     }));
 }
 
-export const login = (email, password) => {    
+export const login = (email, password) => {
     return dispatch => {
         let loginRequest = {
             "email": email,
             "password": password
         };
-        axios.post(endpoint+'/api/users/authenticate/',loginRequest)
-        .then(res => {
-            let userData = res.data.user;
-            console.log(userData);
-            //localStorage.setItem('user', JSON.stringify(res));
-            saveDataToStorage(userData.id, userData.token);
-            dispatch(loginSuccess(res.data.user));
-            //history.push('/Dashboard');
-            return res.data.user;
-        })
-        .catch(error => dispatch(loginFailure(error)));
+        axios.post('http://localhost:8080/api/users/authenticate/', loginRequest)
+            .then(res => {
+                let userData = res.data.user;
+                console.log(userData);
+                dispatch(loginSuccess(res.data.user));
+                // dispatch(authenticate(userData.id, userData.token));
+                // const expirationDate = new Date(
+                //     new Date().getTime() + parseInt(resData.expiresIn) * 1000
+                // );
+                saveDataToStorage(userData.id, userData.token);
+                return res.data.user;
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(loginFailure(error))
+            });
     }
 };
 
-export const register = (name, username, email, password, history) => {    
+export const register = (name, username, email, password, history) => {
     return dispatch => {
         let registerRequest = {
             "name": name,
@@ -46,12 +61,12 @@ export const register = (name, username, email, password, history) => {
             "email": email,
             "password": password
         }
-        axios.post(endpoint+'/api/users/',registerRequest)
-        .then(res => {
-            dispatch(registerSuccess());
-            history.push('/');
-        })
-        .catch(error => dispatch(registerFailure(error)));
+        axios.post(endpoint + '/api/users/', registerRequest)
+            .then(res => {
+                dispatch(registerSuccess());
+                history.push('/');
+            })
+            .catch(error => dispatch(registerFailure(error)));
     }
 };
 
@@ -62,6 +77,8 @@ export const logout = () => {
     }
 };
 
+
+export const setDidTryAL = () => ({ type: SET_DID_TRY_AL });
 export const loginSuccess = user => ({
     type: LOGIN_SUCCESS,
     payload: { user }
@@ -72,27 +89,13 @@ export const loginFailure = error => ({
     payload: { error }
 });
 
-export const logoutSuccess = () => ({
-    type: LOGOUT_SUCCESS
-});
-
-export const registerReset = () => ({
-    type: REGISTER_RESET
-});
-
-export const registerSuccess = () => ({
-    type: REGISTER_SUCCESS
-});
-
+export const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
+export const registerReset = () => ({ type: REGISTER_RESET });
+export const registerSuccess = () => ({ type: REGISTER_SUCCESS });
 export const registerFailure = (error) => ({
     type: REGISTER_FAILURE,
     payload: { error }
 });
 
-export const clearRegisterErrorMsg = () => ({
-    type: CLEAR_REGISTERERROR
-});
-
-export const clearLoginErrorMsg = () => ({
-    type: CLEAR_LOGINERROR
-});
+export const clearRegisterErrorMsg = () => ({ type: CLEAR_REGISTERERROR });
+export const clearLoginErrorMsg = () => ({ type: CLEAR_LOGINERROR });

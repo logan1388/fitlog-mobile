@@ -4,8 +4,8 @@ import {
     StyleSheet, Text, View, ImageBackground, SafeAreaView, FlatList, Modal,
     TouchableHighlight, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard
 } from 'react-native';
-import { expandExercise, maxWeight } from '../store/actions/actions';
-import WorkoutInput from '../components/WorkoutInput';
+import { expandExercise } from '../store/actions/actions';
+import WorkoutInput from '../components/workoutInput';
 import BackImg from '../assets/back-workout.jpg';
 import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';

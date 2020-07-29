@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import Navigator from './navigation/Navigator';
+import AppNavigator from './navigation/AppNavigator';
 import fitlogReducer from './store/reducers/reducer';
 import thunk from 'redux-thunk';
 
@@ -18,7 +18,7 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 export default function App() {
   return (
     <Provider store={store}>
-      <Navigator />
+      <AppNavigator />
     </Provider>
   );
 }

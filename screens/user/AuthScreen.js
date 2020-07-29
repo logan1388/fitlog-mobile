@@ -4,6 +4,7 @@ import Card from '../../components/Card';
 import BackImg from '../../assets/FITLOG.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from '../../store/actions/auth';
+import { Ionicons } from '@expo/vector-icons';
 
 const AuthScreen = props => {
     const [email, setEmail] = useState('');
@@ -21,9 +22,8 @@ const AuthScreen = props => {
             await dispatch(authActions.login(email, password));
             //const user = useSelector(state => state.fitlogReducer.user);
             //console.log('User ',user);
-            props.navigation.navigate('Navigator');
         } catch (err) {
-
+            console.log(err);
         }
     };
 
@@ -109,6 +109,9 @@ const AuthScreen = props => {
                                         }}>
                                             <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Register</Text>
                                         </TouchableOpacity>
+                                        <View style={{ marginTop: 15 }}>
+                                            <Ionicons style={{ textAlign: 'center' }} name="md-arrow-back" size={24} color="black" onPress={() => setRegister(false)}/>
+                                        </View>
                                     </View>
                                 </React.Fragment>}
                             {authMessage !== '' &&
