@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
-import { workoutHistory, workoutSummary } from '../store/actions/actions';
+import { workoutHistory, workoutSummary, weeklyAwards } from '../store/actions/actions';
+import { logout } from '../store/actions/auth';
 import moment from 'moment';
 import Card from '../components/Card';
 import BackImg from '../assets/FITLOG.jpg';
@@ -20,12 +21,14 @@ const data = [
 const HomeScreen = props => {
     const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
     const workoutSumm = useSelector(state => state.fitlogReducer.workoutSummary);
+    const awardsSumm = useSelector(state => state.fitlogReducer.awardsWeek);
     const dispatch = useDispatch();
     const userId = '5dfecbdd39d8760019968d04';
 
     useEffect(() => {
         dispatch(workoutSummary(userId));
         dispatch(workoutHistory(userId));
+        dispatch(weeklyAwards(userId));
     }, []);
 
     const history =
@@ -54,10 +57,15 @@ const HomeScreen = props => {
     const hightlights =
         <View style={{ width: '100%' }}>
             <ScrollView>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ paddingLeft : 5 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
-                    <View style={{ paddingHorizontal : 15 }}><Text style={{ fontSize: 16 }}>Max wt for Bench press</Text></View>
-                </View>
+                {awardsSumm.map(item =>
+                    <Card style={styles.highlightCard} key={item.date}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
+                            <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
+                            <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
+                            <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                        </View>
+                    </Card>)}
             </ScrollView>
         </View>
 
@@ -87,14 +95,20 @@ const HomeScreen = props => {
                             </View>
                             <View style={{ width: '100%', marginTop: 20 }}>
                                 <Text style={styles.text}>Highlights</Text>
-                                <Card style={styles.highlightCard}>{hightlights}</Card>
-                                <Card style={styles.highlightCard}>{hightlights}</Card>
+                                {hightlights}
                             </View>
                             <View style={{ marginVertical: 20 }}>
                                 <VictoryChart width={350} theme={VictoryTheme.material}>
                                     <VictoryBar data={data} x="quarter" y="earnings" />
                                 </VictoryChart>
                             </View>
+                        </View>
+                        <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => dispatch(logout())} >
+                                <Text style={styles.buttonText}>Log out</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>

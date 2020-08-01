@@ -22,6 +22,8 @@ export const FETCH_WORKOUTHISTORY = "FETCH_WORKOUTHISTORY";
 export const FETCH_WORKOUTSUMMARY = "FETCH_WORKOUTSUMMARY";
 export const FETCH_ACTIVITY = "FETCH_ACTIVITY";
 export const FETCH_BESTSETS = "FETCH_BESTSETS";
+export const FETCH_AWARDSWEEK = "FETCH_AWARDSWEEK";
+export const FETCH_AWARDSHISTORY = "FETCH_AWARDSHISTORY";
 
 export const fetchExercises = (workout) => {
     return dispatch => {
@@ -116,7 +118,7 @@ export const addBestSets = (exerciseLog, workouts) => {
             .then(res => {
                 dispatch(expandExercise(workouts, exerciseLog.category, exerciseLog.name, exerciseLog.userId));
             })
-            .catch(error => dispatch(addExerciseLogFailure(error)));
+            .catch(error => console.log(error));
     }
 };
 
@@ -131,7 +133,7 @@ export const bestSets = (userId, category, name) => {
             .then(res => {
                 dispatch(fetchBestSetsSuccess(res.data.maxWeight, res.data.maxReps, res.data.bestSet));
             })
-            .catch(error => dispatch(addExerciseLogFailure(error)));
+            .catch(error => console.log(error));
     }
 };
 
@@ -153,7 +155,6 @@ export const workoutSummary = userId => {
         axios.post(endpoint + '/api/workout/workoutSummary', param)
             .then(res => {
                 let workoutSummary = res.data;
-                console.log(workoutSummary);
                 dispatch(workoutSummarySuccess(workoutSummary));
             })
             .catch(error => console.log(error));
@@ -185,6 +186,32 @@ export const saveNote = (id, category, note) => {
         axios.put(endpoint + '/api/workoutlog/note', param)
             .then(res => {
                 console.log(res);
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const awardsHistory = userId => {
+    return dispatch => {
+        let param = {
+            userId: userId
+        }
+        axios.post(endpoint + '/api/awards/', param)
+            .then(res => {
+                dispatch(fetchAwardsHistorySuccess(res.data));
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const weeklyAwards = userId => {
+    return dispatch => {
+        let param = {
+            userId: userId
+        }
+        axios.post(endpoint + '/api/awards/week', param)
+            .then(res => {
+                dispatch(fetchAwardsWeekSuccess(res.data));
             })
             .catch(error => console.log(error));
     }
@@ -255,4 +282,14 @@ export const activitySuccess = activity => ({
 export const fetchBestSetsSuccess = (maxWeight, maxReps, bestSet) => ({
     type: FETCH_BESTSETS,
     payload: { maxWeight, maxReps, bestSet }
+});
+
+export const fetchAwardsWeekSuccess = awards => ({
+    type: FETCH_AWARDSWEEK,
+    payload: { awards }
+});
+
+export const fetchAwardsHistorySuccess = awards => ({
+    type: FETCH_AWARDSHISTORY,
+    payload: { awards }
 });
