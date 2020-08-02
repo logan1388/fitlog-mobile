@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { workoutHistory, workoutSummary, weeklyAwards } from '../store/actions/actions';
@@ -8,15 +8,8 @@ import Card from '../components/Card';
 import BackImg from '../assets/FITLOG.jpg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryLabel } from "victory-native";
 import Colors from '../constants/colors';
-
-const data = [
-    { quarter: 1, earnings: 13000 },
-    { quarter: 2, earnings: 16500 },
-    { quarter: 3, earnings: 14250 },
-    { quarter: 4, earnings: 19000 }
-];
 
 const HomeScreen = props => {
     const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
@@ -30,6 +23,15 @@ const HomeScreen = props => {
         dispatch(workoutHistory(userId));
         dispatch(weeklyAwards(userId));
     }, []);
+
+    const graphData = {};
+    const data = [];
+    workoutHist.map(hist => {
+        graphData[hist.category] = { count: graphData[hist.category] ? graphData[hist.category].count + 1 : 1 };
+    });
+    Object.keys(graphData).map(key => {
+        data.push({ x: key, y: graphData[key].count });
+    });
 
     const history =
         <View style={{ width: '100%' }}>
@@ -58,14 +60,12 @@ const HomeScreen = props => {
         <View style={{ width: '100%' }}>
             <ScrollView>
                 {awardsSumm.map(item =>
-                    <Card style={styles.highlightCard} key={item.date}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
-                            <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
-                            <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
-                            <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
-                        </View>
-                    </Card>)}
+                    <View style={{ flexDirection: 'row', paddingBottom: 10 }} key={item.date}>
+                        <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
+                        <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
+                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
+                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                    </View>)}
             </ScrollView>
         </View>
 
@@ -95,12 +95,10 @@ const HomeScreen = props => {
                             </View>
                             <View style={{ width: '100%', marginTop: 20 }}>
                                 <Text style={styles.text}>Highlights</Text>
-                                {hightlights}
+                                <Card style={styles.card}>{hightlights}</Card>
                             </View>
                             <View style={{ marginVertical: 20 }}>
-                                <VictoryChart width={350} theme={VictoryTheme.material}>
-                                    <VictoryBar data={data} x="quarter" y="earnings" />
-                                </VictoryChart>
+                                <VictoryPie data={data} width={350}/>
                             </View>
                         </View>
                         <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>

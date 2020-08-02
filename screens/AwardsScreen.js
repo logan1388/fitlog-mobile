@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ImageBackground, ScrollView } from 'react-native';
-import BackImg from '../assets/back-workout.jpg';
+import BackImg from '../assets/FITLOG.jpg';
 import Card from '../components/Card';
 import { awardsHistory } from '../store/actions/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     innerContainer: {
-        paddingVertical: 30,
-        paddingHorizontal: 20,
+        paddingVertical: 25,
+        paddingHorizontal: 15,
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
         height: '100%',
         alignItems: 'center'
