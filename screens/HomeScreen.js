@@ -30,7 +30,7 @@ const HomeScreen = props => {
         graphData[hist.category] = { count: graphData[hist.category] ? graphData[hist.category].count + 1 : 1 };
     });
     Object.keys(graphData).map(key => {
-        data.push({ x: key, y: graphData[key].count });
+        data.push({ x: key, y: graphData[key].count, label: `${key}\n(${graphData[key].count})` });
     });
 
     const history =
@@ -97,8 +97,13 @@ const HomeScreen = props => {
                                 <Text style={styles.text}>Highlights</Text>
                                 <Card style={styles.card}>{hightlights}</Card>
                             </View>
-                            <View style={{ marginVertical: 20 }}>
-                                <VictoryPie data={data} width={350}/>
+                            <View style={{ marginTop: 15 }}>
+                                <VictoryPie
+                                    data={data}
+                                    width={350}
+                                    colorScale='blue'
+                                    style={{ labels: { fontSize: 16 } }}
+                                />
                             </View>
                         </View>
                         <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
