@@ -24,6 +24,7 @@ export const FETCH_ACTIVITY = "FETCH_ACTIVITY";
 export const FETCH_BESTSETS = "FETCH_BESTSETS";
 export const FETCH_AWARDSWEEK = "FETCH_AWARDSWEEK";
 export const FETCH_AWARDSHISTORY = "FETCH_AWARDSHISTORY";
+export const FETCH_LOGSWEEK = "FETCH_LOGSWEEK";
 
 export const fetchExercises = (workout) => {
     return dispatch => {
@@ -217,6 +218,19 @@ export const weeklyAwards = userId => {
     }
 };
 
+export const weeklyLogs = userId => {
+    return dispatch => {
+        let param = {
+            userId: userId
+        }
+        axios.post(endpoint + '/api/workoutlog/logsWeek', param)
+            .then(res => {
+                dispatch(fetchLogsWeekSuccess(res.data));
+            })
+            .catch(error => console.log(error));
+    }
+};
+
 export const fetchExercisesBegin = () => ({
     type: FETCH_EXERCISES_BEGIN
 });
@@ -292,4 +306,9 @@ export const fetchAwardsWeekSuccess = awards => ({
 export const fetchAwardsHistorySuccess = awards => ({
     type: FETCH_AWARDSHISTORY,
     payload: { awards }
+});
+
+export const fetchLogsWeekSuccess = logsWeek => ({
+    type: FETCH_LOGSWEEK,
+    payload: { logsWeek }
 });

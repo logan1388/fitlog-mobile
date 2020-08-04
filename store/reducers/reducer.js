@@ -15,7 +15,8 @@ import {
     FETCH_BESTSETS,
     FETCH_WORKOUTSUMMARY,
     FETCH_AWARDSWEEK,
-    FETCH_AWARDSHISTORY
+    FETCH_AWARDSHISTORY,
+    FETCH_LOGSWEEK
 } from "../actions/actions";
 
 import {
@@ -46,7 +47,8 @@ const initialState = {
     maxReps: null,
     bestSet: null,
     awardsWeek: [],
-    awards: []
+    awards: [],
+    logsWeek: []
 };
 
 export default function fitlogReducer(
@@ -171,6 +173,13 @@ export default function fitlogReducer(
                 ...state,
                 loading: false,
                 awards: action.payload.awards
+            };
+
+        case FETCH_LOGSWEEK:
+            return {
+                ...state,
+                loading: false,
+                logsWeek: action.payload.logsWeek
             };
 
         case LOGIN_BEGIN:
