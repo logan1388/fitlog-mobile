@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -75,52 +74,44 @@ const PlannerNavigator = () => {
 };
 
 const AuthStackNavigator = createStackNavigator();
-const AuthNavigator = () => {
+export const AuthNavigator = () => {
     return <AuthStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
         <AuthStackNavigator.Screen name='Auth' component={AuthScreen} options={authScreenOptions} />
     </AuthStackNavigator.Navigator>
 };
 
-// const MainNavigator = createSwitchNavigator({
-//     // Auth: AuthNavigator,
-//     Navigator: DashboardTabNavigator
-// });
-
-//export default createAppContainer(MainNavigator);
 const Tab = createBottomTabNavigator();
-export default function App() {
+export const FitbookNavigator = () => {
     return (
-        <NavigationContainer>
-            <Tab.Navigator
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        if (route.name === 'Home') {
-                            return <Ionicons name="ios-home" size={25} color={color} />
-                        } else if (route.name === 'Planner') {
-                            return <FontAwesome name="calendar" size={25} color={color} />
-                        } else if (route.name === 'Workouts') {
-                            return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
-                        } else if (route.name === 'Awards') {
-                            return <FontAwesome name="trophy" size={25} color={color} />
-                        } else if (route.name === 'Notes') {
-                            return <Ionicons name="ios-book" size={25} color={color} />
-                        }
-                    },
-                })}
-                tabBarOptions={{
-                    activeTintColor: Colors.headerFontColor,
-                    inactiveTintColor: Colors.buttonColor,
-                    tabStyle: {
-                        backgroundColor: Colors.headerBackground
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    if (route.name === 'Home') {
+                        return <Ionicons name="ios-home" size={25} color={color} />
+                    } else if (route.name === 'Planner') {
+                        return <FontAwesome name="calendar" size={25} color={color} />
+                    } else if (route.name === 'Workouts') {
+                        return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
+                    } else if (route.name === 'Awards') {
+                        return <FontAwesome name="trophy" size={25} color={color} />
+                    } else if (route.name === 'Notes') {
+                        return <Ionicons name="ios-book" size={25} color={color} />
                     }
-                }}
-            >
-                <Tab.Screen name="Home" component={HomeNavigator} />
-                <Tab.Screen name="Planner" component={PlannerNavigator} />
-                <Tab.Screen name="Workouts" component={DashboardNavigator} />
-                <Tab.Screen name="Awards" component={AwardsNavigator} />
-                <Tab.Screen name="Notes" component={NotesNavigator} />
-            </Tab.Navigator>
-        </NavigationContainer>
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: Colors.headerFontColor,
+                inactiveTintColor: Colors.buttonColor,
+                tabStyle: {
+                    backgroundColor: Colors.headerBackground
+                }
+            }}
+        >
+            <Tab.Screen name="Home" component={HomeNavigator} />
+            <Tab.Screen name="Planner" component={PlannerNavigator} />
+            <Tab.Screen name="Workouts" component={DashboardNavigator} />
+            <Tab.Screen name="Awards" component={AwardsNavigator} />
+            <Tab.Screen name="Notes" component={NotesNavigator} />
+        </Tab.Navigator>
     );
 }

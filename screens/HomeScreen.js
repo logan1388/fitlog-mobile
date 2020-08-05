@@ -1,32 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
-import { workoutHistory, workoutSummary } from '../store/actions/actions';
+import { workoutHistory, workoutSummary, weeklyAwards } from '../store/actions/actions';
+import { logout } from '../store/actions/auth';
 import moment from 'moment';
 import Card from '../components/Card';
 import BackImg from '../assets/FITLOG.jpg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryLabel } from "victory-native";
 import Colors from '../constants/colors';
-
-const data = [
-    { quarter: 1, earnings: 13000 },
-    { quarter: 2, earnings: 16500 },
-    { quarter: 3, earnings: 14250 },
-    { quarter: 4, earnings: 19000 }
-];
 
 const HomeScreen = props => {
     const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
     const workoutSumm = useSelector(state => state.fitlogReducer.workoutSummary);
+    const awardsSumm = useSelector(state => state.fitlogReducer.awardsWeek);
     const dispatch = useDispatch();
     const userId = '5dfecbdd39d8760019968d04';
 
     useEffect(() => {
         dispatch(workoutSummary(userId));
         dispatch(workoutHistory(userId));
+        dispatch(weeklyAwards(userId));
     }, []);
+
+    const graphData = {};
+    const data = [];
+    workoutHist.map(hist => {
+        graphData[hist.category] = { count: graphData[hist.category] ? graphData[hist.category].count + 1 : 1 };
+    });
+    Object.keys(graphData).map(key => {
+        data.push({ x: key, y: graphData[key].count, label: `${key}\n(${graphData[key].count})` });
+    });
 
     const history =
         <View style={{ width: '100%' }}>
@@ -54,10 +59,13 @@ const HomeScreen = props => {
     const hightlights =
         <View style={{ width: '100%' }}>
             <ScrollView>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ paddingLeft : 5 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
-                    <View style={{ paddingHorizontal : 15 }}><Text style={{ fontSize: 16 }}>Max wt for Bench press</Text></View>
-                </View>
+                {awardsSumm.map(item =>
+                    <View style={{ flexDirection: 'row', paddingBottom: 10 }} key={item.date}>
+                        <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
+                        <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
+                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
+                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                    </View>)}
             </ScrollView>
         </View>
 
@@ -87,14 +95,23 @@ const HomeScreen = props => {
                             </View>
                             <View style={{ width: '100%', marginTop: 20 }}>
                                 <Text style={styles.text}>Highlights</Text>
-                                <Card style={styles.highlightCard}>{hightlights}</Card>
-                                <Card style={styles.highlightCard}>{hightlights}</Card>
+                                <Card style={styles.card}>{hightlights}</Card>
                             </View>
-                            <View style={{ marginVertical: 20 }}>
-                                <VictoryChart width={350} theme={VictoryTheme.material}>
-                                    <VictoryBar data={data} x="quarter" y="earnings" />
-                                </VictoryChart>
+                            <View style={{ marginTop: 15 }}>
+                                <VictoryPie
+                                    data={data}
+                                    width={350}
+                                    colorScale='blue'
+                                    style={{ labels: { fontSize: 16 } }}
+                                />
                             </View>
+                        </View>
+                        <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => dispatch(logout())} >
+                                <Text style={styles.buttonText}>Log out</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
