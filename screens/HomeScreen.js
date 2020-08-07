@@ -85,9 +85,16 @@ const HomeScreen = props => {
                                 <TouchableOpacity
                                     style={styles.button}
                                     onPress={() => props.navigation.navigate('Workouts')} >
-                                    <Text style={styles.buttonText}>Start Tracking</Text>
+                                    <Text style={styles.buttonText}>Weight Tracking</Text>
                                 </TouchableOpacity>
                             </View>}
+                        <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => props.navigation.navigate('HomeWorkouts')} >
+                                <Text style={styles.buttonText}>Home workouts Tracking</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
                             <View style={{ width: '100%' }}>
                                 <Text style={styles.text}>Last 5 Workouts</Text>
