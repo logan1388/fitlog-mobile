@@ -19,7 +19,7 @@ const HomeWorkoutScreen = props => {
                     style={styles.button}
                     onPress={() => {
                         props.navigation.navigate('HomeWorkoutlog', {
-                            workout: title
+                            exercise: title
                         });
                     }} >
                     <Text style={styles.buttonText}>{title.toUpperCase()}</Text>
@@ -31,12 +31,12 @@ const HomeWorkoutScreen = props => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={BackImg} style={styles.image}>
-            <View style={styles.bg}>
-                <FlatList
-                    data={buttons}
-                    renderItem={({ item }) => <Item title={item.title} />}
-                    keyExtractor={item => item.title}
-                />
+                <View style={styles.bg}>
+                    <FlatList
+                        data={buttons}
+                        renderItem={({ item }) => <Item title={item.title} />}
+                        keyExtractor={item => item.title}
+                    />
                 </View>
             </ImageBackground>
         </SafeAreaView>
