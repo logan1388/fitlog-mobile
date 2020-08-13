@@ -14,7 +14,8 @@ const HomeWorkoutlogScreen = props => {
     const userId = '5dfecbdd39d8760019968d04';
     const selectedExercise = props.route.params ? props.route.params.exercise : null;
     const logs = useSelector(state => state.fitlogReducer.homeworkoutlogs);
-    console.log('Homeworkout logs ', logs);
+    const maxRps = useSelector(state => state.fitlogReducer.maxReps);
+    const maxTime = useSelector(state => state.fitlogReducer.maxTime);
     const [count, setCount] = useState(0);
     const [weight, setWeight] = useState(0);
     const [time, setTime] = useState(0);
@@ -60,9 +61,11 @@ const HomeWorkoutlogScreen = props => {
     }
 
     const addLog = (weight, count, time) => {
-        console.log('Time ', time);
+        if (time) {
+            time = time.substr(3, 5);
+            console.log('Time ', time);
+        }
         let timestamp = getTimestamp();
-        console.log('Timestamp ', timestamp);
         let id = '5dfecbdd39d8760019968d04';
         let exerciseLog = {
             'userId': id,
@@ -82,7 +85,7 @@ const HomeWorkoutlogScreen = props => {
             <ImageBackground source={BackImg} style={styles.image}>
                 <View style={styles.bg}>
                     <View style={{ flexDirection: 'row', paddingBottom: 15, justifyContent: 'center' }}>
-                        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+                        <View style={{ paddingHorizontal: 15, marginTop: 5 }}>
                             <Text style={styles.label}>Count</Text>
                             <NumericInput
                                 initValue={count}
@@ -93,7 +96,7 @@ const HomeWorkoutlogScreen = props => {
                                 borderColor='darkgrey'
                                 upDownButtonsBackgroundColor='darkgrey' />
                         </View>
-                        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+                        <View style={{ paddingHorizontal: 15, marginTop: 5 }}>
                             <Text style={styles.label}>Weight</Text>
                             <NumericInput
                                 initValue={weight}
@@ -105,7 +108,7 @@ const HomeWorkoutlogScreen = props => {
                                 upDownButtonsBackgroundColor='darkgrey' />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'center' }}>
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => stopwatchStart ? stopStopWatch() : toggleStopWatch()} >
@@ -121,12 +124,26 @@ const HomeWorkoutlogScreen = props => {
                                 <Text style={styles.buttonText}>Reset</Text>
                             </TouchableOpacity>}
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15, marginTop: 25 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', paddingBottom: 15, marginTop: 20 }}>
                         <TouchableOpacity
                             style={styles.addButton}
                             onPress={() => (weight > 0 || count > 0 || time != 0) && addLog(weight, count, time)}>
                             <Text style={{ fontWeight: 'bold' }}>ADD</Text>
                         </TouchableOpacity>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        {maxRps && <View style={styles.max}>
+                            <Text style={styles.maxText}>Max Reps</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text>{maxRps.count} reps</Text>
+                            </View>
+                        </View>}
+                        {maxTime && <View style={styles.max}>
+                            <Text style={styles.maxText}>Max Time</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text>{maxTime.time} </Text>
+                            </View>
+                        </View>}
                     </View>
                     <SafeAreaView style={{ flex: 1 }}>
                         <View>
@@ -143,9 +160,9 @@ const HomeWorkoutlogScreen = props => {
                                             </View> : null} */}
                                         </View>
                                         <View style={{ flex: 3 }}><Text>{item.date}</Text></View>
-                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
-                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.time !=0 && item.time}</Text></View>
-                                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight ? `${item.weight} ${item.unit}` : ''}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count ? `${item.count} reps` : '-'}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.time != 0 ? item.time : '-'}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.weight ? `${item.weight} lbs` : '-'}</Text></View>
                                     </View>}
                                 keyExtractor={item => item._id}
                             />
@@ -231,6 +248,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'darkgrey'
     },
+    max: {
+        height: 50,
+        textAlign: 'center',
+        flex: 3
+    },
+    maxText: {
+        fontWeight: 'bold',
+        textAlign: 'center'
+    }
 });
 
 export default HomeWorkoutlogScreen;

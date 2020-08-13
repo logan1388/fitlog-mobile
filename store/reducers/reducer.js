@@ -2,7 +2,6 @@ import {
     FETCH_EXERCISES_BEGIN,
     FETCH_EXERCISES_SUCCESS,
     FETCH_EXERCISES_FAILURE,
-    EXPAND_EXERCISE_BEGIN,
     EXPAND_EXERCISE_SUCCESS,
     EXPAND_EXERCISE_FAILURE,
     CLOSE_EXPANDEXERCISE_SUCCESS,
@@ -13,6 +12,8 @@ import {
     FETCH_WORKOUTHISTORY,
     FETCH_ACTIVITY,
     FETCH_BESTSETS,
+    FETCH_MAXREPS,
+    FETCH_MAXTIME,
     FETCH_WORKOUTSUMMARY,
     FETCH_AWARDSWEEK,
     FETCH_AWARDSHISTORY,
@@ -79,13 +80,6 @@ export default function fitlogReducer(
                 loading: false,
                 error: action.payload.error,
                 workouts: []
-            };
-
-        case EXPAND_EXERCISE_BEGIN:
-            return {
-                ...state,
-                loading: true,
-                error: null
             };
 
         case EXPAND_EXERCISE_SUCCESS:
@@ -162,6 +156,20 @@ export default function fitlogReducer(
                 maxWeight: action.payload.maxWeight,
                 maxReps: action.payload.maxReps,
                 bestSet: action.payload.bestSet
+            };
+
+        case FETCH_MAXREPS:
+            return {
+                ...state,
+                loading: false,
+                maxReps: action.payload.maxReps,
+            };
+
+        case FETCH_MAXTIME:
+            return {
+                ...state,
+                loading: false,
+                maxTime: action.payload.maxTime,
             };
 
         case FETCH_AWARDSWEEK:
