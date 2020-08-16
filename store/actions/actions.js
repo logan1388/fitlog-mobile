@@ -6,7 +6,6 @@ export const FETCH_EXERCISES_BEGIN = "FETCH_EXERCISES_BEGIN";
 export const FETCH_EXERCISES_SUCCESS = "FETCH_EXERCISES_SUCCESS";
 export const FETCH_EXERCISES_FAILURE = "FETCH_EXERCISES_FAILURE";
 
-export const EXPAND_EXERCISE_BEGIN = "EXPAND_EXERCISE_BEGIN";
 export const EXPAND_EXERCISE_SUCCESS = "EXPAND_EXERCISE_SUCCESS";
 export const EXPAND_EXERCISE_FAILURE = "EXPAND_EXERCISE_FAILURE";
 
@@ -22,9 +21,13 @@ export const FETCH_WORKOUTHISTORY = "FETCH_WORKOUTHISTORY";
 export const FETCH_WORKOUTSUMMARY = "FETCH_WORKOUTSUMMARY";
 export const FETCH_ACTIVITY = "FETCH_ACTIVITY";
 export const FETCH_BESTSETS = "FETCH_BESTSETS";
+export const FETCH_MAXREPS = "FETCH_MAXREPS";
+export const FETCH_MAXTIME = "FETCH_MAXTIME";
 export const FETCH_AWARDSWEEK = "FETCH_AWARDSWEEK";
 export const FETCH_AWARDSHISTORY = "FETCH_AWARDSHISTORY";
 export const FETCH_LOGSWEEK = "FETCH_LOGSWEEK";
+
+export const FETCH_HOMEWORKOUTLOG_SUCCESS = "FETCH_HOMEWORKOUTLOG_SUCCESS";
 
 export const fetchExercises = (workout) => {
     return dispatch => {
@@ -57,7 +60,6 @@ export const expandExercise = (workouts, category, name, userId) => {
             category: category,
             name: name
         };
-        dispatch(expandExerciseBegin());
         dispatch(bestSets(userId, category, name));
         axios.post(endpoint + '/api/workoutlog/log', exercise)
             .then(res => {
@@ -69,6 +71,29 @@ export const expandExercise = (workouts, category, name, userId) => {
                 return logs;
             })
             .catch(error => dispatch(expandExerciseFailure(error)));
+    };
+};
+
+export const fetchHomeWorkoutLog = (category, name, userId) => {
+    return dispatch => {
+        let exercise = {
+            userId: userId,
+            category: category,
+            name: name
+        };
+        dispatch(maxReps(userId, name));
+        dispatch(maxTime(userId, name));
+        axios.post(endpoint + '/api/homeworkoutlog/log', exercise)
+            .then(res => {
+                var logs = res.data;
+                console.log('Home workoutlog ', logs);
+                logs.map(log => {
+                    log.date = moment(log.date).utc().format('MM/DD/YY HH:mm')
+                });
+                dispatch(fetchHomeworkoutLogSuccess(logs));
+                return logs;
+            })
+            .catch(error => console.log(error));
     };
 };
 
@@ -133,6 +158,34 @@ export const bestSets = (userId, category, name) => {
         axios.post(endpoint + '/api/bestset/set', bestSetsRequest)
             .then(res => {
                 dispatch(fetchBestSetsSuccess(res.data.maxWeight, res.data.maxReps, res.data.bestSet));
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const maxReps = (userId, name) => {
+    return dispatch => {
+        let maxRepsRequest = {
+            "userId": userId,
+            "name": name
+        };
+        axios.post(endpoint + '/api/maxreps/reps', maxRepsRequest)
+            .then(res => {
+                dispatch(fetchMaxRepsSuccess(res.data));
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const maxTime = (userId, name) => {
+    return dispatch => {
+        let maxTimeRequest = {
+            "userId": userId,
+            "name": name
+        };
+        axios.post(endpoint + '/api/maxtime/time', maxTimeRequest)
+            .then(res => {
+                dispatch(fetchMaxTimeSuccess(res.data));
             })
             .catch(error => console.log(error));
     }
@@ -231,6 +284,43 @@ export const weeklyLogs = userId => {
     }
 };
 
+export const addMaxTime = exerciseLog => {
+    return dispatch => {
+        axios.post(endpoint + '/api/maxtime/', exerciseLog)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const addMaxReps = exerciseLog => {
+    return dispatch => {
+        axios.post(endpoint + '/api/maxreps/', exerciseLog)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => console.log(error));
+    }
+};
+
+export const addHomeExerciseLog = (exerciseLog, logToBeUpdated) => {
+    return dispatch => {
+        console.log(exerciseLog);
+        logToBeUpdated.push(exerciseLog);
+        console.log(logToBeUpdated);
+        axios.post(endpoint + '/api/homeworkoutlog/', exerciseLog)
+            .then(res => {
+                console.log('Response ', res);
+                dispatch(addMaxTime(exerciseLog));
+                dispatch(addMaxReps(exerciseLog));
+                dispatch(fetchHomeWorkoutLog(exerciseLog.category, exerciseLog.name, exerciseLog.userId))
+                return logToBeUpdated;
+            })
+            .catch(error => dispatch(addExerciseLogFailure(error)));
+    }
+};
+
 export const fetchExercisesBegin = () => ({
     type: FETCH_EXERCISES_BEGIN
 });
@@ -243,10 +333,6 @@ export const fetchExercisesSuccess = exercises => ({
 export const fetchExercisesFailure = error => ({
     type: FETCH_EXERCISES_FAILURE,
     payload: { error }
-});
-
-export const expandExerciseBegin = () => ({
-    type: EXPAND_EXERCISE_BEGIN
 });
 
 export const expandExerciseSuccess = logs => ({
@@ -298,6 +384,16 @@ export const fetchBestSetsSuccess = (maxWeight, maxReps, bestSet) => ({
     payload: { maxWeight, maxReps, bestSet }
 });
 
+export const fetchMaxRepsSuccess = maxReps => ({
+    type: FETCH_MAXREPS,
+    payload: { maxReps }
+});
+
+export const fetchMaxTimeSuccess = maxTime => ({
+    type: FETCH_MAXTIME,
+    payload: { maxTime }
+});
+
 export const fetchAwardsWeekSuccess = awards => ({
     type: FETCH_AWARDSWEEK,
     payload: { awards }
@@ -311,4 +407,9 @@ export const fetchAwardsHistorySuccess = awards => ({
 export const fetchLogsWeekSuccess = logsWeek => ({
     type: FETCH_LOGSWEEK,
     payload: { logsWeek }
+});
+
+export const fetchHomeworkoutLogSuccess = homeworkoutlogs => ({
+    type: FETCH_HOMEWORKOUTLOG_SUCCESS,
+    payload: { homeworkoutlogs }
 });

@@ -59,13 +59,13 @@ const HomeScreen = props => {
     const hightlights =
         <View style={{ width: '100%' }}>
             <ScrollView>
-                {awardsSumm.map(item =>
+                {awardsSumm.length > 0 ? awardsSumm.map(item =>
                     <View style={{ flexDirection: 'row', paddingBottom: 10 }} key={item.date}>
                         <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
                         <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
-                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
+                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight>0 && `${item.weight} ${item.unit}`}</Text></View>
                         <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
-                    </View>)}
+                    </View>) : <View style={{ alignItems: 'center' }}><Text>Keep pushing hard!</Text></View>}
             </ScrollView>
         </View>
 
@@ -85,9 +85,16 @@ const HomeScreen = props => {
                                 <TouchableOpacity
                                     style={styles.button}
                                     onPress={() => props.navigation.navigate('Workouts')} >
-                                    <Text style={styles.buttonText}>Start Tracking</Text>
+                                    <Text style={styles.buttonText}>Weight Tracking</Text>
                                 </TouchableOpacity>
                             </View>}
+                        <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => props.navigation.navigate('HomeWorkouts')} >
+                                <Text style={styles.buttonText}>Home workouts Tracking</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
                             <View style={{ width: '100%' }}>
                                 <Text style={styles.text}>Last 5 Workouts</Text>
