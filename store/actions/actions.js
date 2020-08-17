@@ -26,8 +26,8 @@ export const FETCH_MAXTIME = "FETCH_MAXTIME";
 export const FETCH_AWARDSWEEK = "FETCH_AWARDSWEEK";
 export const FETCH_AWARDSHISTORY = "FETCH_AWARDSHISTORY";
 export const FETCH_LOGSWEEK = "FETCH_LOGSWEEK";
-
 export const FETCH_HOMEWORKOUTLOG_SUCCESS = "FETCH_HOMEWORKOUTLOG_SUCCESS";
+export const SET_THEME = "SET_THEME";
 
 export const fetchExercises = (workout) => {
     return dispatch => {
@@ -412,4 +412,9 @@ export const fetchLogsWeekSuccess = logsWeek => ({
 export const fetchHomeworkoutLogSuccess = homeworkoutlogs => ({
     type: FETCH_HOMEWORKOUTLOG_SUCCESS,
     payload: { homeworkoutlogs }
+});
+
+export const setTheme = theme => ({
+    type: SET_THEME,
+    payload: { theme }
 });

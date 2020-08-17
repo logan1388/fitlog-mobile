@@ -18,7 +18,8 @@ import {
     FETCH_AWARDSWEEK,
     FETCH_AWARDSHISTORY,
     FETCH_LOGSWEEK,
-    FETCH_HOMEWORKOUTLOG_SUCCESS
+    FETCH_HOMEWORKOUTLOG_SUCCESS,
+    SET_THEME
 } from "../actions/actions";
 
 import {
@@ -52,7 +53,8 @@ const initialState = {
     awardsWeek: [],
     awards: [],
     logsWeek: [],
-    homeworkoutlogs: []
+    homeworkoutlogs: [],
+    theme: 'light'
 };
 
 export default function fitlogReducer(
@@ -198,6 +200,12 @@ export default function fitlogReducer(
                 ...state,
                 loading: false,
                 homeworkoutlogs: action.payload.homeworkoutlogs
+            };
+
+        case SET_THEME:
+            return {
+                ...state,
+                theme: action.payload.theme
             };
 
         case LOGIN_BEGIN:
