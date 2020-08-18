@@ -48,6 +48,7 @@ const initialState = {
     register: false,
     maxWeight: null,
     maxReps: null,
+    maxRepsResistance: null,
     maxTime: null,
     bestSet: null,
     awardsWeek: [],
@@ -164,7 +165,7 @@ export default function fitlogReducer(
             return {
                 ...state,
                 loading: false,
-                maxReps: action.payload.maxReps,
+                maxRepsResistance: action.payload.maxReps,
             };
 
         case FETCH_MAXTIME:

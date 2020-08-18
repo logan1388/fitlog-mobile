@@ -13,12 +13,8 @@ const Profile = props => {
     }
     const themeTextStyle =
         mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-    const themeButtonTextStyle =
-        mode === 'light' ? styles.lightThemeButtonText : styles.darkThemeButtonText;
     const themeContainerStyle =
         mode === 'light' ? styles.lightContainer : styles.darkContainer;
-    const themeButtonStyle =
-        mode === 'light' ? styles.lightThemeButton : styles.darkThemeButton;
 
     return (
         <View style={[styles.container, themeContainerStyle]}>
@@ -34,9 +30,9 @@ const Profile = props => {
             </View>
             <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
                 <TouchableOpacity
-                    style={[styles.button, themeButtonStyle]}
+                    style={styles.button}
                     onPress={() => dispatch(logout())} >
-                    <Text style={[styles.buttonText, themeButtonTextStyle]}>Log out</Text>
+                    <Text style={styles.buttonText}>Log out</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -50,7 +46,8 @@ const styles = StyleSheet.create({
     button: {
         paddingVertical: 25,
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
+        backgroundColor: 'steelblue'
     },
     innerContainer: {
         flexDirection: 'row',
@@ -74,18 +71,6 @@ const styles = StyleSheet.create({
     },
     darkThemeText: {
         color: 'bisque',
-    },
-    lightThemeButtonText: {
-        color: 'bisque',
-    },
-    darkThemeButtonText: {
-        color: 'black',
-    },
-    lightThemeButton: {
-        backgroundColor: '#343a40',
-    },
-    darkThemeButton: {
-        backgroundColor: 'darkgrey',
     }
 });
 

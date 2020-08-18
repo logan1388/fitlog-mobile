@@ -106,7 +106,7 @@ export const FitbookNavigator = () => {
                 tabBarIcon: ({ focused, color, size }) => {
                     if (route.name === 'Home') {
                         return <Ionicons name="ios-home" size={25} color={color} />
-                    } else if (route.name === 'HomeWorkouts') {
+                    } else if (route.name === 'Resistance') {
                         return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
                     } else if (route.name === 'Workouts') {
                         return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
@@ -120,13 +120,12 @@ export const FitbookNavigator = () => {
             tabBarOptions={{
                 activeTintColor: Colors.headerFontColor,
                 inactiveTintColor: Colors.buttonColor,
-                tabStyle: {
-                    backgroundColor: Colors.headerBackground
-                }
+                style: { backgroundColor: Colors.headerBackground },
+                safeAreaInset: { bottom: 'never', top: 'never' }
             }}
         >
             <Tab.Screen name="Home" component={HomeNavigator} />
-            <Tab.Screen name="HomeWorkouts" component={HomeWorkoutNavigator} />
+            <Tab.Screen name="Resistance" component={HomeWorkoutNavigator} />
             <Tab.Screen name="Workouts" component={DashboardNavigator} />
             <Tab.Screen name="Awards" component={AwardsNavigator} />
             <Tab.Screen name="Me" component={ProfileNavigator} />

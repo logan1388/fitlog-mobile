@@ -10,7 +10,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryLabel } from "victory-native";
 import Colors from '../constants/colors';
-// import { useColorScheme } from 'react-native-appearance';
 
 const HomeScreen = props => {
     const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
@@ -19,16 +18,10 @@ const HomeScreen = props => {
     const mode = useSelector(state => state.fitlogReducer.theme);
     const dispatch = useDispatch();
     const userId = '5dfecbdd39d8760019968d04';
-    // const colorScheme = useColorScheme();
-    // console.log(colorScheme);
     const themeTextStyle =
         mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
     const themeContainerStyle =
         mode === 'light' ? styles.lightContainer : styles.darkContainer;
-    const themeButtonStyle =
-        mode === 'light' ? styles.lightThemeButton : styles.darkThemeButton;
-    const themeButtonTextStyle =
-        mode === 'light' ? styles.lightThemeButtonText : styles.darkThemeButtonText;
 
     useEffect(() => {
         dispatch(workoutSummary(userId));
@@ -75,8 +68,8 @@ const HomeScreen = props => {
                     <View style={{ flexDirection: 'row', paddingBottom: 10 }} key={item.date}>
                         <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
                         <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
-                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight > 0 && `${item.weight} ${item.unit}`}</Text></View>
-                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.weight > 0 && `${item.weight} ${item.unit}`}</Text></View>
+                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
                     </View>) : <View style={{ alignItems: 'center' }}><Text>Keep pushing hard!</Text></View>}
             </ScrollView>
         </View>
@@ -95,16 +88,16 @@ const HomeScreen = props => {
                         </View> :
                         <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
                             <TouchableOpacity
-                                style={[styles.button, themeButtonStyle]}
+                                style={styles.button}
                                 onPress={() => props.navigation.navigate('Workouts')} >
-                                <Text style={[styles.buttonText, themeButtonTextStyle]}>Weight Tracking</Text>
+                                <Text style={styles.buttonText}>Weight Tracking</Text>
                             </TouchableOpacity>
                         </View>}
                     <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
                         <TouchableOpacity
-                            style={[styles.button, themeButtonStyle]}
-                            onPress={() => props.navigation.navigate('HomeWorkouts')} >
-                            <Text style={[styles.buttonText, themeButtonTextStyle]}>Home workouts Tracking</Text>
+                            style={styles.button}
+                            onPress={() => props.navigation.navigate('Resistance')} >
+                            <Text style={styles.buttonText}>Home workouts Tracking</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
@@ -120,18 +113,11 @@ const HomeScreen = props => {
                             <VictoryPie
                                 data={data}
                                 width={350}
-                                colorScale='qualitative'
+                                colorScale='blue'
                                 style={{ labels: { fontSize: 16 } }}
                             />
                         </View>
                     </View>
-                    {/* <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
-                        <TouchableOpacity
-                            style={[styles.button, themeButtonStyle]}
-                            onPress={() => dispatch(logout())} >
-                            <Text style={styles.buttonText}>Log out</Text>
-                        </TouchableOpacity>
-                    </View> */}
                 </View>
             </ScrollView>
             {/* </ImageBackground> */}
@@ -171,7 +157,7 @@ const styles = StyleSheet.create({
         padding: 15
     },
     button: {
-        backgroundColor: '#343a40',
+        backgroundColor: 'steelblue',
         paddingVertical: 25,
         alignItems: 'center',
         width: '100%'
@@ -179,8 +165,7 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
-        color: 'bisque'
+        fontSize: 16
     },
     text: {
         fontWeight: 'bold',
@@ -207,18 +192,6 @@ const styles = StyleSheet.create({
     },
     darkThemeText: {
         color: 'bisque',
-    },
-    lightThemeButtonText: {
-        color: 'bisque',
-    },
-    darkThemeButtonText: {
-        color: 'black',
-    },
-    lightThemeButton: {
-        backgroundColor: '#343a40',
-    },
-    darkThemeButton: {
-        backgroundColor: 'darkgrey',
     }
 });
 
