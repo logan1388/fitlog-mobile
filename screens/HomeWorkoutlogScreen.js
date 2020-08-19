@@ -74,7 +74,7 @@ const HomeWorkoutlogScreen = props => {
         let id = '5dfecbdd39d8760019968d04';
         let exerciseLog = {
             'userId': id,
-            'category': 'homeworkout',
+            'category': 'resistance',
             'name': selectedExercise,
             'date': timestamp,
             'weight': weight,
