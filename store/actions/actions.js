@@ -65,7 +65,7 @@ export const expandExercise = (workouts, category, name, userId) => {
             .then(res => {
                 var logs = res.data;
                 logs.map(log => {
-                    log.date = moment(log.date).utc().format('MM/DD/YY HH:mm')
+                    log.date = moment(log.date).utc().local().format('MM/DD/YY HH:mm')
                 });
                 dispatch(expandExerciseSuccess(logs));
                 return logs;
@@ -88,7 +88,7 @@ export const fetchHomeWorkoutLog = (category, name, userId) => {
                 var logs = res.data;
                 console.log('Home workoutlog ', logs);
                 logs.map(log => {
-                    log.date = moment(log.date).utc().format('MM/DD/YY HH:mm')
+                    log.date = moment(log.date).utc().local().format('MM/DD/YY HH:mm')
                 });
                 dispatch(fetchHomeworkoutLogSuccess(logs));
                 return logs;

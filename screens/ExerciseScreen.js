@@ -128,7 +128,7 @@ const ExerciseScreen = props => {
                                         {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => addNotes(item)} /></View> :
                                             <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => addNotes(item)} /></View>}
                                         <View style={{ flex: 1 }}>
-                                            {bestSet && item.weight === bestSet.weight && item.count === bestSet.count && item.date === moment(bestSet.date).utc().format('MM/DD/YY HH:mm') ?
+                                            {bestSet && item.weight === bestSet.weight && item.count === bestSet.count && item.date === moment(bestSet.date).utc().local().format('MM/DD/YY HH:mm') ?
                                                 <View style={{ flexDirection: 'row' }}>
                                                     <FontAwesome name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
                                                 </View> : null}
