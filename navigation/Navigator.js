@@ -112,8 +112,8 @@ export const FitbookNavigator = () => {
                         return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
                     } else if (route.name === 'Awards') {
                         return <FontAwesome name="trophy" size={25} color={color} />
-                    } else if (route.name === 'Me') {
-                        return <FontAwesome name="user" size={24} color={color} />
+                    } else if (route.name === 'Profile') {
+                        return <MaterialCommunityIcons name="settings" size={24} color={color} />
                     }
                 },
             })}
@@ -128,7 +128,7 @@ export const FitbookNavigator = () => {
             <Tab.Screen name="Resistance" component={HomeWorkoutNavigator} />
             <Tab.Screen name="Workouts" component={DashboardNavigator} />
             <Tab.Screen name="Awards" component={AwardsNavigator} />
-            <Tab.Screen name="Me" component={ProfileNavigator} />
+            <Tab.Screen name="Profile" component={ProfileNavigator} />
         </Tab.Navigator>
     );
 }
