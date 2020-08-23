@@ -14,6 +14,7 @@ import { saveNote } from '../store/actions/actions';
 
 const ExerciseScreen = props => {
     const selectedExercise = props.route.params ? props.route.params.exercise : null;
+    const mode = useSelector(state => state.fitlogReducer.theme);
     const logs = useSelector(state => state.fitlogReducer.logs);
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
@@ -26,6 +27,11 @@ const ExerciseScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [notes, setNotes] = useState('');
     const [noteLog, setNoteLog] = useState({});
+
+    const themeTextStyle =
+        mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle =
+        mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
     useEffect(() => {
         dispatch(expandExercise(workouts, category, selectedExercise, userId));
@@ -45,8 +51,8 @@ const ExerciseScreen = props => {
     }
 
     return (
-        <View style={styles.container}>
-            <ImageBackground source={BackImg} style={styles.image}>
+        <View style={[styles.container, themeContainerStyle]}>
+            {/* <ImageBackground source={BackImg} style={styles.image}> */}
                 <Modal
                     animationType="none"
                     transparent={true}
@@ -85,31 +91,31 @@ const ExerciseScreen = props => {
                         </View>
                     </TouchableWithoutFeedback>
                 </Modal>
-                <View style={styles.innerContainer}>
+                <View style={[styles.innerContainer, themeContainerStyle]}>
                     <WorkoutInput category={category} name={selectedExercise} logs={logs} workouts={workouts} />
                     <View style={{ flexDirection: 'row' }}>
                         {bestSet && <View style={styles.maxwt}>
-                            <Text style={styles.maxwtText}>Best Set</Text>
+                            <Text style={[styles.maxwtText, themeTextStyle]}>Best Set</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <Text>{bestSet.weight} </Text>
-                                <Text>{bestSet.unit} </Text>
-                                <Text>{bestSet.count} reps</Text>
+                                <Text style={themeTextStyle}>{bestSet.weight} </Text>
+                                <Text style={themeTextStyle}>{bestSet.unit} </Text>
+                                <Text style={themeTextStyle}>{bestSet.count} reps</Text>
                             </View>
                         </View>}
                         {maxWt && <View style={styles.maxwt}>
-                            <Text style={styles.maxwtText}>Max Weight</Text>
+                            <Text style={[styles.maxwtText, themeTextStyle]}>Max Weight</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <Text>{maxWt.weight} </Text>
-                                <Text>{maxWt.unit} </Text>
-                                <Text>{maxWt.count} reps</Text>
+                                <Text style={themeTextStyle}>{maxWt.weight} </Text>
+                                <Text style={themeTextStyle}>{maxWt.unit} </Text>
+                                <Text style={themeTextStyle}>{maxWt.count} reps</Text>
                             </View>
                         </View>}
                         {maxRps && <View style={styles.maxwt}>
-                            <Text style={styles.maxwtText}>Max Reps</Text>
+                            <Text style={[styles.maxwtText, themeTextStyle]}>Max Reps</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <Text>{maxRps.weight} </Text>
-                                <Text>{maxRps.unit} </Text>
-                                <Text>{maxRps.count} reps</Text>
+                                <Text style={themeTextStyle}>{maxRps.weight} </Text>
+                                <Text style={themeTextStyle}>{maxRps.unit} </Text>
+                                <Text style={themeTextStyle}>{maxRps.count} reps</Text>
                             </View>
                         </View>}
                     </View>
@@ -119,24 +125,24 @@ const ExerciseScreen = props => {
                                 data={logs}
                                 renderItem={({ item }) =>
                                     <View style={styles.logs}>
-                                        {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View> :
-                                            <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color="black" onPress={() => addNotes(item)} /></View>}
-                                        <View style={{ flex: 2 }}>
-                                            {bestSet && item.weight === bestSet.weight && item.count === bestSet.count && item.date === moment(bestSet.date).utc().format('MM/DD/YY HH:mm') ?
-                                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                                    <FontAwesome name="trophy" size={25} color={Colors.buttonColor} />
+                                        {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => addNotes(item)} /></View> :
+                                            <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => addNotes(item)} /></View>}
+                                        <View style={{ flex: 1 }}>
+                                            {bestSet && item.weight === bestSet.weight && item.count === bestSet.count && item.date === moment(bestSet.date).utc().local().format('MM/DD/YY HH:mm') ?
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <FontAwesome name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
                                                 </View> : null}
                                         </View>
-                                        <View style={{ flex: 2.5 }}><Text>{item.date}</Text></View>
-                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.weight} {item.unit}</Text></View>
-                                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                                        <View style={{ flex: 2.5 }}><Text style={themeTextStyle}>{item.date}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.weight} {item.unit}</Text></View>
+                                        <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.count} reps</Text></View>
                                     </View>}
                                 keyExtractor={item => item._id}
                             />
                         </View>
                     </SafeAreaView>
                 </View>
-            </ImageBackground>
+            {/* </ImageBackground> */}
         </View>
     );
 }
@@ -222,6 +228,18 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
+    },
+    lightContainer: {
+        backgroundColor: 'white',
+    },
+    darkContainer: {
+        backgroundColor: '#2D2D2D',
+    },
+    lightThemeText: {
+        color: 'black',
+    },
+    darkThemeText: {
+        color: 'bisque',
     }
 });
 

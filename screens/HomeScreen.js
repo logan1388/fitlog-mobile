@@ -15,8 +15,13 @@ const HomeScreen = props => {
     const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
     const workoutSumm = useSelector(state => state.fitlogReducer.workoutSummary);
     const awardsSumm = useSelector(state => state.fitlogReducer.awardsWeek);
+    const mode = useSelector(state => state.fitlogReducer.theme);
     const dispatch = useDispatch();
     const userId = '5dfecbdd39d8760019968d04';
+    const themeTextStyle =
+        mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle =
+        mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
     useEffect(() => {
         dispatch(workoutSummary(userId));
@@ -63,66 +68,59 @@ const HomeScreen = props => {
                     <View style={{ flexDirection: 'row', paddingBottom: 10 }} key={item.date}>
                         <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
                         <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
-                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.weight>0 && `${item.weight} ${item.unit}`}</Text></View>
-                        <View style={{ flex: 1 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
+                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.weight > 0 && `${item.weight} ${item.unit}`}</Text></View>
+                        <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
                     </View>) : <View style={{ alignItems: 'center' }}><Text>Keep pushing hard!</Text></View>}
             </ScrollView>
         </View>
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <ImageBackground source={BackImg} style={styles.image}>
-                <ScrollView style={styles.container}>
-                    <View style={styles.innerContainer}>
-                        {workoutSumm && workoutSumm.length > 0 ?
-                            <View style={{ width: '100%', alignItems: 'center' }}>
-                                <View style={{ width: '100%' }}>
-                                    <Text style={styles.text}>Today's Summary</Text>
-                                    <Card style={styles.card}>{summary}</Card>
-                                </View>
-                            </View> :
-                            <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => props.navigation.navigate('Workouts')} >
-                                    <Text style={styles.buttonText}>Weight Tracking</Text>
-                                </TouchableOpacity>
-                            </View>}
-                        <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={() => props.navigation.navigate('HomeWorkouts')} >
-                                <Text style={styles.buttonText}>Home workouts Tracking</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
+            {/* <ImageBackground source={BackImg} style={styles.image}> */}
+            <ScrollView style={[styles.container, themeContainerStyle]}>
+                <View style={styles.innerContainer}>
+                    {workoutSumm && workoutSumm.length > 0 ?
+                        <View style={{ width: '100%', alignItems: 'center' }}>
                             <View style={{ width: '100%' }}>
-                                <Text style={styles.text}>Last 5 Workouts</Text>
-                                <Card style={styles.card}>{history}</Card>
+                                <Text style={[styles.text, themeTextStyle]}>Today's Summary</Text>
+                                <Card style={styles.card}>{summary}</Card>
                             </View>
-                            <View style={{ width: '100%', marginTop: 20 }}>
-                                <Text style={styles.text}>Highlights</Text>
-                                <Card style={styles.card}>{hightlights}</Card>
-                            </View>
-                            <View style={{ marginTop: 15 }}>
-                                <VictoryPie
-                                    data={data}
-                                    width={350}
-                                    colorScale='blue'
-                                    style={{ labels: { fontSize: 16 } }}
-                                />
-                            </View>
-                        </View>
+                        </View> :
                         <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => dispatch(logout())} >
-                                <Text style={styles.buttonText}>Log out</Text>
+                                onPress={() => props.navigation.navigate('Workouts')} >
+                                <Text style={styles.buttonText}>Weight Tracking</Text>
                             </TouchableOpacity>
+                        </View>}
+                    <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 15, marginVertical: 30 }}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => props.navigation.navigate('Resistance')} >
+                            <Text style={styles.buttonText}>Home workouts Tracking</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
+                        <View style={{ width: '100%' }}>
+                            <Text style={[styles.text, themeTextStyle]}>Last 5 Workouts</Text>
+                            <Card style={styles.card}>{history}</Card>
+                        </View>
+                        <View style={{ width: '100%', marginTop: 20 }}>
+                            <Text style={[styles.text, themeTextStyle]}>Highlights</Text>
+                            <Card style={styles.card}>{hightlights}</Card>
+                        </View>
+                        <View style={{ marginTop: 15 }}>
+                            <VictoryPie
+                                data={data}
+                                width={350}
+                                colorScale='blue'
+                                style={{ labels: { fontSize: 16 } }}
+                            />
                         </View>
                     </View>
-                </ScrollView>
-            </ImageBackground>
+                </View>
+            </ScrollView>
+            {/* </ImageBackground> */}
         </SafeAreaView>
     );
 }
@@ -159,7 +157,7 @@ const styles = StyleSheet.create({
         padding: 15
     },
     button: {
-        backgroundColor: '#343a40',
+        backgroundColor: 'steelblue',
         paddingVertical: 25,
         alignItems: 'center',
         width: '100%'
@@ -167,8 +165,7 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 16,
-        color: 'bisque'
+        fontSize: 16
     },
     text: {
         fontWeight: 'bold',
@@ -183,6 +180,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomWidth: 1,
         borderBottomColor: 'black'
+    },
+    lightContainer: {
+        backgroundColor: 'white',
+    },
+    darkContainer: {
+        backgroundColor: '#2D2D2D',
+    },
+    lightThemeText: {
+        color: '#343a40',
+    },
+    darkThemeText: {
+        color: 'bisque',
     }
 });
 
