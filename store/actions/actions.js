@@ -298,7 +298,7 @@ export const addMaxReps = exerciseLog => {
     return dispatch => {
         axios.post(endpoint + '/api/maxreps/', exerciseLog)
             .then(res => {
-                console.log(res);
+                dispatch(fetchHomeWorkoutLog(exerciseLog.category, exerciseLog.name, exerciseLog.userId))
             })
             .catch(error => console.log(error));
     }
@@ -306,15 +306,11 @@ export const addMaxReps = exerciseLog => {
 
 export const addHomeExerciseLog = (exerciseLog, logToBeUpdated) => {
     return dispatch => {
-        console.log(exerciseLog);
         logToBeUpdated.push(exerciseLog);
-        console.log(logToBeUpdated);
         axios.post(endpoint + '/api/homeworkoutlog/', exerciseLog)
             .then(res => {
-                console.log('Response ', res);
                 dispatch(addMaxTime(exerciseLog));
                 dispatch(addMaxReps(exerciseLog));
-                dispatch(fetchHomeWorkoutLog(exerciseLog.category, exerciseLog.name, exerciseLog.userId))
                 return logToBeUpdated;
             })
             .catch(error => dispatch(addExerciseLogFailure(error)));
