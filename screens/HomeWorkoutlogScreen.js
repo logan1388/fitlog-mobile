@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, ImageBackground, Modal } from 'react-native';
+import { StyleSheet, View, SafeAreaView, ImageBackground, Modal } from 'react-native';
 import BackImg from '../assets/back-workout.jpg';
 import { fetchHomeWorkoutLog } from '../store/actions/actions';
-import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
 import ResistanceInput from '../components/ResistanceInput';
 import { saveNote } from '../store/actions/actions';
 import Notes from '../components/Notes';
 import BestLog from '../components/BestLog';
+import Logs from '../components/Logs';
 
 const HomeWorkoutlogScreen = props => {
     const category = 'Homeworkout';
@@ -18,12 +18,9 @@ const HomeWorkoutlogScreen = props => {
     const maxRps = useSelector(state => state.fitlogReducer.maxRepsResistance);
     const maxTime = useSelector(state => state.fitlogReducer.maxTime);
     const dispatch = useDispatch();
-
     const [modalVisible, setModalVisible] = useState(false);
     const [notes, setNotes] = useState('');
     const [noteLog, setNoteLog] = useState({});
-
-    const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
     const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
     useEffect(() => {
@@ -61,23 +58,7 @@ const HomeWorkoutlogScreen = props => {
                 </Modal>
                 <ResistanceInput category={category} name={selectedExercise} logs={logs} />
                 <BestLog maxRps={maxRps} maxTime={maxTime}/>
-                <SafeAreaView style={{ flex: 1 }}>
-                    <View>
-                        <FlatList
-                            data={logs}
-                            renderItem={({ item }) =>
-                                <View style={styles.logs}>
-                                    {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => addNotes(item)} /></View> :
-                                        <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => addNotes(item)} /></View>}
-                                    <View style={{ flex: 3 }}><Text style={themeTextStyle}>{item.date}</Text></View>
-                                    <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.count ? `${item.count} reps` : '-'}</Text></View>
-                                    <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text></View>
-                                    <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.weight ? `${item.weight} lbs` : '-'}</Text></View>
-                                </View>}
-                            keyExtractor={item => item._id}
-                        />
-                    </View>
-                </SafeAreaView>
+                <Logs resistance={true} logs={logs} addNotes={note => addNotes(note)}/>
             </View>
             {/* </ImageBackground> */}
         </SafeAreaView>
@@ -97,18 +78,8 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 20,
     },
-    logs: {
-        paddingVertical: 8,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: 'darkgrey'
-    },
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },
-    lightThemeText: { color: 'black' },
-    darkThemeText: { color: 'bisque' }
 });
 
 export default HomeWorkoutlogScreen;
