@@ -147,9 +147,7 @@ const ResistanceInput = props => {
 }
 
 const options = {
-    container: {
-        borderRadius: 5
-    },
+    container: { borderRadius: 5 },
     text: {
         fontSize: 20,
         color: 'black',
@@ -181,12 +179,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingHorizontal: 15
     },
-    lightThemeText: {
-        color: '#343a40',
-    },
-    darkThemeText: {
-        color: 'bisque',
-    }
+    lightThemeText: { color: '#343a40' },
+    darkThemeText: { color: 'bisque' }
 })
 
 export default ResistanceInput;
