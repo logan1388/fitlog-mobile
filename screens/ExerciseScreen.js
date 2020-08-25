@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, FlatList, Modal } from 'react-native';
 import { expandExercise } from '../store/actions/actions';
-import WorkoutInput from '../components/workoutInput';
+import WorkoutInput from '../components/WorkoutInput';
 import BackImg from '../assets/back-workout.jpg';
 import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import moment from 'moment';
 import { saveNote } from '../store/actions/actions';
-import Notes from '../components/notes';
+import Notes from '../components/Notes';
+import BestLog from '../components/BestLog';
 
 const ExerciseScreen = props => {
     const selectedExercise = props.route.params ? props.route.params.exercise : null;
@@ -49,7 +50,7 @@ const ExerciseScreen = props => {
 
     return (
         <View style={[styles.container, themeContainerStyle]}>
-            {/* <ImageBackground source={BackImg} style={styles.image}> */}
+            {/* <ImageBackground source={BackImg} style={{ flex: 1 }}> */}
             <Modal
                 animationType="none"
                 transparent={true}
@@ -64,32 +65,7 @@ const ExerciseScreen = props => {
             </Modal>
             <View style={[styles.innerContainer, themeContainerStyle]}>
                 <WorkoutInput category={category} name={selectedExercise} logs={logs} workouts={workouts} />
-                <View style={{ flexDirection: 'row' }}>
-                    {bestSet && <View style={styles.maxwt}>
-                        <Text style={[styles.maxwtText, themeTextStyle]}>Best Set</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={themeTextStyle}>{bestSet.weight} </Text>
-                            <Text style={themeTextStyle}>{bestSet.unit} </Text>
-                            <Text style={themeTextStyle}>{bestSet.count} reps</Text>
-                        </View>
-                    </View>}
-                    {maxWt && <View style={styles.maxwt}>
-                        <Text style={[styles.maxwtText, themeTextStyle]}>Max Weight</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={themeTextStyle}>{maxWt.weight} </Text>
-                            <Text style={themeTextStyle}>{maxWt.unit} </Text>
-                            <Text style={themeTextStyle}>{maxWt.count} reps</Text>
-                        </View>
-                    </View>}
-                    {maxRps && <View style={styles.maxwt}>
-                        <Text style={[styles.maxwtText, themeTextStyle]}>Max Reps</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={themeTextStyle}>{maxRps.weight} </Text>
-                            <Text style={themeTextStyle}>{maxRps.unit} </Text>
-                            <Text style={themeTextStyle}>{maxRps.count} reps</Text>
-                        </View>
-                    </View>}
-                </View>
+                <BestLog bestSet={bestSet} maxWt={maxWt} maxRps={maxRps}/>
                 <SafeAreaView style={{ flex: 1 }}>
                     <View>
                         <FlatList
@@ -134,16 +110,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
         height: '100%'
-    },
-    image: { flex: 1 },
-    maxwt: {
-        height: 50,
-        textAlign: 'center',
-        flex: 3
-    },
-    maxwtText: {
-        fontWeight: 'bold',
-        textAlign: 'center'
     },
     logs: {
         paddingVertical: 8,

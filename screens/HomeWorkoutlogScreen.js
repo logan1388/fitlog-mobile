@@ -4,9 +4,10 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList, ImageBackground, Modal 
 import BackImg from '../assets/back-workout.jpg';
 import { fetchHomeWorkoutLog } from '../store/actions/actions';
 import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
-import ResistanceInput from '../components/resistanceInput';
+import ResistanceInput from '../components/ResistanceInput';
 import { saveNote } from '../store/actions/actions';
-import Notes from '../components/notes';
+import Notes from '../components/Notes';
+import BestLog from '../components/BestLog';
 
 const HomeWorkoutlogScreen = props => {
     const category = 'Homeworkout';
@@ -44,7 +45,7 @@ const HomeWorkoutlogScreen = props => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {/* <ImageBackground source={BackImg} style={styles.image}> */}
+            {/* <ImageBackground source={BackImg} style={{ flex: 1 }}> */}
             <View style={[styles.bg, themeContainerStyle]}>
                 <Modal
                     animationType="none"
@@ -59,20 +60,7 @@ const HomeWorkoutlogScreen = props => {
                         setModalVisible={modalVisible => setModalVisible(modalVisible)} />
                 </Modal>
                 <ResistanceInput category={category} name={selectedExercise} logs={logs} />
-                <View style={{ flexDirection: 'row' }}>
-                    {maxRps && <View style={styles.max}>
-                        <Text style={[styles.maxText, themeTextStyle]}>Max Reps</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={themeTextStyle}>{maxRps.count} reps</Text>
-                        </View>
-                    </View>}
-                    {maxTime && <View style={styles.max}>
-                        <Text style={[styles.maxText, themeTextStyle]}>Max Time</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={themeTextStyle}>{maxTime.time}</Text>
-                        </View>
-                    </View>}
-                </View>
+                <BestLog maxRps={maxRps} maxTime={maxTime}/>
                 <SafeAreaView style={{ flex: 1 }}>
                     <View>
                         <FlatList
@@ -103,16 +91,11 @@ export const screenOptions = navigationData => {
 };
 
 const styles = StyleSheet.create({
-    image: { flex: 1 },
     bg: {
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
         height: '100%',
         paddingVertical: 20,
         paddingHorizontal: 20,
-    },
-    innerContainer: {
-        paddingVertical: 10,
-        paddingHorizontal: 10
     },
     logs: {
         paddingVertical: 8,
@@ -121,15 +104,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomWidth: 1,
         borderBottomColor: 'darkgrey'
-    },
-    max: {
-        height: 50,
-        textAlign: 'center',
-        flex: 3
-    },
-    maxText: {
-        fontWeight: 'bold',
-        textAlign: 'center'
     },
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },
