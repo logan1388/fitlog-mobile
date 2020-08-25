@@ -16,8 +16,7 @@ const WorkoutInput = props => {
         { label: 'lbs', value: 0 },
         { label: 'kgs', value: 1 }
     ];
-    const themeTextStyle =
-        mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
     const resetInput = () => {
         setWeight(0);

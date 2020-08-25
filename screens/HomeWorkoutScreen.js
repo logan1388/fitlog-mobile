@@ -35,8 +35,7 @@ const HomeWorkoutScreen = props => {
                     <FlatList
                         data={buttons}
                         renderItem={({ item }) => <Item title={item.title} />}
-                        keyExtractor={item => item.title}
-                    />
+                        keyExtractor={item => item.title} />
                 </View>
             </ImageBackground>
         </SafeAreaView>
