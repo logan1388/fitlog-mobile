@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, ImageBackground, Modal } from 'react-native';
 import BackImg from '../assets/back-workout.jpg';
 import { fetchHomeWorkoutLog } from '../store/actions/actions';
 import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
 import ResistanceInput from '../components/resistanceInput';
+import { saveNote } from '../store/actions/actions';
+import Notes from '../components/notes';
 
 const HomeWorkoutlogScreen = props => {
     const category = 'Homeworkout';
@@ -13,22 +15,49 @@ const HomeWorkoutlogScreen = props => {
     const selectedExercise = props.route.params ? props.route.params.exercise : null;
     const logs = useSelector(state => state.fitlogReducer.homeworkoutlogs);
     const maxRps = useSelector(state => state.fitlogReducer.maxRepsResistance);
-    console.log('Max Reps: ', maxRps);
     const maxTime = useSelector(state => state.fitlogReducer.maxTime);
     const dispatch = useDispatch();
-    const themeTextStyle =
-        mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-    const themeContainerStyle =
-        mode === 'light' ? styles.lightContainer : styles.darkContainer;
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [notes, setNotes] = useState('');
+    const [noteLog, setNoteLog] = useState({});
+
+    const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
     useEffect(() => {
         dispatch(fetchHomeWorkoutLog(category, selectedExercise, userId));
     }, []);
 
+    const addNotes = log => {
+        setNotes(log.note);
+        setNoteLog(log);
+        setModalVisible(true);
+    }
+
+    const saveNotes = () => {
+        dispatch(saveNote(noteLog._id, 'home', notes));
+        logs.map(log => log._id === noteLog._id && (log.note = notes));
+        setNotes('');
+        setModalVisible(!modalVisible);
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {/* <ImageBackground source={BackImg} style={styles.image}> */}
             <View style={[styles.bg, themeContainerStyle]}>
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => { Alert.alert("Modal has been closed.") }}>
+                    <Notes
+                        notes={notes}
+                        setNotes={text => setNotes(text)}
+                        saveNotes={saveNotes}
+                        modalVisible={modalVisible}
+                        setModalVisible={modalVisible => setModalVisible(modalVisible)} />
+                </Modal>
                 <ResistanceInput category={category} name={selectedExercise} logs={logs} />
                 <View style={{ flexDirection: 'row' }}>
                     {maxRps && <View style={styles.max}>
@@ -74,23 +103,6 @@ export const screenOptions = navigationData => {
 };
 
 const styles = StyleSheet.create({
-    outerContainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        paddingVertical: 20,
-        paddingHorizontal: 10
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'space-between',
-        paddingVertical: 15
-    },
-    label: {
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 10
-    },
     image: { flex: 1 },
     bg: {
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
@@ -119,18 +131,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    lightContainer: {
-        backgroundColor: 'white',
-    },
-    darkContainer: {
-        backgroundColor: '#2D2D2D',
-    },
-    lightThemeText: {
-        color: 'black',
-    },
-    darkThemeText: {
-        color: 'bisque',
-    }
+    lightContainer: { backgroundColor: 'white' },
+    darkContainer: { backgroundColor: '#2D2D2D' },
+    lightThemeText: { color: 'black' },
+    darkThemeText: { color: 'bisque' }
 });
 
 export default HomeWorkoutlogScreen;

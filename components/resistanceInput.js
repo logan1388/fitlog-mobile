@@ -94,18 +94,6 @@ const ResistanceInput = props => {
                             upDownButtonsBackgroundColor='darkgrey' />
                     </View>
                     <View style={{ marginHorizontal: 20 }}>
-                        {!props.resistance && <View>
-                            <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-                            <RadioForm
-                                radio_props={unitRadio}
-                                initial={unit}
-                                labelStyle={themeTextStyle}
-                                buttonColor={mode === 'light' ? 'black' : 'darkgrey'}
-                                selectedButtonColor={mode === 'light' ? 'black' : 'darkgrey'}
-                                onPress={(value) => setUnit(value)} />
-                        </View>}
-                    </View>
-                    <View>
                         <Text style={[styles.label, themeTextStyle]}>Weight</Text>
                         <NumericInput
                             initValue={weight}
@@ -116,6 +104,16 @@ const ResistanceInput = props => {
                             textColor={mode === 'light' ? 'black' : 'bisque'}
                             borderColor='darkgrey'
                             upDownButtonsBackgroundColor='darkgrey' />
+                    </View>
+                    <View>
+                        <Text style={[styles.label, themeTextStyle]}>Unit</Text>
+                        <RadioForm
+                            radio_props={unitRadio}
+                            initial={unit}
+                            labelStyle={themeTextStyle}
+                            buttonColor={mode === 'light' ? 'black' : 'darkgrey'}
+                            selectedButtonColor={mode === 'light' ? 'black' : 'darkgrey'}
+                            onPress={(value) => setUnit(value)} />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'center' }}>
