@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ImageBackground } from 'react-native';
 import { workoutHistory, workoutSummary, weeklyAwards } from '../store/actions/actions';
 import { logout } from '../store/actions/auth';
 import moment from 'moment';
 import Card from '../components/Card';
 import BackImg from '../assets/FITLOG.jpg';
 import { ScrollView } from 'react-native-gesture-handler';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryLabel } from "victory-native";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { VictoryPie } from "victory-native";
 import Colors from '../constants/colors';
 
 const HomeScreen = props => {
@@ -64,7 +64,7 @@ const HomeScreen = props => {
             <ScrollView>
                 {awardsSumm.length > 0 ? awardsSumm.map(item =>
                     <View style={{ flexDirection: 'row', paddingBottom: 10 }} key={item.date}>
-                        <View style={{ flex: 1 }}><MaterialCommunityIcons name="dumbbell" size={25} color={Colors.headerBackground} /></View>
+                        <View style={{ flex: 1 }}><Icon name="dumbbell" size={25} color={Colors.headerBackground} /></View>
                         <View style={{ flex: 3 }}><Text style={{ fontSize: 16 }}>{item.name}</Text></View>
                         <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.weight > 0 && `${item.weight} ${item.unit}`}</Text></View>
                         <View style={{ flex: 1.5 }}><Text style={{ textAlign: 'right' }}>{item.count} reps</Text></View>
