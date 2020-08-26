@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, SafeAreaView, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
-import { SimpleLineIcons, Octicons, FontAwesome } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import Colors from '../constants/colors';
 
@@ -17,8 +17,8 @@ const Logs = props => {
                         data={props.logs}
                         renderItem={({ item }) =>
                             <View style={styles.logs}>
-                                {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View> :
-                                    <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View>}
+                                {item.note ? <View style={{ flex: 1 }}><Icon name="comment-text-outline" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View> :
+                                    <View style={{ flex: 1 }}><Icon name="comment-outline" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View>}
                                 <View style={{ flex: 3 }}><Text style={themeTextStyle}>{item.date}</Text></View>
                                 <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.count ? `${item.count} reps` : '-'}</Text></View>
                                 <View style={{ flex: 1.5 }}><Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text></View>
@@ -29,12 +29,12 @@ const Logs = props => {
                         data={props.logs}
                         renderItem={({ item }) =>
                             <View style={styles.logs}>
-                                {item.note ? <View style={{ flex: 1 }}><Octicons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View> :
-                                    <View style={{ flex: 1 }}><SimpleLineIcons name="note" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View>}
+                                {item.note ? <View style={{ flex: 1 }}><Icon name="comment-text-outline" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View> :
+                                    <View style={{ flex: 1 }}><Icon name="comment-outline" size={24} color={mode === 'light' ? 'black' : 'darkgrey'} onPress={() => props.addNotes(item)} /></View>}
                                 <View style={{ flex: 1 }}>
                                     {props.bestSet && item.weight === props.bestSet.weight && item.count === props.bestSet.count && item.date === moment(props.bestSet.date).utc().local().format('MM/DD/YY HH:mm') ?
                                         <View style={{ flexDirection: 'row' }}>
-                                            <FontAwesome name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
+                                            <Icon name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
                                         </View> : null}
                                 </View>
                                 <View style={{ flex: 2.5 }}><Text style={themeTextStyle}>{item.date}</Text></View>

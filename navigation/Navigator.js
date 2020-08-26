@@ -9,7 +9,7 @@ import AuthScreen, { screenOptions as authScreenOptions } from '../screens/user/
 import HomeWorkoutScreen, { screenOptions as homeWorkoutScreenOptions } from '../screens/HomeWorkoutScreen';
 import HomeWorkoutlogScreen, { screenOptions as homeWorkoutlogScreenOptions } from '../screens/HomeWorkoutlogScreen';
 import NotesScreen from '../screens/NotesScreen';
-import { Ionicons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeScreen';
 import Planner from '../screens/Planner';
@@ -105,15 +105,15 @@ export const FitbookNavigator = () => {
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                     if (route.name === 'Home') {
-                        return <Ionicons name="ios-home" size={25} color={color} />
+                        return <Icon name="home" size={25} color={color} />
                     } else if (route.name === 'Resistance') {
-                        return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
+                        return <Icon name="dumbbell" size={25} color={color} />
                     } else if (route.name === 'Workouts') {
-                        return <MaterialCommunityIcons name="dumbbell" size={25} color={color} />
+                        return <Icon name="dumbbell" size={25} color={color} />
                     } else if (route.name === 'Awards') {
-                        return <FontAwesome name="trophy" size={25} color={color} />
+                        return <Icon name="trophy" size={25} color={color} />
                     } else if (route.name === 'Profile') {
-                        return <MaterialCommunityIcons name="settings" size={24} color={color} />
+                        return <Icon name="settings" size={24} color={color} />
                     }
                 },
             })}

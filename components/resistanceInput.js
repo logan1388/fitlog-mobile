@@ -5,7 +5,7 @@ import RadioForm from 'react-native-simple-radio-button';
 import { addHomeExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
-import { MaterialIcons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 
 const ResistanceInput = props => {
@@ -121,7 +121,7 @@ const ResistanceInput = props => {
                         style={styles.timerButton}
                         onPress={() => stopwatchStart ? stopStopWatch() : toggleStopWatch()} >
                         <Text style={styles.buttonText}>{stopwatchStart ? 'Stop' : showReset ? 'Resume' : 'Start'}</Text>
-                        <MaterialIcons name="timer" size={24} color='black' />
+                        <Icon name="timer" size={24} color='black' />
                         {showStopWatch && <Stopwatch laps start={stopwatchStart}
                             reset={stopwatchReset}
                             options={options}
