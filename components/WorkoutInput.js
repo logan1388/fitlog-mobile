@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import RadioForm from 'react-native-simple-radio-button';
 import { addExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
+import RadioButtons from './RadioButtons';
 
 const WorkoutInput = props => {
     const [weight, setWeight] = useState(0);
@@ -58,13 +58,7 @@ const WorkoutInput = props => {
                     </View>
                     <View style={{ marginHorizontal: 20 }}>
                         <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-                        <RadioForm
-                            radio_props={unitRadio}
-                            initial={unit}
-                            labelStyle={themeTextStyle}
-                            buttonColor={mode === 'light' ? 'black' : 'darkgrey'}
-                            selectedButtonColor={mode === 'light' ? 'black' : 'darkgrey'}
-                            onPress={(value) => setUnit(value)} />
+                        <RadioButtons options={unitRadio} unit={unit} setUnit={value => setUnit(value)}/>
                     </View>
                     <View>
                         <Text style={[styles.label, themeTextStyle]}>Count</Text>
