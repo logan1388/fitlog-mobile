@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import RadioForm from 'react-native-simple-radio-button';
 import { addHomeExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Stopwatch } from 'react-native-stopwatch-timer';
+import RadioButtons from './RadioButtons';
 
 const ResistanceInput = props => {
     const [weight, setWeight] = useState(0);
@@ -107,13 +107,7 @@ const ResistanceInput = props => {
                     </View>
                     <View>
                         <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-                        <RadioForm
-                            radio_props={unitRadio}
-                            initial={unit}
-                            labelStyle={themeTextStyle}
-                            buttonColor={mode === 'light' ? 'black' : 'darkgrey'}
-                            selectedButtonColor={mode === 'light' ? 'black' : 'darkgrey'}
-                            onPress={(value) => setUnit(value)} />
+                        <RadioButtons options={unitRadio} unit={unit} setUnit={value => setUnit(value)} />
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'center' }}>
