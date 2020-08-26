@@ -40,9 +40,7 @@ const Profile = props => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
+    container: { flex: 1 },
     button: {
         paddingVertical: 25,
         alignItems: 'center',
@@ -60,18 +58,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18
     },
-    lightContainer: {
-        backgroundColor: 'white',
-    },
-    darkContainer: {
-        backgroundColor: '#2D2D2D',
-    },
-    lightThemeText: {
-        color: '#343a40',
-    },
-    darkThemeText: {
-        color: 'bisque',
-    }
+    lightContainer: { backgroundColor: 'white' },
+    darkContainer: { backgroundColor: '#2D2D2D'},
+    lightThemeText: { color: '#343a40' },
+    darkThemeText: { color: 'bisque' }
 });
 
 export default Profile;

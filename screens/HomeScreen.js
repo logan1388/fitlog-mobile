@@ -18,10 +18,8 @@ const HomeScreen = props => {
     const mode = useSelector(state => state.fitlogReducer.theme);
     const dispatch = useDispatch();
     const userId = '5dfecbdd39d8760019968d04';
-    const themeTextStyle =
-        mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-    const themeContainerStyle =
-        mode === 'light' ? styles.lightContainer : styles.darkContainer;
+    const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
     useEffect(() => {
         dispatch(workoutSummary(userId));
@@ -114,8 +112,7 @@ const HomeScreen = props => {
                                 data={data}
                                 width={350}
                                 colorScale='blue'
-                                style={{ labels: { fontSize: 16 } }}
-                            />
+                                style={{ labels: { fontSize: 16 } }} />
                         </View>
                     </View>
                 </View>
@@ -149,13 +146,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         maxHeight: 250
     },
-    highlightCard: {
-        justifyContent: 'space-between',
-        backgroundColor: 'darkgrey',
-        marginHorizontal: 15,
-        marginVertical: 10,
-        padding: 15
-    },
     button: {
         backgroundColor: 'steelblue',
         paddingVertical: 25,
@@ -181,18 +171,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'black'
     },
-    lightContainer: {
-        backgroundColor: 'white',
-    },
-    darkContainer: {
-        backgroundColor: '#2D2D2D',
-    },
-    lightThemeText: {
-        color: '#343a40',
-    },
-    darkThemeText: {
-        color: 'bisque',
-    }
+    lightContainer: { backgroundColor: 'white' },
+    darkContainer: { backgroundColor: '#2D2D2D' },
+    lightThemeText: { color: '#343a40' },
+    darkThemeText: { color: 'bisque' }
 });
 
 export default HomeScreen;

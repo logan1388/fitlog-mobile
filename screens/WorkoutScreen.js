@@ -6,7 +6,6 @@ import BackImg from '../assets/FITLOG.jpg';
 
 const WorkoutScreen = props => {
     const selectedWorkout = props.route.params.workout;
-    //const selectedWorkout = props.navigation.getParam('workout');
     const workouts = useSelector(state => state.fitlogReducer.workouts);
     const dispatch = useDispatch();
 
@@ -80,9 +79,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16
     },
-    image: {
-        flex: 1
-    },
+    image: { flex: 1 },
     bg: {
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
         height: '100%',

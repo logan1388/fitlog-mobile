@@ -35,8 +35,7 @@ const HomeWorkoutScreen = props => {
                     <FlatList
                         data={buttons}
                         renderItem={({ item }) => <Item title={item.title} />}
-                        keyExtractor={item => item.title}
-                    />
+                        keyExtractor={item => item.title} />
                 </View>
             </ImageBackground>
         </SafeAreaView>
@@ -62,9 +61,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16
     },
-    image: {
-        flex: 1
-    },
+    image: { flex: 1 },
     bg: {
         backgroundColor: 'rgba(238, 238, 238, 0.8)',
         height: '100%',
