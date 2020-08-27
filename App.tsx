@@ -9,8 +9,8 @@ import thunk from 'redux-thunk';
 enableScreens();
 
 const rootReducer = combineReducers({
-  fitlogReducer: fitlogReducer 
-})
+  fitlogReducer: fitlogReducer,
+});
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
