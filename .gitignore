@@ -12,3 +12,10 @@ web-report/
 
 # macOS
 .DS_Store
+
+# ios build files
+Pods/
+
+# Android
+debug.keystore
+*.jar
