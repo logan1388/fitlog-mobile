@@ -14,12 +14,12 @@ import ExerciseScreen, {
 import AuthScreen, {
   screenOptions as authScreenOptions,
 } from '../screens/user/AuthScreen';
-import HomeWorkoutScreen, {
-  screenOptions as homeWorkoutScreenOptions,
-} from '../screens/HomeWorkoutScreen';
-import HomeWorkoutlogScreen, {
-  screenOptions as homeWorkoutlogScreenOptions,
-} from '../screens/HomeWorkoutlogScreen';
+import ResistanceScreen, {
+  screenOptions as resistanceScreenOptions,
+} from '../screens/ResistanceScreen';
+import ResistancelogScreen, {
+  screenOptions as resistancelogScreenOptions,
+} from '../screens/ResistancelogScreen';
 import NotesScreen from '../screens/NotesScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
@@ -95,21 +95,21 @@ const DashboardNavigator = () => {
   );
 };
 
-const HomeWorkoutStackNavigator = createStackNavigator();
-const HomeWorkoutNavigator = () => {
+const ResistanceStackNavigator = createStackNavigator();
+const ResistanceNavigator = () => {
   return (
-    <HomeWorkoutStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <HomeWorkoutStackNavigator.Screen
-        name="HomeWorkout"
-        component={HomeWorkoutScreen}
-        options={homeWorkoutScreenOptions}
+    <ResistanceStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <ResistanceStackNavigator.Screen
+        name="Resistance"
+        component={ResistanceScreen}
+        options={resistanceScreenOptions}
       />
-      <HomeWorkoutStackNavigator.Screen
-        name="HomeWorkoutlog"
-        component={HomeWorkoutlogScreen}
-        options={homeWorkoutlogScreenOptions}
+      <ResistanceStackNavigator.Screen
+        name="Resistancelog"
+        component={ResistancelogScreen}
+        options={resistancelogScreenOptions}
       />
-    </HomeWorkoutStackNavigator.Navigator>
+    </ResistanceStackNavigator.Navigator>
   );
 };
 
@@ -183,7 +183,7 @@ export const FitbookNavigator = () => {
         safeAreaInset: { bottom: 'never', top: 'never' },
       }}>
       <Tab.Screen name="Home" component={HomeNavigator} />
-      <Tab.Screen name="Resistance" component={HomeWorkoutNavigator} />
+      <Tab.Screen name="Resistance" component={ResistanceNavigator} />
       <Tab.Screen name="Workouts" component={DashboardNavigator} />
       <Tab.Screen name="Awards" component={AwardsNavigator} />
       <Tab.Screen name="Profile" component={ProfileNavigator} />

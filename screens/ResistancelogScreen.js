@@ -8,7 +8,7 @@ import Notes from '../components/Notes';
 import BestLog from '../components/BestLog';
 import Logs from '../components/Logs';
 
-const HomeWorkoutlogScreen = (props) => {
+const ResistancelogScreen = (props) => {
   const category = 'Homeworkout';
   const userId = '5dfecbdd39d8760019968d04';
   const mode = useSelector((state) => state.fitlogReducer.theme);
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   darkContainer: { backgroundColor: '#2D2D2D' },
 });
 
-export default HomeWorkoutlogScreen;
+export default ResistancelogScreen;
