@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import BackImg from '../assets/FITLOG.jpg';
 
-const HomeWorkoutScreen = (props) => {
+const ResistanceScreen = (props) => {
   const buttons = [
     { title: 'Pushup', workout: 'pushups' },
     { title: 'Pullup', workout: 'pullups' },
@@ -26,7 +26,7 @@ const HomeWorkoutScreen = (props) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            props.navigation.navigate('HomeWorkoutlog', {
+            props.navigation.navigate('Resistancelog', {
               exercise: title,
             });
           }}>
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeWorkoutScreen;
+export default ResistanceScreen;

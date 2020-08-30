@@ -173,7 +173,7 @@ const HomeScreen = (props) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => props.navigation.navigate('Resistance')}>
-              <Text style={styles.buttonText}>Home workouts Tracking</Text>
+              <Text style={styles.buttonText}>Resistance Tracking</Text>
             </TouchableOpacity>
           </View>
           <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
