@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, View, Modal, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Modal,
+  Alert,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import { expandExercise } from '../store/actions/actions';
 import WorkoutInput from '../components/WorkoutInput';
 import { saveNote } from '../store/actions/actions';
 import Notes from '../components/Notes';
 import BestLog from '../components/BestLog';
 import Logs from '../components/Logs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ExerciseScreen = (props) => {
   const selectedExercise = props.route.params
@@ -21,11 +29,19 @@ const ExerciseScreen = (props) => {
   const category = props.route.params ? props.route.params.workout : null;
   const userId = '5dfecbdd39d8760019968d04';
   const dispatch = useDispatch();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [notesModalVisible, setNotesModalVisible] = useState(false);
+  const [logInputModalVisible, setLogInputModalVisible] = useState(false);
   const [notes, setNotes] = useState('');
   const [noteLog, setNoteLog] = useState({});
   const themeContainerStyle =
-    mode === 'light' ? styles.lightContainer : styles.darkContainer;
+    mode === 'light'
+      ? notesModalVisible || logInputModalVisible
+        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+        : styles.lightContainer
+      : notesModalVisible || logInputModalVisible
+      ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+      : styles.darkContainer;
+  const themeButtonStyle = mode === 'light' ? '#343a40' : 'bisque';
 
   useEffect(() => {
     dispatch(expandExercise(workouts, category, selectedExercise, userId));
@@ -34,14 +50,14 @@ const ExerciseScreen = (props) => {
   const addNotes = (log) => {
     setNotes(log.note);
     setNoteLog(log);
-    setModalVisible(true);
+    setNotesModalVisible(true);
   };
 
   const saveNotes = () => {
     dispatch(saveNote(noteLog._id, noteLog.category, notes));
     logs.map((log) => log._id === noteLog._id && (log.note = notes));
     setNotes('');
-    setModalVisible(!modalVisible);
+    setNotesModalVisible(!notesModalVisible);
   };
 
   return (
@@ -50,7 +66,7 @@ const ExerciseScreen = (props) => {
       <Modal
         animationType="none"
         transparent={true}
-        visible={modalVisible}
+        visible={notesModalVisible}
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
         }}>
@@ -58,23 +74,48 @@ const ExerciseScreen = (props) => {
           notes={notes}
           setNotes={(text) => setNotes(text)}
           saveNotes={saveNotes}
-          modalVisible={modalVisible}
-          setModalVisible={(modalVisible) => setModalVisible(modalVisible)}
+          modalVisible={notesModalVisible}
+          setModalVisible={(notesModalVisible) =>
+            setNotesModalVisible(notesModalVisible)
+          }
         />
       </Modal>
       <View style={[styles.innerContainer, themeContainerStyle]}>
-        <WorkoutInput
-          category={category}
-          name={selectedExercise}
-          logs={logs}
-          workouts={workouts}
-        />
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={logInputModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <WorkoutInput
+            category={category}
+            name={selectedExercise}
+            logs={logs}
+            workouts={workouts}
+            modalVisible={logInputModalVisible}
+            setModalVisible={(logInputModalVisible) =>
+              setLogInputModalVisible(logInputModalVisible)
+            }
+          />
+        </Modal>
         <BestLog bestSet={bestSet} maxWt={maxWt} maxRps={maxRps} />
-        <Logs
-          logs={logs}
-          bestSet={bestSet}
-          addNotes={(note) => addNotes(note)}
-        />
+        {logs.length ? (
+          <Logs
+            logs={logs}
+            bestSet={bestSet}
+            addNotes={(note) => addNotes(note)}
+          />
+        ) : (
+          <View style={{ alignItems: 'center' }}>
+            <Text>Start logging!</Text>
+          </View>
+        )}
+        <TouchableOpacity
+          style={styles.floatingButton}
+          onPress={() => setLogInputModalVisible(true)}>
+          <Icon name="plus-circle" size={50} color={themeButtonStyle} />
+        </TouchableOpacity>
       </View>
       {/* </ImageBackground> */}
     </View>
@@ -100,6 +141,15 @@ const styles = StyleSheet.create({
   },
   lightContainer: { backgroundColor: 'white' },
   darkContainer: { backgroundColor: '#2D2D2D' },
+  floatingButton: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 15,
+    bottom: 45,
+  },
 });
 
 export default ExerciseScreen;

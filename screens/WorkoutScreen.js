@@ -24,7 +24,7 @@ const WorkoutScreen = (props) => {
   function Item({ title, category }) {
     return (
       <View style={styles.container}>
-        {category.toLowerCase() == selectedWorkout.toLowerCase() ? (
+        {category.toLowerCase() === selectedWorkout.toLowerCase() ? (
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
