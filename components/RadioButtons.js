@@ -12,7 +12,7 @@ const RadioButtons = (props) => {
     mode === 'light' ? styles.lightThemeCircle : styles.darkThemeCircle;
 
   return (
-    <View>
+    <View style={props.style}>
       {props.options.map((item) => {
         return (
           <View key={item.value} style={styles.buttonContainer}>
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+    marginHorizontal: 10,
   },
   circle: {
     height: 20,

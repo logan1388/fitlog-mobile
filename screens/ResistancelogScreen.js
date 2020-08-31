@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, View, SafeAreaView, Modal, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Modal,
+  Alert,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { fetchHomeWorkoutLog } from '../store/actions/actions';
 import ResistanceInput from '../components/ResistanceInput';
 import { saveNote } from '../store/actions/actions';
 import Notes from '../components/Notes';
 import BestLog from '../components/BestLog';
 import Logs from '../components/Logs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ResistancelogScreen = (props) => {
   const category = 'Homeworkout';
@@ -19,11 +28,19 @@ const ResistancelogScreen = (props) => {
   const maxRps = useSelector((state) => state.fitlogReducer.maxRepsResistance);
   const maxTime = useSelector((state) => state.fitlogReducer.maxTime);
   const dispatch = useDispatch();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [notesModalVisible, setNotesModalVisible] = useState(false);
+  const [logInputModalVisible, setLogInputModalVisible] = useState(false);
   const [notes, setNotes] = useState('');
   const [noteLog, setNoteLog] = useState({});
   const themeContainerStyle =
-    mode === 'light' ? styles.lightContainer : styles.darkContainer;
+    mode === 'light'
+      ? notesModalVisible || logInputModalVisible
+        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+        : styles.lightContainer
+      : notesModalVisible || logInputModalVisible
+      ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+      : styles.darkContainer;
+  const themeButtonStyle = mode === 'light' ? '#343a40' : 'bisque';
 
   useEffect(() => {
     dispatch(fetchHomeWorkoutLog(category, selectedExercise, userId));
@@ -32,14 +49,14 @@ const ResistancelogScreen = (props) => {
   const addNotes = (log) => {
     setNotes(log.note);
     setNoteLog(log);
-    setModalVisible(true);
+    setNotesModalVisible(true);
   };
 
   const saveNotes = () => {
     dispatch(saveNote(noteLog._id, 'home', notes));
     logs.map((log) => log._id === noteLog._id && (log.note = notes));
     setNotes('');
-    setModalVisible(!modalVisible);
+    setNotesModalVisible(!notesModalVisible);
   };
 
   return (
@@ -49,7 +66,7 @@ const ResistancelogScreen = (props) => {
         <Modal
           animationType="none"
           transparent={true}
-          visible={modalVisible}
+          visible={notesModalVisible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
           }}>
@@ -57,21 +74,46 @@ const ResistancelogScreen = (props) => {
             notes={notes}
             setNotes={(text) => setNotes(text)}
             saveNotes={saveNotes}
-            modalVisible={modalVisible}
-            setModalVisible={(modalVisible) => setModalVisible(modalVisible)}
+            modalVisible={notesModalVisible}
+            setModalVisible={(notesModalVisible) =>
+              setNotesModalVisible(notesModalVisible)
+            }
           />
         </Modal>
-        <ResistanceInput
-          category={category}
-          name={selectedExercise}
-          logs={logs}
-        />
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={logInputModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <ResistanceInput
+            category={category}
+            name={selectedExercise}
+            logs={logs}
+            modalVisible={logInputModalVisible}
+            setModalVisible={(logInputModalVisible) =>
+              setLogInputModalVisible(logInputModalVisible)
+            }
+          />
+        </Modal>
         <BestLog maxRps={maxRps} maxTime={maxTime} />
-        <Logs
-          resistance={true}
-          logs={logs}
-          addNotes={(note) => addNotes(note)}
-        />
+        {logs.length ? (
+          <Logs
+            resistance={true}
+            logs={logs}
+            addNotes={(note) => addNotes(note)}
+          />
+        ) : (
+          <View style={{ alignItems: 'center' }}>
+            <Text>Start logging!</Text>
+          </View>
+        )}
+        <TouchableOpacity
+          style={styles.floatingButton}
+          onPress={() => setLogInputModalVisible(true)}>
+          <Icon name="plus-circle" size={50} color={themeButtonStyle} />
+        </TouchableOpacity>
       </View>
       {/* </ImageBackground> */}
     </SafeAreaView>
@@ -93,6 +135,15 @@ const styles = StyleSheet.create({
   },
   lightContainer: { backgroundColor: 'white' },
   darkContainer: { backgroundColor: '#2D2D2D' },
+  floatingButton: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 15,
+    bottom: 45,
+  },
 });
 
 export default ResistancelogScreen;
