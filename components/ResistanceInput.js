@@ -189,7 +189,6 @@ const options = {
   text: {
     fontSize: 20,
     color: 'black',
-    margin: 5,
   },
 };
 
