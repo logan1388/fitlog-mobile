@@ -107,7 +107,7 @@ const ExerciseScreen = (props) => {
             addNotes={(note) => addNotes(note)}
           />
         ) : (
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ justifyContent: 'space-around', alignItems: 'center', height: '100%' }}>
             <Text>Start logging!</Text>
           </View>
         )}

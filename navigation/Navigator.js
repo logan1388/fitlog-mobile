@@ -20,7 +20,7 @@ import ResistanceScreen, {
 import ResistancelogScreen, {
   screenOptions as resistancelogScreenOptions,
 } from '../screens/ResistancelogScreen';
-import NotesScreen from '../screens/NotesScreen';
+import ProgressScreen from '../screens/ProgressScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
 import HomeScreen, {
@@ -46,12 +46,12 @@ const AwardsNavigator = () => {
   );
 };
 
-const NotesStackNavigator = createStackNavigator();
-const NotesNavigator = () => {
+const ProgressStackNavigator = createStackNavigator();
+const ProgressNavigator = () => {
   return (
-    <NotesStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <NotesStackNavigator.Screen name="Notes" component={NotesScreen} />
-    </NotesStackNavigator.Navigator>
+    <ProgressStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <ProgressStackNavigator.Screen name="Progress" component={ProgressScreen} />
+    </ProgressStackNavigator.Navigator>
   );
 };
 
@@ -66,8 +66,7 @@ const ExerciseTabNavigator = () => {
         indicatorStyle: { backgroundColor: Colors.headerFontColor },
       }}>
       <TopTab.Screen name="Exercise" component={ExerciseScreen} />
-      {/* <TopTab.Screen name='Notes' component={NotesNavigator}/> */}
-      <TopTab.Screen name="Awards" component={AwardsNavigator} />
+      <TopTab.Screen name='Progress' component={ProgressNavigator}/>
     </TopTab.Navigator>
   );
 };
