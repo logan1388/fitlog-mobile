@@ -1,21 +1,12 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  TextInput,
-  TouchableHighlight,
-  Keyboard,
-} from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, TextInput, TouchableHighlight, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Notes = (props) => {
-  const mode = useSelector((state) => state.fitlogReducer.theme);
-  const themeContainerStyle =
-    mode === 'light' ? styles.lightContainer : styles.darkContainer;
-  const themeTextStyle =
-    mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+const Notes = props => {
+  const mode = useSelector(state => state.fitlogReducer.theme);
+  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -36,18 +27,14 @@ const Notes = (props) => {
             multiline
             numberOfLines={4}
             maxLength={100}
-            onChangeText={(text) => props.setNotes(text)}
+            onChangeText={text => props.setNotes(text)}
             value={props.notes}
           />
           <View style={{ flexDirection: 'row', paddingTop: 15 }}>
-            <TouchableHighlight
-              style={{ ...styles.openButton, marginRight: 15 }}
-              onPress={() => props.saveNotes()}>
+            <TouchableHighlight style={{ ...styles.openButton, marginRight: 15 }} onPress={() => props.saveNotes()}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.openButton}
-              onPress={() => props.setModalVisible(!props.modalVisible)}>
+            <TouchableHighlight style={styles.openButton} onPress={() => props.setModalVisible(!props.modalVisible)}>
               <Icon name="close-circle-outline" size={50} color="tomato" />
             </TouchableHighlight>
           </View>

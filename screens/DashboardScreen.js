@@ -1,16 +1,8 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  ImageBackground,
-} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import BackImg from '../assets/FITLOG.jpg';
 
-const DashboardScreen = (props) => {
+const DashboardScreen = props => {
   const buttons = [
     { title: 'Chest', workout: 'chest' },
     { title: 'Leg', workout: 'legs' },
@@ -43,7 +35,7 @@ const DashboardScreen = (props) => {
           <FlatList
             data={buttons}
             renderItem={({ item }) => <Item title={item.title} />}
-            keyExtractor={(item) => item.title}
+            keyExtractor={item => item.title}
           />
         </View>
       </ImageBackground>

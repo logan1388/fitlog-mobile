@@ -20,7 +20,6 @@ export const getTimestamp = () => {
   if (sec < 10) {
     sec = '0' + sec;
   }
-  let timestamp =
-    month + '/' + date + '/' + year + ' ' + hours + ':' + min + ':' + sec;
+  let timestamp = month + '/' + date + '/' + year + ' ' + hours + ':' + min + ':' + sec;
   return timestamp;
 };

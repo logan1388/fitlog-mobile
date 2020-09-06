@@ -2,28 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-const MaxCard = (props) => {
-  const mode = useSelector((state) => state.fitlogReducer.theme);
-  const themeContainerStyle =
-    mode === 'light' ? styles.lightContainer : styles.darkContainer;
-  const themeTextStyle =
-    mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+const MaxCard = props => {
+  const mode = useSelector(state => state.fitlogReducer.theme);
+  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
   return (
-    <View
-      style={[
-        styles.container,
-        themeContainerStyle,
-        { shadowColor: mode === 'light' ? 'black' : 'bisque' },
-      ]}>
-      <View
-        style={[
-          styles.titleContainer,
-          { backgroundColor: mode === 'light' ? 'steelblue' : 'darkgrey' },
-        ]}>
-        <Text style={{ padding: 10, fontSize: 16, fontWeight: 'bold' }}>
-          {props.title}
-        </Text>
+    <View style={[styles.container, themeContainerStyle, { shadowColor: mode === 'light' ? 'black' : 'bisque' }]}>
+      <View style={[styles.titleContainer, { backgroundColor: mode === 'light' ? 'steelblue' : 'darkgrey' }]}>
+        <Text style={{ padding: 10, fontSize: 16, fontWeight: 'bold' }}>{props.title}</Text>
       </View>
       {!props.time ? (
         <View style={{ padding: 10 }}>

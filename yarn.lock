@@ -1001,6 +1001,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@react-native-community/async-storage@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.0.tgz#d2fc65bc08aa1c3e9514bbe9fe7095eab8e8aca3"
+  integrity sha512-y3zVxuVyiOxI8TXrvajmYfDbIt2vFNxzV5MiA28v15DQTxDk6uJH3rpc9my+la7u2Tiwt3PpdU2+59ZgZ4h7wA==
+  dependencies:
+    deep-assign "^3.0.0"
+
 "@react-native-community/cli-debugger-ui@^4.9.0":
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.9.0.tgz#4177764ba69243c97aa26829d59d9501acb2bd71"
@@ -1310,7 +1317,20 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
-"@types/react-native@^0.63.2":
+"@types/react-native-uuid-generator@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-uuid-generator/-/react-native-uuid-generator-4.0.0.tgz#a8cec2287873a287ca85c269a2da627026c3f913"
+  integrity sha512-iAt2ILkYpatLaxw7MOryWbaH0L3h1hDa+ClIF3VO7bn03q7WLORTmczRm1oezBP21RYJKGL7JGQx2U3iXrLN0w==
+
+"@types/react-native-vector-icons@^6.4.5":
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.5.tgz#74cbfc564bd8435e43ad6728572a0e5b49c335d1"
+  integrity sha512-JBpcjWQE4n0GlE0p6HpDDclT+uXpFC453T5k4h+B38q0utlGJhvgNr8899BoJGc1xOktA2cgqFKmFMJd0h7YaA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/react-native@*", "@types/react-native@^0.63.2":
   version "0.63.15"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.63.15.tgz#f86ce87a0afc53bec7c6bc96282e698e0a03ce1b"
   integrity sha512-ZFOHFn4NNKxvpHfri099KMVCeHU9Rvu7E3GC6ST1KGoktipyfWTW0HLePKAflbmARODAh84ci4HSzAXnW54FXw==
@@ -2497,6 +2517,13 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
+deep-assign@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/deep-assign/-/deep-assign-3.0.0.tgz#c8e4c4d401cba25550a2f0f486a2e75bc5f219a2"
+  integrity sha512-YX2i9XjJ7h5q/aQ/IM9PEwEnDqETAIYbggmdDB3HLTlSgo1CxPsj6pvhPG68rq6SVE0+p+6Ywsm5fTYNrYtBWw==
+  dependencies:
+    is-obj "^1.0.0"
+
 deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
@@ -2775,7 +2802,7 @@ escodegen@^1.11.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-prettier@^6.10.1:
+eslint-config-prettier@^6.10.1, eslint-config-prettier@^6.11.0:
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.11.0.tgz#f6d2238c1290d01c859a8b5c1f7d352a0b0da8b1"
   integrity sha512-oB8cpLWSAjOVFEJhhyMZh6NOEOtBVziaqdDQ86+qhDHFbZXoRTM7pNSvFRfW/W/L/LrQ38C99J5CGuRBBzBsdA==
@@ -2806,6 +2833,13 @@ eslint-plugin-prettier@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.2.tgz#432e5a667666ab84ce72f945c72f77d996a5c9ba"
   integrity sha512-GlolCC9y3XZfv3RQfwGew7NnuFDKsfI4lbvRK+PIIo23SFH+LemGs4cKwzAaRa+Mdb+lQO/STaIayno8T5sJJA==
+  dependencies:
+    prettier-linter-helpers "^1.0.0"
+
+eslint-plugin-prettier@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.4.tgz#168ab43154e2ea57db992a2cd097c828171f75c2"
+  integrity sha512-jZDa8z76klRqo+TdGDTFJSavwbnWK2ZpqGKNZ+VvweMW516pDUMmQ2koXvxEE4JhzNvTv+radye/bWGBmA6jmg==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
@@ -3589,6 +3623,11 @@ image-size@^0.6.0:
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
 
+immer@^7.0.8:
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-7.0.8.tgz#41dcbc5669a76500d017bef3ad0d03ce0a1d7c1e"
+  integrity sha512-XnpIN8PXBBaOD43U8Z17qg6RQiKQYGDGGCIbz1ixmLGwBkSWwmrmx5X7d+hTtXDM8ur7m5OdLE0PiO+y5RB3pw==
+
 immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
@@ -3839,6 +3878,11 @@ is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
+
+is-obj@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-obj/-/is-obj-1.0.1.tgz#3e4729ac1f5fde025cd7d83a896dab9f4f67db0f"
+  integrity sha1-PkcprB9f3gJc19g6iW2rn09n2w8=
 
 is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   version "2.0.4"
@@ -5838,6 +5882,11 @@ react-native-calendars@^1.315.0:
     react-native-swipe-gestures "^1.0.5"
     xdate "^0.8.0"
 
+react-native-device-info@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-6.0.2.tgz#03317893bd6336b9ed2fe7a78d424737a441553f"
+  integrity sha512-Kx6ozWKkiPPvRhZDIL5jQ8zEZLlRT8hTovTaV+NgDc0tM+slBEnuEIgn0FXArHudO0qq2r+VDs4pUwMf6csGPg==
+
 react-native-gesture-handler@^1.7.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.8.0.tgz#18f61f51da50320f938957b0ee79bc58f47449dc"
@@ -5912,6 +5961,11 @@ react-native-tab-view@^2.15.1:
   version "2.15.1"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.15.1.tgz#cf4df4ffdec504263a2e06a6becd8831b9a19ad9"
   integrity sha512-cDYl1pNWspbEHBjHrHVpIC40h4g8VhZe0CIG0CUKcouX98vHVfAojxhgWuRosq9qMhITHpLKM+7BmBLnhCJ0nw==
+
+react-native-uuid-generator@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-uuid-generator/-/react-native-uuid-generator-6.1.1.tgz#59ca80f1eacd282311593af49fde34331d712b6e"
+  integrity sha512-jWF0wiGTUTkCBTpspUZatC7wlhjN3GRbW9YblaxxpuMuhk0DEOQXOp1qgsDd2vLTL8GsM3i7Hnatvfj1kwf88w==
 
 react-native-vector-icons@^7.0.0:
   version "7.0.0"
