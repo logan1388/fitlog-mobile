@@ -1,14 +1,16 @@
 // Copyright FitBook
 
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { ProfileStackRouteParams, ProfileStackScreens } from '../navigation/Navigator';
-import { styles } from './ProfileScreen.style';
+import { profileStyles } from './ProfileScreen.style';
 import { CreateProfileModel, ProfileModel } from '../commonlib/models/ProfileModel';
 import { RootState } from '../store/actionHelpers';
 import { updateMyProfile, fetchMyProfile } from '../store/profiles';
+import { ThemeName } from '../styles/style';
 
 interface EditProfileReduxState {
   myProfile?: ProfileModel;
@@ -21,10 +23,14 @@ interface EditProfileProps {
 }
 
 const EditProfile: React.FC<EditProfileProps> = props => {
+  const { t } = useTranslation();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const dispatch = useDispatch();
+  const currentTheme = useSelector<RootState>(state => state.fitlogReducer.theme);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [styles, setStyles] = useState(profileStyles());
 
-  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeContainerStyle = currentTheme === ThemeName.LIGHT ? styles.lightContainer : styles.darkContainer;
 
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
@@ -37,8 +43,10 @@ const EditProfile: React.FC<EditProfileProps> = props => {
   });
 
   React.useEffect(() => {
+    setIsDarkMode(currentTheme === ThemeName.DARK);
+    setStyles(profileStyles());
     dispatch(fetchMyProfile());
-  }, [dispatch]);
+  }, [setIsDarkMode, setStyles, currentTheme, dispatch]);
 
   const { myProfile } = profileReduxState;
 
@@ -52,7 +60,7 @@ const EditProfile: React.FC<EditProfileProps> = props => {
   }, [myProfile]);
 
   const onSuccess = () => {
-    props.navigation.navigate('Profile');
+    props.navigation.navigate(ProfileStackScreens.ProfileScreen);
   };
 
   const onSaveClick = () => {
@@ -71,43 +79,43 @@ const EditProfile: React.FC<EditProfileProps> = props => {
     <View style={[styles.container, styles.editProfileContainer, themeContainerStyle]}>
       <View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>First name</Text>
+          <Text style={styles.labelText}>{t('profile.firstNameLabel')}</Text>
           <TextInput
-            placeholder="First name"
+            placeholder={t('profile.firstNameLabel')}
             style={styles.valueText}
             defaultValue={firstName}
             onChangeText={(value: string) => setFirstName(value)}
           />
         </View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>Last name</Text>
+          <Text style={styles.labelText}>{t('profile.lastNameLabel')}</Text>
           <TextInput
-            placeholder="Last name"
+            placeholder={t('profile.lastNameLabel')}
             style={styles.valueText}
             defaultValue={lastName}
             onChangeText={(value: string) => setLastName(value)}
           />
         </View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>Weight (in kg)</Text>
+          <Text style={styles.labelText}>{t('profile.weightLabel')}</Text>
           <TextInput
-            placeholder="Weight (in kgs)"
+            placeholder={t('profile.weightLabel')}
             style={styles.valueText}
             defaultValue={weight > 0 ? weight.toString() : undefined}
             onChangeText={(value: string) => setWeight(Number(value))}
           />
         </View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>Height (in cms)</Text>
+          <Text style={styles.labelText}>{t('profile.heightLabel')}</Text>
           <TextInput
-            placeholder="Height (in cms)"
+            placeholder={t('profile.heightLabel')}
             style={styles.valueText}
             defaultValue={height > 0 ? height.toString() : undefined}
             onChangeText={(value: string) => setHeight(Number(value))}
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={onSaveClick}>
-          <Text>Save</Text>
+          <Text>{t('profile.saveButton')}</Text>
         </TouchableOpacity>
       </View>
     </View>

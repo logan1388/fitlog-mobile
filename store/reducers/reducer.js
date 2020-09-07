@@ -21,6 +21,7 @@ import {
   FETCH_HOMEWORKOUTLOG_SUCCESS,
   SET_THEME,
 } from '../actions/actions';
+import { Style } from '../../styles/style';
 
 import {
   LOGIN_SUCCESS,
@@ -55,7 +56,7 @@ const initialState = {
   awards: [],
   logsWeek: [],
   homeworkoutlogs: [],
-  theme: 'light',
+  theme: Style.getCurrentTheme(),
 };
 
 export default function fitlogReducer(state = initialState, action) {

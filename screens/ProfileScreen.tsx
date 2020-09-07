@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, Switch } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { ProfileStackRouteParams, ProfileStackScreens } from '../navigation/Navigator';
 import { setTheme } from '../store/actions/actions';
-import { styles } from './ProfileScreen.style';
+import { profileStyles } from './ProfileScreen.style';
 import { ProfileModel } from '../commonlib/models/ProfileModel';
 import { RootState } from '../store/actionHelpers';
 import { fetchMyProfile } from '../store/profiles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Style, ThemeName } from '../styles/style';
 
 interface ProfileReduxState {
   myProfile?: ProfileModel;
@@ -21,15 +23,25 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = props => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
+  const { t } = useTranslation();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [styles, setStyles] = useState(profileStyles());
+
+  const currentTheme = useSelector<RootState>(state => state.fitlogReducer.theme);
   const dispatch = useDispatch();
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState);
-    dispatch(setTheme(isEnabled ? 'light' : 'dark'));
+
+  const toggleSwitch = async (value: boolean) => {
+    await Style.setCurrentTheme(value ? ThemeName.DARK : ThemeName.LIGHT);
+    dispatch(setTheme(value ? ThemeName.DARK : ThemeName.LIGHT));
   };
-  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+
+  React.useEffect(() => {
+    setIsDarkMode(currentTheme === ThemeName.DARK);
+    setStyles(profileStyles());
+  }, [setIsDarkMode, setStyles, currentTheme]);
+
+  const themeTextStyle = currentTheme === ThemeName.LIGHT ? styles.lightThemeText : styles.darkThemeText;
+  const themeContainerStyle = currentTheme === ThemeName.LIGHT ? styles.lightContainer : styles.darkContainer;
 
   const profileReduxState = useSelector<RootState, ProfileReduxState>(state => {
     const myProfile = state.profiles.myProfile;
@@ -41,7 +53,7 @@ const Profile: React.FC<ProfileProps> = props => {
   }, [dispatch]);
 
   const onEditProfileClick = () => {
-    props.navigation.navigate('EditProfile');
+    props.navigation.navigate(ProfileStackScreens.EditProfileScreen);
   };
 
   const { myProfile } = profileReduxState;
@@ -50,33 +62,33 @@ const Profile: React.FC<ProfileProps> = props => {
   return (
     <View style={[styles.container, themeContainerStyle]}>
       <View style={[styles.innerContainer]}>
-        <Text style={[styles.darkThemeText, themeTextStyle]}>Dark Theme</Text>
+        <Text style={[styles.darkThemeText, themeTextStyle]}>{t('profile.darkThemeToggle')}</Text>
         <Switch
           trackColor={{ false: 'darkgrey', true: 'lightgrey' }}
-          thumbColor={isEnabled ? 'steelblue' : '#f4f3f4'}
+          thumbColor={isDarkMode ? 'steelblue' : '#f4f3f4'}
           ios_backgroundColor="darkgrey"
           onValueChange={toggleSwitch}
-          value={isEnabled}
+          value={isDarkMode}
         />
       </View>
       <TouchableOpacity onPress={onEditProfileClick}>
-        <Text style={styles.editProfileButtonText}>Edit profile info</Text>
+        <Text style={styles.editProfileButtonText}>{t('profile.editProfileButton')}</Text>
       </TouchableOpacity>
       <View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>First name</Text>
+          <Text style={styles.labelText}>{t('profile.firstNameLabel')}</Text>
           <Text style={styles.valueText}>{firstName}</Text>
         </View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>Last name</Text>
+          <Text style={styles.labelText}>{t('profile.lastNameLabel')}</Text>
           <Text style={styles.valueText}>{lastName}</Text>
         </View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>Weight (in kg)</Text>
+          <Text style={styles.labelText}>{t('profile.weightLabel')}</Text>
           <Text style={styles.valueText}>{weight}</Text>
         </View>
         <View style={styles.dataView}>
-          <Text style={styles.labelText}>Height (in cms)</Text>
+          <Text style={styles.labelText}>{t('profile.heightLabel')}</Text>
           <Text style={styles.valueText}>{height}</Text>
         </View>
       </View>

@@ -1,0 +1,15 @@
+{
+  "header": {
+    "profile": "Profile",
+    "editProfile": "Edit Profile"
+  },
+  "profile": {
+    "darkThemeToggle": "Dark Theme",
+    "editProfileButton": "Edit Profile Info",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "weightLabel": "Weight (in kgs)",
+    "heightLabel": "Height (in cms)",
+    "saveButton": "Save"
+  }
+}
