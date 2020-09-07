@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTranslation } from 'react-i18next';
 import DashboardScreen, { screenOptions as dashboardScreenOptions } from '../screens/DashboardScreen';
 import WorkoutScreen, { screenOptions as workoutScreenOptions } from '../screens/WorkoutScreen';
 import ExerciseScreen, { screenOptions as exerciseScreenOptions } from '../screens/ExerciseScreen';
@@ -122,16 +123,17 @@ export enum ProfileStackScreens {
 
 const ProfileStackNavigator = createStackNavigator<ProfileStackRouteParams>();
 const ProfileNavigator = () => {
+  const { t } = useTranslation();
   return (
     <ProfileStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
       <ProfileStackNavigator.Screen
         name={ProfileStackScreens.ProfileScreen}
-        options={{ title: 'Profile' }}
+        options={{ title: t('header.profile') }}
         component={Profile}
       />
       <ProfileStackNavigator.Screen
         name={ProfileStackScreens.EditProfileScreen}
-        options={{ title: 'Edit Profile' }}
+        options={{ title: t('header.editProfile') }}
         component={EditProfile}
       />
     </ProfileStackNavigator.Navigator>
