@@ -1,15 +1,16 @@
 // Copyright FitBook
 
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ProfileStackRouteParams, ProfileStackScreens } from '../navigation/Navigator';
-import { styles } from './ProfileScreen.style';
+import { profileStyles } from './ProfileScreen.style';
 import { CreateProfileModel, ProfileModel } from '../commonlib/models/ProfileModel';
 import { RootState } from '../store/actionHelpers';
 import { updateMyProfile, fetchMyProfile } from '../store/profiles';
+import { ThemeName } from '../styles/style';
 
 interface EditProfileReduxState {
   myProfile?: ProfileModel;
@@ -25,8 +26,11 @@ const EditProfile: React.FC<EditProfileProps> = props => {
   const { t } = useTranslation();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const dispatch = useDispatch();
+  const currentTheme = useSelector<RootState>(state => state.fitlogReducer.theme);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [styles, setStyles] = useState(profileStyles());
 
-  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeContainerStyle = currentTheme === ThemeName.LIGHT ? styles.lightContainer : styles.darkContainer;
 
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
@@ -39,8 +43,10 @@ const EditProfile: React.FC<EditProfileProps> = props => {
   });
 
   React.useEffect(() => {
+    setIsDarkMode(currentTheme === ThemeName.DARK);
+    setStyles(profileStyles());
     dispatch(fetchMyProfile());
-  }, [dispatch]);
+  }, [setIsDarkMode, setStyles, currentTheme, dispatch]);
 
   const { myProfile } = profileReduxState;
 
