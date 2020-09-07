@@ -5,12 +5,12 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { ProfileStackRouteParams, ProfileStackScreens } from '../navigation/Navigator';
+import { ProfileStackRouteParams, ProfileStackScreens } from '../../navigation/Navigator';
 import { profileStyles } from './ProfileScreen.style';
-import { CreateProfileModel, ProfileModel } from '../commonlib/models/ProfileModel';
-import { RootState } from '../store/actionHelpers';
-import { updateMyProfile, fetchMyProfile } from '../store/profiles';
-import { ThemeName } from '../styles/style';
+import { CreateProfileModel, ProfileModel } from '../../commonlib/models/ProfileModel';
+import { RootState } from '../../store/actionHelpers';
+import { updateMyProfile, fetchMyProfile } from '../../store/profiles';
+import { ThemeName } from '../../styles/style';
 
 interface EditProfileReduxState {
   myProfile?: ProfileModel;
