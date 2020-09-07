@@ -46,4 +46,7 @@ export const resistanceStyles = () =>
       right: 15,
       bottom: 45,
     },
+    noDataText: {
+      alignItems: 'center'
+    }
   });

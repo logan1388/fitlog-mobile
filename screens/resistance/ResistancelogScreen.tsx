@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, SafeAreaView, Modal, Alert, Text, TouchableOpacity } from 'react-native';
-import { fetchHomeWorkoutLog } from '../../store/actions/actions';
+import { fetchResistanceLog } from '../../store/actions/actions';
 import ResistanceInput from '../../components/ResistanceInput';
 import { saveNote } from '../../store/actions/actions';
 import Notes from '../../components/Notes';
@@ -23,11 +23,11 @@ interface ResistancelogProps {
 }
 
 const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
-  const category = 'Homeworkout';
+  const category = 'Resistance';
   const userId = '5dfecbdd39d8760019968d04';
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const selectedExercise = props.route.params ? props.route.params.exercise : null;
-  const logs = useSelector<RootState>(state => state.fitlogReducer.homeworkoutlogs);
+  const logs = useSelector<RootState>(state => state.fitlogReducer.resistancelogs);
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxRepsResistance);
   const maxTime = useSelector<RootState>(state => state.fitlogReducer.maxTime);
   const dispatch = useDispatch();
@@ -42,13 +42,13 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
         ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
         : styles.lightContainer
       : notesModalVisible || logInputModalVisible
-      ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
-      : styles.darkContainer;
+        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+        : styles.darkContainer;
   const themeButtonStyle = mode === 'light' ? '#343a40' : 'bisque';
 
   useEffect(() => {
     setStyles(resistanceStyles());
-    dispatch(fetchHomeWorkoutLog(category, selectedExercise, userId));
+    dispatch(fetchResistanceLog(category, selectedExercise, userId));
   }, [setStyles, dispatch, selectedExercise]);
 
   const addNotes = log => {
@@ -84,9 +84,7 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
           animationType="none"
           transparent={true}
           visible={logInputModalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}>
+          onRequestClose={() => Alert.alert('Modal has been closed.')}>
           <ResistanceInput
             category={category}
             name={selectedExercise}
@@ -99,10 +97,10 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
         {logs.length ? (
           <Logs resistance={true} logs={logs} addNotes={note => addNotes(note)} />
         ) : (
-          <View style={{ alignItems: 'center' }}>
-            <Text>Start logging!</Text>
-          </View>
-        )}
+            <View style={styles.noDataText}>
+              <Text>Start logging!</Text>
+            </View>
+          )}
         <TouchableOpacity style={styles.floatingButton} onPress={() => setLogInputModalVisible(true)}>
           <Icon name="plus-circle" size={50} color={themeButtonStyle} />
         </TouchableOpacity>
