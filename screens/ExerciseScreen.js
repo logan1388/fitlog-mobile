@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  StyleSheet,
-  View,
-  Modal,
-  Alert,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, Modal, Alert, TouchableOpacity, Text } from 'react-native';
 import { expandExercise } from '../store/actions/actions';
 import WorkoutInput from '../components/WorkoutInput';
 import { saveNote } from '../store/actions/actions';
@@ -16,16 +9,14 @@ import BestLog from '../components/BestLog';
 import Logs from '../components/Logs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ExerciseScreen = (props) => {
-  const selectedExercise = props.route.params
-    ? props.route.params.exercise
-    : null;
-  const mode = useSelector((state) => state.fitlogReducer.theme);
-  const logs = useSelector((state) => state.fitlogReducer.logs);
-  const workouts = useSelector((state) => state.fitlogReducer.workouts);
-  const maxWt = useSelector((state) => state.fitlogReducer.maxWeight);
-  const maxRps = useSelector((state) => state.fitlogReducer.maxReps);
-  const bestSet = useSelector((state) => state.fitlogReducer.bestSet);
+const ExerciseScreen = props => {
+  const selectedExercise = props.route.params ? props.route.params.exercise : null;
+  const mode = useSelector(state => state.fitlogReducer.theme);
+  const logs = useSelector(state => state.fitlogReducer.logs);
+  const workouts = useSelector(state => state.fitlogReducer.workouts);
+  const maxWt = useSelector(state => state.fitlogReducer.maxWeight);
+  const maxRps = useSelector(state => state.fitlogReducer.maxReps);
+  const bestSet = useSelector(state => state.fitlogReducer.bestSet);
   const category = props.route.params ? props.route.params.workout : null;
   const userId = '5dfecbdd39d8760019968d04';
   const dispatch = useDispatch();
@@ -47,7 +38,7 @@ const ExerciseScreen = (props) => {
     dispatch(expandExercise(workouts, category, selectedExercise, userId));
   }, [category, dispatch, selectedExercise, workouts]);
 
-  const addNotes = (log) => {
+  const addNotes = log => {
     setNotes(log.note);
     setNoteLog(log);
     setNotesModalVisible(true);
@@ -55,7 +46,7 @@ const ExerciseScreen = (props) => {
 
   const saveNotes = () => {
     dispatch(saveNote(noteLog._id, noteLog.category, notes));
-    logs.map((log) => log._id === noteLog._id && (log.note = notes));
+    logs.map(log => log._id === noteLog._id && (log.note = notes));
     setNotes('');
     setNotesModalVisible(!notesModalVisible);
   };
@@ -72,12 +63,10 @@ const ExerciseScreen = (props) => {
         }}>
         <Notes
           notes={notes}
-          setNotes={(text) => setNotes(text)}
+          setNotes={text => setNotes(text)}
           saveNotes={saveNotes}
           modalVisible={notesModalVisible}
-          setModalVisible={(notesModalVisible) =>
-            setNotesModalVisible(notesModalVisible)
-          }
+          setModalVisible={notesModalVisible => setNotesModalVisible(notesModalVisible)}
         />
       </Modal>
       <View style={[styles.innerContainer, themeContainerStyle]}>
@@ -94,26 +83,18 @@ const ExerciseScreen = (props) => {
             logs={logs}
             workouts={workouts}
             modalVisible={logInputModalVisible}
-            setModalVisible={(logInputModalVisible) =>
-              setLogInputModalVisible(logInputModalVisible)
-            }
+            setModalVisible={logInputModalVisible => setLogInputModalVisible(logInputModalVisible)}
           />
         </Modal>
         <BestLog bestSet={bestSet} maxWt={maxWt} maxRps={maxRps} />
         {logs.length ? (
-          <Logs
-            logs={logs}
-            bestSet={bestSet}
-            addNotes={(note) => addNotes(note)}
-          />
+          <Logs logs={logs} bestSet={bestSet} addNotes={note => addNotes(note)} />
         ) : (
           <View style={{ alignItems: 'center' }}>
             <Text>Start logging!</Text>
           </View>
         )}
-        <TouchableOpacity
-          style={styles.floatingButton}
-          onPress={() => setLogInputModalVisible(true)}>
+        <TouchableOpacity style={styles.floatingButton} onPress={() => setLogInputModalVisible(true)}>
           <Icon name="plus-circle" size={50} color={themeButtonStyle} />
         </TouchableOpacity>
       </View>
@@ -122,7 +103,7 @@ const ExerciseScreen = (props) => {
   );
 };
 
-export const screenOptions = (navigationData) => {
+export const screenOptions = navigationData => {
   return {
     headerTitle: navigationData.route.params.params.exercise,
   };

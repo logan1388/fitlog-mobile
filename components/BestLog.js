@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import MaxCard from '../components/MaxCard';
 
-const BestLog = (props) => {
+const BestLog = props => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
       {props.bestSet && <MaxCard title="Set" {...props.bestSet} />}

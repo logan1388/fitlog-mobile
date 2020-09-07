@@ -14,7 +14,7 @@ export const CLEAR_LOGINERROR = 'CLEAR_LOGINERROR';
 export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
 
 export const authenticate = (userId, token, expiryTime) => {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(setLogoutTimer(expiryTime));
     // eslint-disable-next-line no-undef
     dispatch({ type: AUTHENTICATE, userId: userId, token: token });
@@ -27,19 +27,19 @@ const saveDataToStorage = (userId, token) => {
     JSON.stringify({
       userId: userId,
       token: token,
-    }),
+    })
   );
 };
 
 export const login = (email, password) => {
-  return (dispatch) => {
+  return dispatch => {
     let loginRequest = {
       email: email,
       password: password,
     };
     axios
       .post('http://localhost:8080/api/users/authenticate/', loginRequest)
-      .then((res) => {
+      .then(res => {
         let userData = res.data.user;
         console.log(userData);
         dispatch(loginSuccess(res.data.user));
@@ -50,7 +50,7 @@ export const login = (email, password) => {
         saveDataToStorage(userData.id, userData.token);
         return res.data.user;
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         dispatch(loginFailure(error));
       });
@@ -58,7 +58,7 @@ export const login = (email, password) => {
 };
 
 export const register = (name, username, email, password, history) => {
-  return (dispatch) => {
+  return dispatch => {
     let registerRequest = {
       name: name,
       username: username,
@@ -71,24 +71,24 @@ export const register = (name, username, email, password, history) => {
         dispatch(registerSuccess());
         history.push('/');
       })
-      .catch((error) => dispatch(registerFailure(error)));
+      .catch(error => dispatch(registerFailure(error)));
   };
 };
 
 export const logout = () => {
-  return (dispatch) => {
+  return dispatch => {
     AsyncStorage.removeItem('user');
     dispatch(logoutSuccess());
   };
 };
 
 export const setDidTryAL = () => ({ type: SET_DID_TRY_AL });
-export const loginSuccess = (user) => ({
+export const loginSuccess = user => ({
   type: LOGIN_SUCCESS,
   payload: { user },
 });
 
-export const loginFailure = (error) => ({
+export const loginFailure = error => ({
   type: LOGIN_FAILURE,
   payload: { error },
 });
@@ -96,7 +96,7 @@ export const loginFailure = (error) => ({
 export const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
 export const registerReset = () => ({ type: REGISTER_RESET });
 export const registerSuccess = () => ({ type: REGISTER_SUCCESS });
-export const registerFailure = (error) => ({
+export const registerFailure = error => ({
   type: REGISTER_FAILURE,
   payload: { error },
 });

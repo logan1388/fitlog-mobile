@@ -1,20 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  ImageBackground,
-} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { fetchExercises } from '../store/actions/actions';
 import BackImg from '../assets/FITLOG.jpg';
 
-const WorkoutScreen = (props) => {
+const WorkoutScreen = props => {
   const selectedWorkout = props.route.params.workout;
-  const workouts = useSelector((state) => state.fitlogReducer.workouts);
+  const workouts = useSelector(state => state.fitlogReducer.workouts);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,10 +42,8 @@ const WorkoutScreen = (props) => {
           <FlatList
             style={styles.innerContainer}
             data={workouts}
-            renderItem={({ item }) => (
-              <Item title={item.name} category={item.category} />
-            )}
-            keyExtractor={(item) => item.name}
+            renderItem={({ item }) => <Item title={item.name} category={item.category} />}
+            keyExtractor={item => item.name}
           />
         </View>
       </ImageBackground>
@@ -61,7 +51,7 @@ const WorkoutScreen = (props) => {
   );
 };
 
-export const screenOptions = (navigationData) => {
+export const screenOptions = navigationData => {
   return {
     headerTitle: navigationData.route.params.workout,
   };

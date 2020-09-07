@@ -2,26 +2,19 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-const RadioButtons = (props) => {
-  const mode = useSelector((state) => state.fitlogReducer.theme);
-  const themeTextStyle =
-    mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeButtonStyle =
-    mode === 'light' ? styles.lightThemeButton : styles.darkThemeButton;
-  const themeCircleStyle =
-    mode === 'light' ? styles.lightThemeCircle : styles.darkThemeCircle;
+const RadioButtons = props => {
+  const mode = useSelector(state => state.fitlogReducer.theme);
+  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const themeButtonStyle = mode === 'light' ? styles.lightThemeButton : styles.darkThemeButton;
+  const themeCircleStyle = mode === 'light' ? styles.lightThemeCircle : styles.darkThemeCircle;
 
   return (
     <View style={props.style}>
-      {props.options.map((item) => {
+      {props.options.map(item => {
         return (
           <View key={item.value} style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.circle, themeButtonStyle]}
-              onPress={() => props.setUnit(item.value)}>
-              {props.unit === item.value && (
-                <View style={[styles.checkedCircle, themeCircleStyle]} />
-              )}
+            <TouchableOpacity style={[styles.circle, themeButtonStyle]} onPress={() => props.setUnit(item.value)}>
+              {props.unit === item.value && <View style={[styles.checkedCircle, themeCircleStyle]} />}
             </TouchableOpacity>
             <Text style={themeTextStyle}>{item.label}</Text>
           </View>

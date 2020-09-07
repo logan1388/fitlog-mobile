@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, ScrollView } from 'react-native';
 import BackImg from '../assets/FITLOG.jpg';
 import Card from '../components/Card';
 import { awardsHistory } from '../store/actions/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 
-const AwardsScreen = (props) => {
-  const awardsHist = useSelector((state) => state.fitlogReducer.awards);
+const AwardsScreen = props => {
+  const awardsHist = useSelector(state => state.fitlogReducer.awards);
   const dispatch = useDispatch();
   const userId = '5dfecbdd39d8760019968d04';
 
@@ -27,19 +21,15 @@ const AwardsScreen = (props) => {
         <View style={styles.innerContainer}>
           <View style={{ width: '100%' }}>
             <ScrollView>
-              {awardsHist.map((item) => (
+              {awardsHist.map(item => (
                 <React.Fragment key={item.date}>
                   <Card style={styles.highlightCard}>
                     <View>
-                      <Text style={{ fontSize: 16, textAlign: 'center' }}>
-                        {item.name}
-                      </Text>
+                      <Text style={{ fontSize: 16, textAlign: 'center' }}>{item.name}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', paddingVertical: 5 }}>
                       <View style={{ flex: 1 }}>
-                        <Text style={{ textAlign: 'center' }}>
-                          {moment(item.date).format('MM/DD/YY')}
-                        </Text>
+                        <Text style={{ textAlign: 'center' }}>{moment(item.date).format('MM/DD/YY')}</Text>
                       </View>
                       <View style={{ flex: 1 }}>
                         <Text style={{ textAlign: 'center' }}>
@@ -47,9 +37,7 @@ const AwardsScreen = (props) => {
                         </Text>
                       </View>
                       <View style={{ flex: 1 }}>
-                        <Text style={{ textAlign: 'center' }}>
-                          {item.count} reps
-                        </Text>
+                        <Text style={{ textAlign: 'center' }}>{item.count} reps</Text>
                       </View>
                     </View>
                   </Card>

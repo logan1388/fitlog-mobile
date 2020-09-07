@@ -1,32 +1,24 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { addExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import RadioButtons from './RadioButtons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const WorkoutInput = (props) => {
+const WorkoutInput = props => {
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState(0);
   const [count, setCount] = useState(0);
-  const mode = useSelector((state) => state.fitlogReducer.theme);
+  const mode = useSelector(state => state.fitlogReducer.theme);
   const dispatch = useDispatch();
   let unitRadio = [
     { label: 'lbs', value: 0 },
     { label: 'kgs', value: 1 },
   ];
-  const themeContainerStyle =
-    mode === 'light' ? styles.lightContainer : styles.darkContainer;
-  const themeTextStyle =
-    mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
   const resetInput = () => {
     setWeight(0);
@@ -61,7 +53,7 @@ const WorkoutInput = (props) => {
               <NumericInput
                 initValue={weight}
                 value={weight}
-                onChange={(value) => setWeight(value)}
+                onChange={value => setWeight(value)}
                 type="up-down"
                 totalHeight={60}
                 textColor={mode === 'light' ? 'black' : 'bisque'}
@@ -74,7 +66,7 @@ const WorkoutInput = (props) => {
               <NumericInput
                 initValue={count}
                 value={count}
-                onChange={(value) => setCount(value)}
+                onChange={value => setCount(value)}
                 type="up-down"
                 totalHeight={60}
                 textColor={mode === 'light' ? 'black' : 'bisque'}
@@ -89,7 +81,7 @@ const WorkoutInput = (props) => {
               options={unitRadio}
               unit={unit}
               style={{ flexDirection: 'row' }}
-              setUnit={(value) => setUnit(value)}
+              setUnit={value => setUnit(value)}
             />
           </View>
           <View
@@ -100,9 +92,7 @@ const WorkoutInput = (props) => {
             }}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() =>
-                weight > 0 && count > 0 && addLog(weight, unit, count)
-              }>
+              onPress={() => weight > 0 && count > 0 && addLog(weight, unit, count)}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
             <TouchableOpacity

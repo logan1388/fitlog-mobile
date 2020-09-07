@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import BackImg from '../assets/back-workout.jpg';
 
-const NotesScreen = (props) => {
+const NotesScreen = props => {
   return (
     <View style={styles.container}>
       <ImageBackground source={BackImg} style={styles.image}>

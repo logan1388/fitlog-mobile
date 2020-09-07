@@ -49,7 +49,7 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="Email"
-                        onChangeText={(text) => setEmail(text)}
+                        onChangeText={text => setEmail(text)}
                         value={email}
                       />
                     </View>
@@ -57,16 +57,13 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="Password"
-                        onChangeText={(text) => setPassword(text)}
+                        onChangeText={text => setPassword(text)}
                         value={password}
                       />
                     </View>
                   </View>
                   <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      disabled={!(email && password)}
-                      onPress={() => login()}>
+                    <TouchableOpacity style={styles.button} disabled={!(email && password)} onPress={() => login()}>
                       <Text style={{ fontWeight: 'bold' }}>Login</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={signup}>
@@ -82,7 +79,7 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="Full Name"
-                        onChangeText={(text) => setFullName(text)}
+                        onChangeText={text => setFullName(text)}
                         value={fullName}
                       />
                     </View>
@@ -90,7 +87,7 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="User Name"
-                        onChangeText={(text) => setUserName(text)}
+                        onChangeText={text => setUserName(text)}
                         value={userName}
                       />
                     </View>
@@ -98,7 +95,7 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="Email"
-                        onChangeText={(text) => setEmail(text)}
+                        onChangeText={text => setEmail(text)}
                         value={email}
                       />
                     </View>
@@ -106,7 +103,7 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="Password"
-                        onChangeText={(text) => setPassword(text)}
+                        onChangeText={text => setPassword(text)}
                         value={password}
                       />
                     </View>
@@ -114,7 +111,7 @@ const AuthScreen = () => {
                       <TextInput
                         style={styles.textInput}
                         placeholder="Confirm Password"
-                        onChangeText={(text) => setConfirmPassword(text)}
+                        onChangeText={text => setConfirmPassword(text)}
                         value={confirmPassword}
                       />
                     </View>
@@ -126,9 +123,7 @@ const AuthScreen = () => {
                         setAuthMessage('Register success!');
                         setRegister(false);
                       }}>
-                      <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                        Register
-                      </Text>
+                      <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Register</Text>
                     </TouchableOpacity>
                     <View style={{ marginTop: 15 }}>
                       <Icon
@@ -150,12 +145,8 @@ const AuthScreen = () => {
                     </View>
                   </View>
                   <View style={{ paddingHorizontal: 30, marginTop: 30 }}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => setAuthMessage('')}>
-                      <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                        Back to login
-                      </Text>
+                    <TouchableOpacity style={styles.button} onPress={() => setAuthMessage('')}>
+                      <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Back to login</Text>
                     </TouchableOpacity>
                   </View>
                 </React.Fragment>
