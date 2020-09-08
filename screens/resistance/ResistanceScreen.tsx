@@ -3,7 +3,6 @@ import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground }
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/Navigator';
 import { resistanceStyles } from './ResistanceScreen.style';
-import BackImg from '../../assets/FITLOG.jpg';
 
 type ResistanceNavigationProps = StackNavigationProp<
   ResistanceStackRouteParams,
@@ -51,7 +50,7 @@ const Resistance: React.FC<ResistanceProps> = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground source={BackImg} style={styles.image}>
+      <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}>
         <View style={styles.bg}>
           <FlatList
             data={buttons}

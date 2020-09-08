@@ -12,6 +12,7 @@ import { resistanceStyles } from './ResistanceScreen.style';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/Navigator';
 import { RootState } from '../../store/actionHelpers';
+import { useRoute, RouteProp } from '@react-navigation/native'
 
 type ResistanceNavigationProps = StackNavigationProp<
   ResistanceStackRouteParams,
@@ -25,8 +26,9 @@ interface ResistancelogProps {
 const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
   const category = 'Resistance';
   const userId = '5dfecbdd39d8760019968d04';
+  const route = useRoute<RouteProp<ResistanceStackRouteParams, ResistanceStackScreens.ResistancelogScreen>>();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
-  const selectedExercise = props.route.params ? props.route.params.exercise : null;
+  const selectedExercise = route.params ? route.params.exercise : null;
   const logs = useSelector<RootState>(state => state.fitlogReducer.resistancelogs);
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxRepsResistance);
   const maxTime = useSelector<RootState>(state => state.fitlogReducer.maxTime);

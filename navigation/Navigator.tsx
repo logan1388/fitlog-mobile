@@ -79,7 +79,9 @@ const DashboardNavigator = () => {
 
 export type ResistanceStackRouteParams = {
   Resistance: undefined;
-  Resistancelog: undefined;
+  Resistancelog: {
+    exercise: string
+  }
 };
 
 export enum ResistanceStackScreens {
