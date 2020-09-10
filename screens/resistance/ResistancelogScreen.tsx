@@ -13,6 +13,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/Navigator';
 import { RootState } from '../../store/actionHelpers';
 import { useRoute, RouteProp } from '@react-navigation/native'
+import { ResistanceModel } from '../../commonlib/models/ResistanceModel';
+
+interface ResistanceReduxState {
+  resistance?: ResistanceModel[];
+}
 
 type ResistanceNavigationProps = StackNavigationProp<
   ResistanceStackRouteParams,
@@ -29,7 +34,7 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
   const route = useRoute<RouteProp<ResistanceStackRouteParams, ResistanceStackScreens.ResistancelogScreen>>();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const selectedExercise = route.params ? route.params.exercise : null;
-  const logs = useSelector<RootState>(state => state.fitlogReducer.resistancelogs);
+  const logs = useSelector<RootState, ResistanceModel>(state => state.fitlogReducer.resistancelogs);
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxRepsResistance);
   const maxTime = useSelector<RootState>(state => state.fitlogReducer.maxTime);
   const dispatch = useDispatch();
@@ -37,7 +42,7 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
   const [notesModalVisible, setNotesModalVisible] = useState(false);
   const [logInputModalVisible, setLogInputModalVisible] = useState(false);
   const [notes, setNotes] = useState('');
-  const [noteLog, setNoteLog] = useState({});
+  const [noteLog, setNoteLog] = useState<ResistanceModel>();
   const themeContainerStyle =
     mode === 'light'
       ? notesModalVisible || logInputModalVisible
@@ -48,20 +53,27 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
         : styles.darkContainer;
   const themeButtonStyle = mode === 'light' ? '#343a40' : 'bisque';
 
+  const resistanceReduxState = useSelector<RootState, ResistanceReduxState>(state => {
+    const resistance = state.resistance.resistance;
+    return { resistance: resistance };
+  });
+
+  const { resistance } = resistanceReduxState;
+
   useEffect(() => {
     setStyles(resistanceStyles());
     dispatch(fetchResistanceLog(category, selectedExercise, userId));
   }, [setStyles, dispatch, selectedExercise]);
 
-  const addNotes = log => {
+  const addNotes = (log: ResistanceModel) => {
     setNotes(log.note);
     setNoteLog(log);
     setNotesModalVisible(true);
   };
 
-  const saveNotes = () => {
-    dispatch(saveNote(noteLog._id, 'home', notes));
-    logs.map(log => log._id === noteLog._id && (log.note = notes));
+  const saveNotes = (noteLog: ResistanceModel) => {
+    dispatch(saveNote(noteLog.id, 'home', notes));
+    logs && logs.map((log: ResistanceModel) => log.id === noteLog.id && (log.note = notes));
     setNotes('');
     setNotesModalVisible(!notesModalVisible);
   };
@@ -76,10 +88,10 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
           onRequestClose={() => Alert.alert('Modal has been closed.')}>
           <Notes
             notes={notes}
-            setNotes={text => setNotes(text)}
+            setNotes={(text: string) => setNotes(text)}
             saveNotes={saveNotes}
             modalVisible={notesModalVisible}
-            setModalVisible={notesModalVisible => setNotesModalVisible(notesModalVisible)}
+            setModalVisible={(notesModalVisible: boolean) => setNotesModalVisible(notesModalVisible)}
           />
         </Modal>
         <Modal
@@ -92,12 +104,12 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
             name={selectedExercise}
             logs={logs}
             modalVisible={logInputModalVisible}
-            setModalVisible={logInputModalVisible => setLogInputModalVisible(logInputModalVisible)}
+            setModalVisible={(logInputModalVisible: boolean) => setLogInputModalVisible(logInputModalVisible)}
           />
         </Modal>
         <BestLog maxRps={maxRps} maxTime={maxTime} />
-        {logs.length ? (
-          <Logs resistance={true} logs={logs} addNotes={note => addNotes(note)} />
+        {logs && logs.length ? (
+          <Logs resistance={true} logs={logs} addNotes={(note: ResistanceModel) => addNotes(note)} />
         ) : (
             <View style={styles.noDataText}>
               <Text>Start logging!</Text>
@@ -111,7 +123,7 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
   );
 };
 
-export const screenOptions = navigationData => {
+export const screenOptions = (navigationData: any) => {
   return {
     headerTitle: navigationData.route.params.exercise,
   };
