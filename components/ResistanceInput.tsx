@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { addHomeExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,14 +9,14 @@ import RadioButtons from './RadioButtons';
 import { resistanceStyles } from '../screens/resistance/ResistanceScreen.style';
 import { ResistanceModel } from '../commonlib/models/ResistanceModel';
 import { RootState } from '../store/actionHelpers';
-import { addResistance } from '../store/resistance'
+import { addResistance } from '../store/resistance';
 
 interface ResistanceInputProps {
-  category: string,
-  name: string,
-  logs: ResistanceModel,
-  modalVisible: boolean,
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+  category: string;
+  name: string;
+  logs: ResistanceModel;
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ResistanceInput: React.FC<ResistanceInputProps> = props => {
@@ -88,7 +87,6 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
     };
     resetInput();
     props.setModalVisible(!props.modalVisible);
-    //dispatch(addHomeExerciseLog(exerciseLog, props.logs));
     dispatch(addResistance(exerciseLog));
   };
 
@@ -156,16 +154,13 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
               </TouchableOpacity>
             )}
           </View>
-          <View
-            style={styles.buttonContainer}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => (weight > 0 || count > 0 || time != 0) && addLog(weight, count, time)}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => props.setModalVisible(!props.modalVisible)}>
+            <TouchableOpacity style={styles.closeButton} onPress={() => props.setModalVisible(!props.modalVisible)}>
               <Icon name="close-circle-outline" size={50} color="tomato" />
             </TouchableOpacity>
           </View>

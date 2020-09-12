@@ -87,13 +87,7 @@ const ExerciseScreen = props => {
           />
         </Modal>
         <BestLog bestSet={bestSet} maxWt={maxWt} maxRps={maxRps} />
-        {logs.length ? (
-          <Logs logs={logs} bestSet={bestSet} addNotes={note => addNotes(note)} />
-        ) : (
-          <View style={{ alignItems: 'center' }}>
-            <Text>Start logging!</Text>
-          </View>
-        )}
+        <Logs logs={logs} exercise={selectedExercise} bestSet={bestSet} addNotes={note => addNotes(note)} />
         <TouchableOpacity style={styles.floatingButton} onPress={() => setLogInputModalVisible(true)}>
           <Icon name="plus-circle" size={50} color={themeButtonStyle} />
         </TouchableOpacity>

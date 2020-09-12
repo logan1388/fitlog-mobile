@@ -11,11 +11,9 @@ import ResistanceScreen, { screenOptions as resistanceScreenOptions } from '../s
 import ResistancelogScreen, {
   screenOptions as resistancelogScreenOptions,
 } from '../screens/resistance/ResistancelogScreen';
-import NotesScreen from '../screens/NotesScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeScreen';
-import Planner from '../screens/Planner';
 import Profile from '../screens/profile/ProfileScreen';
 import AwardsScreen from '../screens/AwardsScreen';
 import EditProfile from '../screens/profile/EditProfileScreen';
@@ -36,14 +34,14 @@ const AwardsNavigator = () => {
   );
 };
 
-const NotesStackNavigator = createStackNavigator();
-const NotesNavigator = () => {
-  return (
-    <NotesStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <NotesStackNavigator.Screen name="Notes" component={NotesScreen} />
-    </NotesStackNavigator.Navigator>
-  );
-};
+// const NotesStackNavigator = createStackNavigator();
+// const NotesNavigator = () => {
+//   return (
+//     <NotesStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+//       <NotesStackNavigator.Screen name="Notes" component={NotesScreen} />
+//     </NotesStackNavigator.Navigator>
+//   );
+// };
 
 const TopTab = createMaterialTopTabNavigator();
 const ExerciseTabNavigator = () => {
@@ -80,8 +78,8 @@ const DashboardNavigator = () => {
 export type ResistanceStackRouteParams = {
   Resistance: undefined;
   Resistancelog: {
-    exercise: string
-  }
+    exercise: string;
+  };
 };
 
 export enum ResistanceStackScreens {
@@ -91,7 +89,6 @@ export enum ResistanceStackScreens {
 
 const ResistanceStackNavigator = createStackNavigator<ResistanceStackRouteParams>();
 const ResistanceNavigator = () => {
-  const { t } = useTranslation();
   return (
     <ResistanceStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
       <ResistanceStackNavigator.Screen
@@ -117,14 +114,14 @@ const HomeNavigator = () => {
   );
 };
 
-const PlannerStackNavigator = createStackNavigator();
-const PlannerNavigator = () => {
-  return (
-    <PlannerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <PlannerStackNavigator.Screen name="Planner" component={Planner} />
-    </PlannerStackNavigator.Navigator>
-  );
-};
+// const PlannerStackNavigator = createStackNavigator();
+// const PlannerNavigator = () => {
+//   return (
+//     <PlannerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+//       <PlannerStackNavigator.Screen name="Planner" component={Planner} />
+//     </PlannerStackNavigator.Navigator>
+//   );
+// };
 
 export type ProfileStackRouteParams = {
   Profile: undefined;

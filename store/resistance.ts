@@ -70,7 +70,10 @@ export const addResistance: ThunkActionCreator = (data: CreateResistanceModel, o
   }
 };
 
-export const resistanceReducer = (state: ResistanceState = getInitialResistanceState(), action: Actions): ResistanceState => {
+export const resistanceReducer = (
+  state: ResistanceState = getInitialResistanceState(),
+  action: Actions
+): ResistanceState => {
   switch (action.type) {
     case ResistanceActionNames.RECEIVE_RESISTANCE: {
       const { resistance } = action.payload;

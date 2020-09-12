@@ -46,9 +46,6 @@ export const resistanceStyles = () =>
       right: 15,
       bottom: 45,
     },
-    noDataText: {
-      alignItems: 'center'
-    },
     label: {
       fontWeight: 'bold',
       textAlign: 'center',
@@ -67,14 +64,14 @@ export const resistanceStyles = () =>
       paddingHorizontal: 5,
       alignItems: 'center',
       flexDirection: 'row',
-      marginLeft: 15
+      marginLeft: 15,
     },
     addButton: {
       backgroundColor: 'transparent',
     },
     closeButton: {
       backgroundColor: 'transparent',
-      marginLeft: 15
+      marginLeft: 15,
     },
     timerButtonText: {
       textAlign: 'center',
@@ -113,12 +110,12 @@ export const resistanceStyles = () =>
     },
     timerContainer: {
       flexDirection: 'row',
-      marginTop: 5
+      marginTop: 5,
     },
     weightInputContainer: {
-      marginHorizontal: 20
+      marginHorizontal: 20,
     },
     inputContainer: {
-      flexDirection: 'row'
-    }
+      flexDirection: 'row',
+    },
   });

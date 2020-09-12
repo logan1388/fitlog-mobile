@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, SafeAreaView, Modal, Alert, Text, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, Modal, Alert, TouchableOpacity } from 'react-native';
 import { fetchResistanceLog } from '../../store/actions/actions';
 import ResistanceInput from '../../components/ResistanceInput';
 import { saveNote } from '../../store/actions/actions';
@@ -9,26 +9,16 @@ import BestLog from '../../components/BestLog';
 import Logs from '../../components/Logs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { resistanceStyles } from './ResistanceScreen.style';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/Navigator';
 import { RootState } from '../../store/actionHelpers';
-import { useRoute, RouteProp } from '@react-navigation/native'
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { ResistanceModel } from '../../commonlib/models/ResistanceModel';
 
 interface ResistanceReduxState {
   resistance?: ResistanceModel[];
 }
 
-type ResistanceNavigationProps = StackNavigationProp<
-  ResistanceStackRouteParams,
-  ResistanceStackScreens.ResistancelogScreen
->;
-
-interface ResistancelogProps {
-  navigation: ResistanceNavigationProps;
-}
-
-const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
+const ResistancelogScreen = () => {
   const category = 'Resistance';
   const userId = '5dfecbdd39d8760019968d04';
   const route = useRoute<RouteProp<ResistanceStackRouteParams, ResistanceStackScreens.ResistancelogScreen>>();
@@ -49,8 +39,8 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
         ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
         : styles.lightContainer
       : notesModalVisible || logInputModalVisible
-        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
-        : styles.darkContainer;
+      ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+      : styles.darkContainer;
   const themeButtonStyle = mode === 'light' ? '#343a40' : 'bisque';
 
   const resistanceReduxState = useSelector<RootState, ResistanceReduxState>(state => {
@@ -71,9 +61,9 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
     setNotesModalVisible(true);
   };
 
-  const saveNotes = (noteLog: ResistanceModel) => {
-    dispatch(saveNote(noteLog.id, 'home', notes));
-    resistance && resistance.map((log: ResistanceModel) => log.id === noteLog.id && (log.note = notes));
+  const saveNotes = () => {
+    dispatch(saveNote(noteLog && noteLog.id, 'home', notes));
+    resistance && resistance.map((log: ResistanceModel) => log.id === (noteLog && noteLog.id) && (log.note = notes));
     setNotes('');
     setNotesModalVisible(!notesModalVisible);
   };
@@ -108,13 +98,12 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
           />
         </Modal>
         <BestLog maxRps={maxRps} maxTime={maxTime} />
-        {resistance && resistance.length ? (
-          <Logs resistance={true} logs={resistance} exercise={selectedExercise} addNotes={(note: ResistanceModel) => addNotes(note)} />
-        ) : (
-            <View style={styles.noDataText}>
-              <Text>Start logging!</Text>
-            </View>
-          )}
+        <Logs
+          resistance={true}
+          logs={resistance}
+          exercise={selectedExercise}
+          addNotes={(note: ResistanceModel) => addNotes(note)}
+        />
         <TouchableOpacity style={styles.floatingButton} onPress={() => setLogInputModalVisible(true)}>
           <Icon name="plus-circle" size={50} color={themeButtonStyle} />
         </TouchableOpacity>
