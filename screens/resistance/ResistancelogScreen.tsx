@@ -33,7 +33,7 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
   const userId = '5dfecbdd39d8760019968d04';
   const route = useRoute<RouteProp<ResistanceStackRouteParams, ResistanceStackScreens.ResistancelogScreen>>();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
-  const selectedExercise = route.params ? route.params.exercise : null;
+  const selectedExercise = route.params && route.params.exercise;
   const logs = useSelector<RootState, ResistanceModel>(state => state.fitlogReducer.resistancelogs);
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxRepsResistance);
   const maxTime = useSelector<RootState>(state => state.fitlogReducer.maxTime);
@@ -73,7 +73,7 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
 
   const saveNotes = (noteLog: ResistanceModel) => {
     dispatch(saveNote(noteLog.id, 'home', notes));
-    logs && logs.map((log: ResistanceModel) => log.id === noteLog.id && (log.note = notes));
+    resistance && resistance.map((log: ResistanceModel) => log.id === noteLog.id && (log.note = notes));
     setNotes('');
     setNotesModalVisible(!notesModalVisible);
   };
@@ -108,8 +108,8 @@ const ResistancelogScreen: React.FC<ResistancelogProps> = props => {
           />
         </Modal>
         <BestLog maxRps={maxRps} maxTime={maxTime} />
-        {logs && logs.length ? (
-          <Logs resistance={true} logs={logs} addNotes={(note: ResistanceModel) => addNotes(note)} />
+        {resistance && resistance.length ? (
+          <Logs resistance={true} logs={resistance} exercise={selectedExercise} addNotes={(note: ResistanceModel) => addNotes(note)} />
         ) : (
             <View style={styles.noDataText}>
               <Text>Start logging!</Text>

@@ -75,7 +75,7 @@ export const resistanceReducer = (state: ResistanceState = getInitialResistanceS
     case ResistanceActionNames.RECEIVE_RESISTANCE: {
       const { resistance } = action.payload;
       return produce(state, draft => {
-        draft.resistance = resistance;
+        draft.resistance?.push(resistance);
       });
     }
     default:

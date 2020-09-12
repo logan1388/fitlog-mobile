@@ -48,5 +48,77 @@ export const resistanceStyles = () =>
     },
     noDataText: {
       alignItems: 'center'
+    },
+    label: {
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 10,
+    },
+    timerButton: {
+      backgroundColor: 'darkgrey',
+      paddingVertical: 15,
+      paddingHorizontal: 5,
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    timerResetButton: {
+      backgroundColor: 'darkgrey',
+      paddingVertical: 15,
+      paddingHorizontal: 5,
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginLeft: 15
+    },
+    addButton: {
+      backgroundColor: 'transparent',
+    },
+    closeButton: {
+      backgroundColor: 'transparent',
+      marginLeft: 15
+    },
+    timerButtonText: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: 16,
+      paddingHorizontal: 10,
+    },
+    lightThemeText: { color: '#343a40' },
+    darkThemeText: { color: 'bisque' },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalView: {
+      backgroundColor: 'white',
+      margin: 15,
+      borderRadius: 10,
+      padding: 30,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      paddingBottom: 15,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      paddingBottom: 15,
+      marginTop: 20,
+    },
+    timerContainer: {
+      flexDirection: 'row',
+      marginTop: 5
+    },
+    weightInputContainer: {
+      marginHorizontal: 20
+    },
+    inputContainer: {
+      flexDirection: 'row'
     }
   });

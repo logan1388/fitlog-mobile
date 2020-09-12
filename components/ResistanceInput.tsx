@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { addHomeExerciseLog } from '../store/actions/actions';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import RadioButtons from './RadioButtons';
+import { resistanceStyles } from '../screens/resistance/ResistanceScreen.style';
+import { ResistanceModel } from '../commonlib/models/ResistanceModel';
+import { RootState } from '../store/actionHelpers';
+import { addResistance } from '../store/resistance'
 
-const ResistanceInput = props => {
+interface ResistanceInputProps {
+  category: string,
+  name: string,
+  logs: ResistanceModel,
+  modalVisible: boolean,
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const ResistanceInput: React.FC<ResistanceInputProps> = props => {
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState(0);
   const [count, setCount] = useState(0);
   const [time, setTime] = useState(0);
-  const mode = useSelector(state => state.fitlogReducer.theme);
+  const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [stopwatchStart, setStopWatchStart] = useState(false);
   const [stopwatchReset, setStopWatchReset] = useState(false);
   const [showStopWatch, setShowStopWatch] = useState(false);
   const [showReset, setShowReset] = useState(false);
+  const [styles, setStyles] = useState(resistanceStyles());
   const dispatch = useDispatch();
   let unitRadio = [
     { label: 'lbs', value: 0 },
@@ -26,7 +39,7 @@ const ResistanceInput = props => {
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
-  const getFormattedTime = time => {
+  const getFormattedTime = (time: number) => {
     let currentTime = time;
     setTime(currentTime);
   };
@@ -57,7 +70,7 @@ const ResistanceInput = props => {
     setTime(0);
   };
 
-  const addLog = (weight, count, time) => {
+  const addLog = (weight: number, count: number, time: string) => {
     if (time) {
       time = time.substr(3, 5);
       console.log('Time ', time);
@@ -66,7 +79,7 @@ const ResistanceInput = props => {
     let id = '5dfecbdd39d8760019968d04';
     let exerciseLog = {
       userId: id,
-      category: 'resistance',
+      category: props.category,
       name: props.name,
       date: timestamp,
       weight: weight,
@@ -75,14 +88,19 @@ const ResistanceInput = props => {
     };
     resetInput();
     props.setModalVisible(!props.modalVisible);
-    dispatch(addHomeExerciseLog(exerciseLog, props.logs));
+    //dispatch(addHomeExerciseLog(exerciseLog, props.logs));
+    dispatch(addResistance(exerciseLog));
   };
+
+  React.useEffect(() => {
+    setStyles(resistanceStyles());
+  }, [setStyles]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.centeredView}>
         <View style={[styles.modalView, themeContainerStyle]}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.inputContainer}>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Reps</Text>
               <NumericInput
@@ -97,7 +115,7 @@ const ResistanceInput = props => {
                 upDownButtonsBackgroundColor="darkgrey"
               />
             </View>
-            <View style={{ marginHorizontal: 20 }}>
+            <View style={styles.weightInputContainer}>
               <Text style={[styles.label, themeTextStyle]}>Weight</Text>
               <NumericInput
                 initValue={weight}
@@ -116,11 +134,11 @@ const ResistanceInput = props => {
               <RadioButtons options={unitRadio} unit={unit} setUnit={value => setUnit(value)} />
             </View>
           </View>
-          <View style={{ flexDirection: 'row', marginTop: 5 }}>
+          <View style={styles.timerContainer}>
             <TouchableOpacity
               style={styles.timerButton}
               onPress={() => (stopwatchStart ? stopStopWatch() : toggleStopWatch())}>
-              <Text style={styles.buttonText}>{stopwatchStart ? 'Stop' : showReset ? 'Resume' : 'Start'}</Text>
+              <Text style={styles.timerButtonText}>{stopwatchStart ? 'Stop' : showReset ? 'Resume' : 'Start'}</Text>
               <Icon name="timer" size={24} color="black" />
               {showStopWatch && (
                 <Stopwatch
@@ -133,25 +151,20 @@ const ResistanceInput = props => {
               )}
             </TouchableOpacity>
             {showReset && (
-              <TouchableOpacity style={{ ...styles.timerButton, marginLeft: 15 }} onPress={() => resetStopWatch()}>
-                <Text style={styles.buttonText}>Reset</Text>
+              <TouchableOpacity style={styles.timerResetButton} onPress={() => resetStopWatch()}>
+                <Text style={styles.timerButtonText}>Reset</Text>
               </TouchableOpacity>
             )}
           </View>
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingBottom: 15,
-              marginTop: 20,
-            }}>
+            style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={styles.addButton}
               onPress={() => (weight > 0 || count > 0 || time != 0) && addLog(weight, count, time)}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ ...styles.button, marginLeft: 15 }}
+              style={styles.closeButton}
               onPress={() => props.setModalVisible(!props.modalVisible)}>
               <Icon name="close-circle-outline" size={50} color="tomato" />
             </TouchableOpacity>
@@ -169,54 +182,5 @@ const options = {
     color: 'black',
   },
 };
-
-const styles = StyleSheet.create({
-  label: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  timerButton: {
-    backgroundColor: 'darkgrey',
-    paddingVertical: 15,
-    paddingHorizontal: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  button: {
-    backgroundColor: 'transparent',
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
-    paddingHorizontal: 10,
-  },
-  lightContainer: { backgroundColor: 'white' },
-  darkContainer: { backgroundColor: '#2D2D2D' },
-  lightThemeText: { color: '#343a40' },
-  darkThemeText: { color: 'bisque' },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    margin: 15,
-    borderRadius: 10,
-    padding: 30,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingBottom: 15,
-  },
-});
 
 export default ResistanceInput;
