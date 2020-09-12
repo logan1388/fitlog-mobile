@@ -16,8 +16,8 @@ export default class ResistanceService {
     return r;
   }
 
-  public async getResistance(id: string): Promise<ResistanceModel | ServiceResponse> {
-    const r: ResistanceModel | ServiceResponse = await this.db.GetAsync(id);
+  public async getResistances(): Promise<ResistanceModel[] | ServiceResponse> {
+    const r: ResistanceModel[] | ServiceResponse = await this.db.GetListAsync();
 
     return r;
   }

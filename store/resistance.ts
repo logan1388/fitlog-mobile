@@ -1,7 +1,8 @@
 // Copyright FitBook
 
 import { ActionCreator, Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { RootState } from './actionHelpers';
 import produce from 'immer';
 import { ResistanceModel, CreateResistanceModel } from '../commonlib/models/ResistanceModel';
 import { Action, ActionsUnion } from './actionHelpers';
@@ -11,18 +12,18 @@ import { isServiceResponse } from '../commonlib/models/ServiceResponse';
 import { statusActions } from './status';
 
 interface ResistanceState {
-  resistance?: ResistanceModel[];
+  resistances: ResistanceModel[];
 }
 
 export const getInitialResistanceState = (): ResistanceState => {
   return {
-    resistance: [],
+    resistances: [],
   };
 };
 
 export enum ResistanceActionNames {
   FETCH_RESISTANCE = 'FETCH_RESISTANCE',
-  RECEIVE_RESISTANCE = 'RECEIVE_RESISTANCE',
+  RECEIVE_RESISTANCE_LIST = 'RECEIVE_RESISTANCE_LIST',
   ADD_RESISTANCE = 'ADD_RESISTANCE',
 }
 
@@ -31,9 +32,9 @@ export const resistanceActions = {
     type: ResistanceActionNames.ADD_RESISTANCE,
     payload: resistance,
   }),
-  receiveResistance: (resistance: ResistanceModel): Action => ({
-    type: ResistanceActionNames.RECEIVE_RESISTANCE,
-    payload: { resistance },
+  receiveResistance: (resistances: ResistanceModel[]): Action => ({
+    type: ResistanceActionNames.RECEIVE_RESISTANCE_LIST,
+    payload: { resistances },
   }),
 };
 
@@ -41,9 +42,11 @@ export type Actions = ActionsUnion<typeof resistanceActions>;
 
 export type ThunkActionCreator = ActionCreator<ThunkAction<void, AppState, ResistanceController, Actions>>;
 
-export const fetchResistance: ThunkActionCreator = () => async (dispatch: Dispatch) => {
+export type ThunkActionDispatch = ThunkDispatch<RootState, ResistanceController, Actions>;
+
+export const fetchResistanceList: ThunkActionCreator = () => async (dispatch: Dispatch) => {
   dispatch(statusActions.setPending(ResistanceActionNames.FETCH_RESISTANCE));
-  const r = await resistanceController.getMyProfile();
+  const r = await resistanceController.getResistanceLogs();
   dispatch(statusActions.resetPending(ResistanceActionNames.FETCH_RESISTANCE));
 
   if (isServiceResponse(r)) {
@@ -55,7 +58,7 @@ export const fetchResistance: ThunkActionCreator = () => async (dispatch: Dispat
 };
 
 export const addResistance: ThunkActionCreator = (data: CreateResistanceModel, onSuccessCallback: () => void) => async (
-  dispatch: Dispatch
+  dispatch: Dispatch & ThunkActionDispatch
 ) => {
   dispatch(statusActions.setPending(ResistanceActionNames.ADD_RESISTANCE));
   const r = await resistanceController.addResistanceLog(data);
@@ -64,7 +67,7 @@ export const addResistance: ThunkActionCreator = (data: CreateResistanceModel, o
   if (isServiceResponse(r)) {
     dispatch(statusActions.setError(ResistanceActionNames.ADD_RESISTANCE, r));
   } else {
-    dispatch(resistanceActions.receiveResistance(r));
+    dispatch(fetchResistanceList());
     dispatch(statusActions.resetError(ResistanceActionNames.ADD_RESISTANCE));
     onSuccessCallback();
   }
@@ -75,10 +78,10 @@ export const resistanceReducer = (
   action: Actions
 ): ResistanceState => {
   switch (action.type) {
-    case ResistanceActionNames.RECEIVE_RESISTANCE: {
-      const { resistance } = action.payload;
+    case ResistanceActionNames.RECEIVE_RESISTANCE_LIST: {
+      const { resistances } = action.payload;
       return produce(state, draft => {
-        draft.resistance?.push(resistance);
+        draft.resistances = resistances;
       });
     }
     default:

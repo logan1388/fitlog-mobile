@@ -6,11 +6,10 @@ import Storage from '../../constants/storage';
 import ResistanceService from '../../commonlib/services/resistance';
 import ServiceResponse from '../../commonlib/models/ServiceResponse';
 import LocalStorageDB from '../database/localStorageDB';
-import DeviceInfo from '../util/DeviceInfo';
 
 export default class ResistanceController {
   private resistanceSvc: ResistanceService;
-  private static readonly TABLE_NAME: string = 'profiles';
+  private static readonly TABLE_NAME: string = 'resistance';
 
   constructor() {
     this.resistanceSvc = new ResistanceService(new LocalStorageDB(ResistanceController.TABLE_NAME));
@@ -31,20 +30,12 @@ export default class ResistanceController {
   }
 
   public async addResistanceLog(data: CreateResistanceModel): Promise<ResistanceModel | ServiceResponse> {
-    data.id = DeviceInfo.DEVICE_ID;
-
     const response = this.resistanceSvc.addResistance(data);
     return response;
   }
 
-  public async getMyProfile(): Promise<ResistanceModel | ServiceResponse> {
-    let id = await AsyncStorage.getItem(Storage.MY_PROFILE_ID);
-
-    if (!id) {
-      id = DeviceInfo.DEVICE_ID;
-    }
-
-    const response: ResistanceModel | ServiceResponse = await this.resistanceSvc.getResistance(id);
+  public async getResistanceLogs(): Promise<ResistanceModel[] | ServiceResponse> {
+    const response: ResistanceModel[] | ServiceResponse = await this.resistanceSvc.getResistances();
     return response;
   }
 }

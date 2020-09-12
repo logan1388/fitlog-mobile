@@ -7,16 +7,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import RadioButtons from './RadioButtons';
 import { resistanceStyles } from '../screens/resistance/ResistanceScreen.style';
-import { ResistanceModel } from '../commonlib/models/ResistanceModel';
 import { RootState } from '../store/actionHelpers';
 import { addResistance } from '../store/resistance';
 
 interface ResistanceInputProps {
   category: string;
   name: string;
-  logs: ResistanceModel;
   modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalVisible: (value: boolean) => void;
 }
 
 const ResistanceInput: React.FC<ResistanceInputProps> = props => {
@@ -69,11 +67,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
     setTime(0);
   };
 
-  const addLog = (weight: number, count: number, time: string) => {
-    if (time) {
-      time = time.substr(3, 5);
-      console.log('Time ', time);
-    }
+  const addLog = () => {
     let timestamp = getTimestamp();
     let id = '5dfecbdd39d8760019968d04';
     let exerciseLog = {
@@ -81,9 +75,9 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
       category: props.category,
       name: props.name,
       date: timestamp,
-      weight: weight,
-      count: count,
-      time: time,
+      weight,
+      count,
+      time: time ? time.toString().substr(3, 5) : null,
     };
     resetInput();
     props.setModalVisible(!props.modalVisible);
@@ -129,7 +123,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
             </View>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-              <RadioButtons options={unitRadio} unit={unit} setUnit={value => setUnit(value)} />
+              <RadioButtons options={unitRadio} unit={unit} setUnit={(value: number) => setUnit(value)} />
             </View>
           </View>
           <View style={styles.timerContainer}>
@@ -157,7 +151,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => (weight > 0 || count > 0 || time != 0) && addLog(weight, count, time)}>
+              onPress={() => (weight > 0 || count > 0 || time !== 0) && addLog()}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.closeButton} onPress={() => props.setModalVisible(!props.modalVisible)}>
