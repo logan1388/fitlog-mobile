@@ -18,7 +18,7 @@ import {
   FETCH_AWARDSWEEK,
   FETCH_AWARDSHISTORY,
   FETCH_LOGSWEEK,
-  FETCH_HOMEWORKOUTLOG_SUCCESS,
+  FETCH_RESISTANCELOG_SUCCESS,
   SET_THEME,
 } from '../actions/actions';
 import { Style } from '../../styles/style';
@@ -55,7 +55,7 @@ const initialState = {
   awardsWeek: [],
   awards: [],
   logsWeek: [],
-  homeworkoutlogs: [],
+  resistancelogs: [],
   theme: Style.getCurrentTheme(),
 };
 
@@ -194,11 +194,11 @@ export default function fitlogReducer(state = initialState, action) {
         logsWeek: action.payload.logsWeek,
       };
 
-    case FETCH_HOMEWORKOUTLOG_SUCCESS:
+    case FETCH_RESISTANCELOG_SUCCESS:
       return {
         ...state,
         loading: false,
-        homeworkoutlogs: action.payload.homeworkoutlogs,
+        resistancelogs: action.payload.resistancelogs,
       };
 
     case SET_THEME:

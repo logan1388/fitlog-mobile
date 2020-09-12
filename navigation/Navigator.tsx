@@ -7,16 +7,16 @@ import DashboardScreen, { screenOptions as dashboardScreenOptions } from '../scr
 import WorkoutScreen, { screenOptions as workoutScreenOptions } from '../screens/WorkoutScreen';
 import ExerciseScreen, { screenOptions as exerciseScreenOptions } from '../screens/ExerciseScreen';
 import AuthScreen, { screenOptions as authScreenOptions } from '../screens/user/AuthScreen';
-import ResistanceScreen, { screenOptions as resistanceScreenOptions } from '../screens/ResistanceScreen';
-import ResistancelogScreen, { screenOptions as resistancelogScreenOptions } from '../screens/ResistancelogScreen';
-import NotesScreen from '../screens/NotesScreen';
+import ResistanceScreen, { screenOptions as resistanceScreenOptions } from '../screens/resistance/ResistanceScreen';
+import ResistancelogScreen, {
+  screenOptions as resistancelogScreenOptions,
+} from '../screens/resistance/ResistancelogScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeScreen';
-import Planner from '../screens/Planner';
-import Profile from '../screens/ProfileScreen';
+import Profile from '../screens/profile/ProfileScreen';
 import AwardsScreen from '../screens/AwardsScreen';
-import EditProfile from '../screens/EditProfileScreen';
+import EditProfile from '../screens/profile/EditProfileScreen';
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -34,14 +34,14 @@ const AwardsNavigator = () => {
   );
 };
 
-const NotesStackNavigator = createStackNavigator();
-const NotesNavigator = () => {
-  return (
-    <NotesStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <NotesStackNavigator.Screen name="Notes" component={NotesScreen} />
-    </NotesStackNavigator.Navigator>
-  );
-};
+// const NotesStackNavigator = createStackNavigator();
+// const NotesNavigator = () => {
+//   return (
+//     <NotesStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+//       <NotesStackNavigator.Screen name="Notes" component={NotesScreen} />
+//     </NotesStackNavigator.Navigator>
+//   );
+// };
 
 const TopTab = createMaterialTopTabNavigator();
 const ExerciseTabNavigator = () => {
@@ -75,17 +75,29 @@ const DashboardNavigator = () => {
   );
 };
 
-const ResistanceStackNavigator = createStackNavigator();
+export type ResistanceStackRouteParams = {
+  Resistance: undefined;
+  Resistancelog: {
+    exercise: string;
+  };
+};
+
+export enum ResistanceStackScreens {
+  ResistanceScreen = 'Resistance',
+  ResistancelogScreen = 'Resistancelog',
+}
+
+const ResistanceStackNavigator = createStackNavigator<ResistanceStackRouteParams>();
 const ResistanceNavigator = () => {
   return (
     <ResistanceStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
       <ResistanceStackNavigator.Screen
-        name="Resistance"
+        name={ResistanceStackScreens.ResistanceScreen}
         component={ResistanceScreen}
         options={resistanceScreenOptions}
       />
       <ResistanceStackNavigator.Screen
-        name="Resistancelog"
+        name={ResistanceStackScreens.ResistancelogScreen}
         component={ResistancelogScreen}
         options={resistancelogScreenOptions}
       />
@@ -102,14 +114,14 @@ const HomeNavigator = () => {
   );
 };
 
-const PlannerStackNavigator = createStackNavigator();
-const PlannerNavigator = () => {
-  return (
-    <PlannerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <PlannerStackNavigator.Screen name="Planner" component={Planner} />
-    </PlannerStackNavigator.Navigator>
-  );
-};
+// const PlannerStackNavigator = createStackNavigator();
+// const PlannerNavigator = () => {
+//   return (
+//     <PlannerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+//       <PlannerStackNavigator.Screen name="Planner" component={Planner} />
+//     </PlannerStackNavigator.Navigator>
+//   );
+// };
 
 export type ProfileStackRouteParams = {
   Profile: undefined;

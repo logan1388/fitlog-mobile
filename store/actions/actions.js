@@ -26,7 +26,7 @@ export const FETCH_MAXTIME = 'FETCH_MAXTIME';
 export const FETCH_AWARDSWEEK = 'FETCH_AWARDSWEEK';
 export const FETCH_AWARDSHISTORY = 'FETCH_AWARDSHISTORY';
 export const FETCH_LOGSWEEK = 'FETCH_LOGSWEEK';
-export const FETCH_HOMEWORKOUTLOG_SUCCESS = 'FETCH_HOMEWORKOUTLOG_SUCCESS';
+export const FETCH_RESISTANCELOG_SUCCESS = 'FETCH_RESISTANCELOG_SUCCESS';
 export const SET_THEME = 'SET_THEME';
 
 export const fetchExercises = workout => {
@@ -76,7 +76,7 @@ export const expandExercise = (workouts, category, name, userId) => {
   };
 };
 
-export const fetchHomeWorkoutLog = (category, name, userId) => {
+export const fetchResistanceLog = (category, name, userId) => {
   return dispatch => {
     let exercise = {
       userId: userId,
@@ -86,14 +86,13 @@ export const fetchHomeWorkoutLog = (category, name, userId) => {
     dispatch(maxReps(userId, name));
     dispatch(maxTime(userId, name));
     axios
-      .post(endpoint + '/api/homeworkoutlog/log', exercise)
+      .post(endpoint + '/api/resistancelog/log', exercise)
       .then(res => {
         var logs = res.data;
-        console.log('Home workoutlog ', logs);
         logs.map(log => {
           log.date = moment(log.date).utc().local().format('MM/DD/YY HH:mm');
         });
-        dispatch(fetchHomeworkoutLogSuccess(logs));
+        dispatch(fetchResistanceLogSuccess(logs));
         return logs;
       })
       .catch(error => console.log(error));
@@ -316,7 +315,7 @@ export const addMaxReps = exerciseLog => {
     axios
       .post(endpoint + '/api/maxreps/', exerciseLog)
       .then(res => {
-        dispatch(fetchHomeWorkoutLog(exerciseLog.category, exerciseLog.name, exerciseLog.userId));
+        dispatch(fetchResistanceLog(exerciseLog.category, exerciseLog.name, exerciseLog.userId));
       })
       .catch(error => console.log(error));
   };
@@ -326,7 +325,7 @@ export const addHomeExerciseLog = (exerciseLog, logToBeUpdated) => {
   return dispatch => {
     logToBeUpdated.push(exerciseLog);
     axios
-      .post(endpoint + '/api/homeworkoutlog/', exerciseLog)
+      .post(endpoint + '/api/resistancelog/', exerciseLog)
       .then(res => {
         dispatch(addMaxTime(exerciseLog));
         dispatch(addMaxReps(exerciseLog));
@@ -424,9 +423,9 @@ export const fetchLogsWeekSuccess = logsWeek => ({
   payload: { logsWeek },
 });
 
-export const fetchHomeworkoutLogSuccess = homeworkoutlogs => ({
-  type: FETCH_HOMEWORKOUTLOG_SUCCESS,
-  payload: { homeworkoutlogs },
+export const fetchResistanceLogSuccess = resistancelogs => ({
+  type: FETCH_RESISTANCELOG_SUCCESS,
+  payload: { resistancelogs },
 });
 
 export const setTheme = theme => ({

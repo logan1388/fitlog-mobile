@@ -1,7 +1,7 @@
 // Copyright FitBook
 
 import { StyleSheet } from 'react-native';
-import { Style } from '../styles/style';
+import { Style } from '../../styles/style';
 
 export const profileStyles = () =>
   StyleSheet.create({
