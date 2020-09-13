@@ -11,7 +11,7 @@ import { workoutStyles } from './WorkoutScreen.style';
 import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/NavigatorTypes';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootState } from '../../store/actionHelpers';
-import { WorkoutModel, WorkoutSubTypes, getWorkoutType } from '../../commonlib/models/WorkoutModel';
+import { WorkoutModel, getWorkoutType } from '../../commonlib/models/WorkoutModel';
 import { fetchWorkoutsList } from '../../store/workouts';
 
 interface WorkoutsReduxState {
@@ -26,12 +26,12 @@ const WorkoutlogScreen = () => {
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxReps);
   const bestSet = useSelector<RootState>(state => state.fitlogReducer.bestSet);
   const type = route.params ? route.params.type : 'Chest';
-  const exercise = route.params ? route.params.exercise : 'Bench Press';
-  const selectedExercise: WorkoutSubTypes = {
-    type: type,
-    exercise: exercise,
+  const subType = route.params ? route.params.subType : 'Bench Press';
+  const selectedExercise = {
+    type,
+    subType,
   };
-  console.log('WorkoutlogScreen ', route);
+  console.log('WorkoutlogScreen ', route.params);
   const userId = '5dfecbdd39d8760019968d04';
   const dispatch = useDispatch();
   const [notesModalVisible, setNotesModalVisible] = useState(false);
@@ -101,18 +101,13 @@ const WorkoutlogScreen = () => {
           }}>
           <CreateWorkout
             type={getWorkoutType(type)}
-            exercise={selectedExercise}
+            subType={subType}
             modalVisible={logInputModalVisible}
             setModalVisible={(value: boolean) => setLogInputModalVisible(value)}
           />
         </Modal>
         <BestLog bestSet={bestSet} maxWt={maxWt} maxRps={maxRps} />
-        <Logs
-          logs={workouts}
-          exercise={selectedExercise.exercise}
-          bestSet={bestSet}
-          addNotes={(note: WorkoutModel) => addNotes(note)}
-        />
+        <Logs logs={workouts} exercise={subType} bestSet={bestSet} addNotes={(note: WorkoutModel) => addNotes(note)} />
         <TouchableOpacity style={styles.floatingButton} onPress={() => setLogInputModalVisible(true)}>
           <Icon name="plus-circle" size={50} color={themeButtonStyle} />
         </TouchableOpacity>
@@ -123,7 +118,7 @@ const WorkoutlogScreen = () => {
 
 export const screenOptions = (navigationData: any) => {
   return {
-    headerTitle: navigationData.route.params.exercise,
+    headerTitle: navigationData.route.params.subType.toUpperCase(),
   };
 };
 

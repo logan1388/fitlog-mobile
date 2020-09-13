@@ -19,7 +19,7 @@ export type WorkoutStackRouteParams = {
   };
   Workoutlog: {
     type: string;
-    exercise: string;
+    subType: string;
   };
 };
 

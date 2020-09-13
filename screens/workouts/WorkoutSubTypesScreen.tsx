@@ -15,8 +15,8 @@ interface WorkoutProps {
 }
 
 interface ItemProps {
-  title: string;
-  category: string;
+  type: string;
+  subType: string;
 }
 
 const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
@@ -31,20 +31,19 @@ const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
     setStyles(workoutStyles());
   }, [dispatch, selectedWorkout, setStyles]);
 
-  const Item: React.FC<ItemProps> = ({ title, category }) => {
+  const Item: React.FC<ItemProps> = ({ type, subType }) => {
     return (
       <View style={styles.workoutSubTypesContainer}>
-        {category.toLowerCase() === selectedWorkout.toLowerCase() ? (
+        {type.toLowerCase() === selectedWorkout.toLowerCase() ? (
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              console.log('WorkoutSubTypeScreen ', selectedWorkout, ' ', title);
               props.navigation.navigate(WorkoutStackScreens.WorkoutlogScreen, {
-                type: selectedWorkout,
-                exercise: title,
+                type,
+                subType,
               });
             }}>
-            <Text style={styles.buttonText}>{title}</Text>
+            <Text style={styles.buttonText}>{subType}</Text>
           </TouchableOpacity>
         ) : null}
       </View>
@@ -58,7 +57,7 @@ const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
           <FlatList
             style={styles.innerContainer}
             data={workouts}
-            renderItem={({ item }) => <Item title={item.name} category={item.category} />}
+            renderItem={({ item }) => <Item type={item.category} subType={item.name} />}
             keyExtractor={item => item.name}
           />
         </View>

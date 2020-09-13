@@ -9,8 +9,6 @@ const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const logs = props.logs;
-  console.log('Logs ', logs);
-  console.log('Exercise ', props.exercise);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

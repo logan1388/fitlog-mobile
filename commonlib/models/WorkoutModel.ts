@@ -9,15 +9,15 @@ export enum WorkoutTypes {
   TRICEPS = 'TRICEPS',
 }
 
-export interface WorkoutSubTypes {
-  type: WorkoutTypes;
-  exercise: string;
-}
+// export interface WorkoutSubTypes {
+//   type: WorkoutTypes;
+//   exercise: string;
+// }
 
 export interface CreateWorkoutModel {
   userId: string;
   type: WorkoutTypes;
-  subType: WorkoutSubTypes;
+  subType: string;
   date: Date;
   weight?: number;
   unit?: string;
@@ -29,7 +29,7 @@ export interface WorkoutModel {
   _id: string;
   userId: string;
   type: WorkoutTypes;
-  subType: WorkoutSubTypes;
+  subType: string;
   date: Date;
   weight: number;
   unit: string;

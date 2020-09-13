@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground }
 import { StackNavigationProp } from '@react-navigation/stack';
 import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/NavigatorTypes';
 import { workoutStyles } from './WorkoutScreen.style';
+import { WorkoutTypes } from '../../commonlib/models/WorkoutModel';
 
 type WorkoutTypesNavigationProps = StackNavigationProp<WorkoutStackRouteParams, WorkoutStackScreens.WorkoutTypesScreen>;
 
@@ -11,35 +12,29 @@ interface WorkoutTypesProps {
 }
 
 interface ItemProps {
-  title: string;
+  type: string;
 }
 
 const WorkoutTypesScreen: React.FC<WorkoutTypesProps> = props => {
-  const buttons = [
-    { title: 'Chest', workout: 'chest' },
-    { title: 'Leg', workout: 'legs' },
-    { title: 'Shoulder', workout: 'shoulder' },
-    { title: 'Back', workout: 'back' },
-    { title: 'Biceps', workout: 'biceps' },
-    { title: 'Triceps', workout: 'triceps' },
-  ];
+  const workoutTypes: string[] = Object.keys(WorkoutTypes);
+
   const [styles, setStyles] = useState(workoutStyles());
 
   React.useEffect(() => {
     setStyles(workoutStyles());
   }, [setStyles]);
 
-  const Item: React.FC<ItemProps> = ({ title }) => {
+  const Item: React.FC<ItemProps> = ({ type }) => {
     return (
       <View style={styles.workoutTypesContainer}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
             props.navigation.navigate(WorkoutStackScreens.WorkoutSubTypesScreen, {
-              type: title,
+              type,
             });
           }}>
-          <Text style={styles.buttonText}>{title.toUpperCase()}</Text>
+          <Text style={styles.buttonText}>{type}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -49,11 +44,7 @@ const WorkoutTypesScreen: React.FC<WorkoutTypesProps> = props => {
     <SafeAreaView style={styles.outerContainer}>
       <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}>
         <View style={styles.bg}>
-          <FlatList
-            data={buttons}
-            renderItem={({ item }) => <Item title={item.title} />}
-            keyExtractor={item => item.title}
-          />
+          <FlatList data={workoutTypes} renderItem={({ item }) => <Item type={item} />} keyExtractor={item => item} />
         </View>
       </ImageBackground>
     </SafeAreaView>

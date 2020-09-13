@@ -5,13 +5,13 @@ import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import RadioButtons from './RadioButtons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CreateWorkoutModel, WorkoutTypes, WorkoutSubTypes } from '../commonlib/models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutTypes } from '../commonlib/models/WorkoutModel';
 import { RootState } from '../store/actionHelpers';
 import { addWorkout } from '../store/workouts';
 
 interface WorkoutInputProps {
   type: WorkoutTypes;
-  exercise: WorkoutSubTypes;
+  subType: string;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
@@ -38,10 +38,11 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   const addLog = () => {
     let timestamp = getTimestamp();
     let id = '5dfecbdd39d8760019968d04';
+
     const exerciseLog: CreateWorkoutModel = {
       userId: id,
       type: props.type,
-      subType: props.exercise,
+      subType: props.subType,
       date: new Date(timestamp),
       weight,
       unit,
@@ -49,13 +50,12 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     };
     resetInput();
     props.setModalVisible(!props.modalVisible);
-    console.log('Exercise log ', props);
     dispatch(addWorkout(exerciseLog));
   };
 
   React.useEffect(() => {
     setUnit(unitRadio[0].value);
-  }, [setUnit]);
+  }, [setUnit, unitRadio]);
 
   return (
     <TouchableWithoutFeedback>

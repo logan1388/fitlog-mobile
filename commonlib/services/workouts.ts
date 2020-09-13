@@ -20,9 +20,12 @@ export default class WorkoutsService {
     return r;
   }
 
-  public async getWorkoutsListByUserId(type: string, exercise: string, userId: string): Promise<WorkoutModel[] | ServiceResponse> {
-    console.log('Inside service ', type);
-    const params = { type: type.toLocaleUpperCase(), exercise: exercise };
+  public async getWorkoutsListByUserId(
+    type: string,
+    subType: string,
+    userId: string
+  ): Promise<WorkoutModel[] | ServiceResponse> {
+    const params = { type: type.toLocaleLowerCase(), subType: subType.toLocaleLowerCase() };
     const r: WorkoutModel[] | ServiceResponse = await this.db.GetListByUserId(userId, params);
 
     if (isServiceResponse(r)) {

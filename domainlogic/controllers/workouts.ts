@@ -1,6 +1,6 @@
 // Copyright FitBook
 
-import { CreateWorkoutModel, WorkoutModel, WorkoutTypes, WorkoutSubTypes } from '../../commonlib/models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutModel, WorkoutTypes } from '../../commonlib/models/WorkoutModel';
 import AsyncStorage from '@react-native-community/async-storage';
 import Storage from '../../constants/storage';
 import WorkoutsService from '../../commonlib/services/workouts';
@@ -34,8 +34,16 @@ export default class WorkoutsController {
     return response;
   }
 
-  public async getWorkoutsList(type: WorkoutTypes, exercise: WorkoutSubTypes, userId: string): Promise<WorkoutModel[] | ServiceResponse> {
-    const response: WorkoutModel[] | ServiceResponse = await this.workoutsSvc.getWorkoutsListByUserId(type, exercise.exercise, userId);
+  public async getWorkoutsList(
+    type: WorkoutTypes,
+    subType: string,
+    userId: string
+  ): Promise<WorkoutModel[] | ServiceResponse> {
+    const response: WorkoutModel[] | ServiceResponse = await this.workoutsSvc.getWorkoutsListByUserId(
+      type,
+      subType,
+      userId
+    );
 
     return response;
   }
