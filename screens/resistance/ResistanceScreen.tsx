@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/Navigator';
+import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/NavigatorTypes';
 import { resistanceStyles } from './ResistanceScreen.style';
 
 type ResistanceNavigationProps = StackNavigationProp<

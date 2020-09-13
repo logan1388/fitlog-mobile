@@ -1,25 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, SafeAreaView, Modal, Alert, TouchableOpacity } from 'react-native';
-import { fetchResistanceList } from '../../store/resistance';
-import ResistanceInput from '../../components/ResistanceInput';
+import { fetchResistanceList, resetResistanceList } from '../../store/resistance';
+import CreateResistance from '../../components/CreateResistance';
 import { maxReps, maxTime, saveNote } from '../../store/actions/actions';
 import Notes from '../../components/Notes';
 import BestLog from '../../components/BestLog';
 import Logs from '../../components/Logs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { resistanceStyles } from './ResistanceScreen.style';
-import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/Navigator';
+import { ResistanceStackRouteParams, ResistanceStackScreens } from '../../navigation/NavigatorTypes';
 import { RootState } from '../../store/actionHelpers';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { ResistanceModel } from '../../commonlib/models/ResistanceModel';
+import { ResistanceModel, ResistanceTypes } from '../../commonlib/models/ResistanceModel';
 
 interface ResistanceReduxState {
   resistances?: ResistanceModel[];
 }
 
+const getResistanceType = (param: string): ResistanceTypes => {
+  switch (param.toLocaleUpperCase()) {
+    case 'PUSHUP':
+      return ResistanceTypes.PUSH_UP;
+    case 'PULLUP':
+      return ResistanceTypes.PULL_UP;
+    case 'DIPS':
+      return ResistanceTypes.DIPS;
+    case 'BURPEE':
+      return ResistanceTypes.BURPEE;
+    case 'PLANK':
+      return ResistanceTypes.PLANK;
+    case 'LUNGES':
+      return ResistanceTypes.LUNGES;
+    default:
+      return ResistanceTypes.PUSH_UP;
+  }
+};
+
 const ResistancelogScreen = () => {
-  const category = 'Resistance';
   const userId = '5dfecbdd39d8760019968d04';
   const route = useRoute<RouteProp<ResistanceStackRouteParams, ResistanceStackScreens.ResistancelogScreen>>();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
@@ -51,9 +69,14 @@ const ResistancelogScreen = () => {
 
   useEffect(() => {
     setStyles(resistanceStyles());
-    dispatch(fetchResistanceList(category, selectedExercise, userId));
+    dispatch(fetchResistanceList(selectedExercise, userId));
     dispatch(maxReps(userId, selectedExercise));
     dispatch(maxTime(userId, selectedExercise));
+
+    // Equivalent of componentDidUnmount to reset resistance list
+    return () => {
+      dispatch(resetResistanceList());
+    };
   }, [setStyles, dispatch, selectedExercise]);
 
   const addNotes = (log: ResistanceModel) => {
@@ -90,9 +113,8 @@ const ResistancelogScreen = () => {
           transparent={true}
           visible={logInputModalVisible}
           onRequestClose={() => Alert.alert('Modal has been closed.')}>
-          <ResistanceInput
-            category={category}
-            name={selectedExercise}
+          <CreateResistance
+            name={getResistanceType(selectedExercise)}
             modalVisible={logInputModalVisible}
             setModalVisible={(value: boolean) => setLogInputModalVisible(value)}
           />

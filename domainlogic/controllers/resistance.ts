@@ -1,6 +1,6 @@
 // Copyright FitBook
 
-import { CreateResistanceModel, ResistanceModel } from '../../commonlib/models/ResistanceModel';
+import { CreateResistanceModel, ResistanceModel, ResistanceTypes } from '../../commonlib/models/ResistanceModel';
 import AsyncStorage from '@react-native-community/async-storage';
 import Storage from '../../constants/storage';
 import ResistanceService from '../../commonlib/services/resistance';
@@ -29,13 +29,18 @@ export default class ResistanceController {
     });
   }
 
-  public async addResistanceLog(data: CreateResistanceModel): Promise<ResistanceModel | ServiceResponse> {
-    const response = this.resistanceSvc.addResistance(data);
+  public async createResistance(data: CreateResistanceModel): Promise<ResistanceModel | ServiceResponse> {
+    const response = await this.resistanceSvc.createResistance(data);
+
     return response;
   }
 
-  public async getResistanceLogs(): Promise<ResistanceModel[] | ServiceResponse> {
-    const response: ResistanceModel[] | ServiceResponse = await this.resistanceSvc.getResistances();
+  public async getResistanceList(type: ResistanceTypes, userId: string): Promise<ResistanceModel[] | ServiceResponse> {
+    const response: ResistanceModel[] | ServiceResponse = await this.resistanceSvc.getResistanceListByUserId(
+      type,
+      userId
+    );
+
     return response;
   }
 }

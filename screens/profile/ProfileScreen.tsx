@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { ProfileStackRouteParams, ProfileStackScreens } from '../../navigation/Navigator';
+import { ProfileStackRouteParams, ProfileStackScreens } from '../../navigation/NavigatorTypes';
 import { setTheme } from '../../store/actions/actions';
 import { profileStyles } from './ProfileScreen.style';
 import { ProfileModel } from '../../commonlib/models/ProfileModel';

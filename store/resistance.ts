@@ -4,7 +4,7 @@ import { ActionCreator, Dispatch } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from './actionHelpers';
 import produce from 'immer';
-import { ResistanceModel, CreateResistanceModel } from '../commonlib/models/ResistanceModel';
+import { ResistanceModel, CreateResistanceModel, ResistanceTypes } from '../commonlib/models/ResistanceModel';
 import { Action, ActionsUnion } from './actionHelpers';
 import ResistanceController, { resistanceController } from '../domainlogic/controllers/resistance';
 import { AppState } from '.';
@@ -44,9 +44,11 @@ export type ThunkActionCreator = ActionCreator<ThunkAction<void, AppState, Resis
 
 export type ThunkActionDispatch = ThunkDispatch<RootState, ResistanceController, Actions>;
 
-export const fetchResistanceList: ThunkActionCreator = () => async (dispatch: Dispatch) => {
+export const fetchResistanceList: ThunkActionCreator = (resistanceType: ResistanceTypes, userId: string) => async (
+  dispatch: Dispatch
+) => {
   dispatch(statusActions.setPending(ResistanceActionNames.FETCH_RESISTANCE));
-  const r = await resistanceController.getResistanceLogs();
+  const r = await resistanceController.getResistanceList(resistanceType, userId);
   dispatch(statusActions.resetPending(ResistanceActionNames.FETCH_RESISTANCE));
 
   if (isServiceResponse(r)) {
@@ -57,20 +59,23 @@ export const fetchResistanceList: ThunkActionCreator = () => async (dispatch: Di
   }
 };
 
-export const addResistance: ThunkActionCreator = (data: CreateResistanceModel, onSuccessCallback: () => void) => async (
+export const addResistance: ThunkActionCreator = (data: CreateResistanceModel) => async (
   dispatch: Dispatch & ThunkActionDispatch
 ) => {
   dispatch(statusActions.setPending(ResistanceActionNames.ADD_RESISTANCE));
-  const r = await resistanceController.addResistanceLog(data);
+  const r = await resistanceController.createResistance(data);
   dispatch(statusActions.resetPending(ResistanceActionNames.ADD_RESISTANCE));
 
   if (isServiceResponse(r)) {
     dispatch(statusActions.setError(ResistanceActionNames.ADD_RESISTANCE, r));
   } else {
-    dispatch(fetchResistanceList());
+    dispatch(fetchResistanceList(data.type, data.userId));
     dispatch(statusActions.resetError(ResistanceActionNames.ADD_RESISTANCE));
-    onSuccessCallback();
   }
+};
+
+export const resetResistanceList: ThunkActionCreator = () => (dispatch: Dispatch) => {
+  dispatch(resistanceActions.receiveResistance([]));
 };
 
 export const resistanceReducer = (

@@ -8,7 +8,7 @@ import Colors from '../constants/colors';
 const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const logs = props.logs.filter(log => log.name === props.exercise);
+  const logs = props.logs;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
