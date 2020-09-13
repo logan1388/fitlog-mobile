@@ -74,13 +74,10 @@ export default class LocalStorageDB implements IDatabase {
     });
 
     if (params) {
-      let filteredData: any[] = [];
-      parsedData.forEach(p => {
-        Object.keys(params).forEach(key => {
-          if (p[key] === params[key]) {
-            filteredData.push(p);
-          }
-        });
+      const filters = Object.keys(params);
+
+      const filteredData = parsedData.filter(p => {
+        return filters.every(key => params[key] === p[key]);
       });
 
       return filteredData;
