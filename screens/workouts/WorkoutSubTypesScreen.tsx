@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/Navigator';
+import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/NavigatorTypes';
 import { fetchExercises } from '../../store/actions/actions';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { workoutStyles } from './WorkoutScreen.style';
@@ -38,6 +38,7 @@ const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
+              console.log('WorkoutSubTypeScreen ', selectedWorkout, ' ', title);
               props.navigation.navigate(WorkoutStackScreens.WorkoutlogScreen, {
                 type: selectedWorkout,
                 exercise: title,

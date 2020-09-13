@@ -12,6 +12,23 @@ export enum ResistanceStackScreens {
   ResistancelogScreen = 'Resistancelog',
 }
 
+export type WorkoutStackRouteParams = {
+  WorkoutTypes: undefined;
+  WorkoutSubTypes: {
+    type: string;
+  };
+  Workoutlog: {
+    type: string;
+    exercise: string;
+  };
+};
+
+export enum WorkoutStackScreens {
+  WorkoutTypesScreen = 'WorkoutTypes',
+  WorkoutSubTypesScreen = 'WorkoutSubTypes',
+  WorkoutlogScreen = 'Workoutlog',
+}
+
 export type ProfileStackRouteParams = {
   Profile: undefined;
   EditProfile: undefined;

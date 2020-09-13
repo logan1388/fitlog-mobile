@@ -19,7 +19,7 @@ interface ResistanceInputProps {
 
 const ResistanceInput: React.FC<ResistanceInputProps> = props => {
   const [weight, setWeight] = useState(0);
-  const [unit, setUnit] = useState(0);
+  const [unit, setUnit] = useState('');
   const [count, setCount] = useState(0);
   const [time, setTime] = useState(0);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
@@ -30,8 +30,8 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
   const [styles, setStyles] = useState(resistanceStyles());
   const dispatch = useDispatch();
   let unitRadio = [
-    { label: 'lbs', value: 0 },
-    { label: 'kgs', value: 1 },
+    { label: 'lbs', value: 'lbs' },
+    { label: 'kgs', value: 'kgs' },
   ];
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
@@ -76,6 +76,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
       type: props.name,
       date: new Date(timestamp),
       weight,
+      unit,
       count,
       time: time ? time.toString().substr(3, 5) : undefined,
     };
@@ -86,7 +87,8 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
 
   React.useEffect(() => {
     setStyles(resistanceStyles());
-  }, [setStyles]);
+    setUnit(unitRadio[0].value);
+  }, [setStyles, setUnit]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -123,7 +125,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
             </View>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-              <RadioButtons options={unitRadio} unit={unit} setUnit={(value: number) => setUnit(value)} />
+              <RadioButtons options={unitRadio} unit={unit} setUnit={(value: string) => setUnit(value)} />
             </View>
           </View>
           <View style={styles.timerContainer}>

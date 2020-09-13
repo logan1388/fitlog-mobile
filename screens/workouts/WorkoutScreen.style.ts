@@ -18,6 +18,12 @@ export const workoutStyles = () =>
       justifyContent: 'space-between',
       paddingVertical: 15,
     },
+    workoutlogContainer: {
+      paddingVertical: 30,
+      paddingHorizontal: 20,
+      backgroundColor: 'rgba(238, 238, 238, 0.8)',
+      height: '100%',
+    },
     button: {
       backgroundColor: 'darkgrey',
       paddingVertical: 25,
@@ -37,5 +43,16 @@ export const workoutStyles = () =>
     innerContainer: {
       paddingVertical: 10,
       paddingHorizontal: 10,
+    },
+    lightContainer: { backgroundColor: 'white' },
+    darkContainer: { backgroundColor: '#2D2D2D' },
+    floatingButton: {
+      position: 'absolute',
+      width: 50,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      right: 15,
+      bottom: 45,
     },
   });

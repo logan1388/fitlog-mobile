@@ -7,12 +7,12 @@ import WorkoutTypesScreen, { screenOptions as workoutTypesScreenOptions } from '
 import WorkoutSubTypesScreen, {
   screenOptions as workoutSubTypesScreenOptions,
 } from '../screens/workouts/WorkoutSubTypesScreen';
-import ExerciseScreen, { screenOptions as exerciseScreenOptions } from '../screens/ExerciseScreen';
 import AuthScreen, { screenOptions as authScreenOptions } from '../screens/user/AuthScreen';
 import ResistanceScreen, { screenOptions as resistanceScreenOptions } from '../screens/resistance/ResistanceScreen';
 import ResistancelogScreen, {
   screenOptions as resistancelogScreenOptions,
 } from '../screens/resistance/ResistancelogScreen';
+import WorkoutlogScreen, { screenOptions as workoutlogScreenOptions } from '../screens/workouts/WorkoutlogScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
 import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeScreen';
@@ -22,6 +22,8 @@ import EditProfile from '../screens/profile/EditProfileScreen';
 import {
   ResistanceStackRouteParams,
   ResistanceStackScreens,
+  WorkoutStackRouteParams,
+  WorkoutStackScreens,
   ProfileStackRouteParams,
   ProfileStackScreens,
 } from './NavigatorTypes';
@@ -52,7 +54,7 @@ const ExerciseTabNavigator = () => {
         style: { backgroundColor: Colors.headerBackground },
         indicatorStyle: { backgroundColor: Colors.headerFontColor },
       }}>
-      <TopTab.Screen name="Exercise" component={ExerciseScreen} />
+      <TopTab.Screen name="Exercise" component={WorkoutlogScreen} />
       <TopTab.Screen name="Awards" component={AwardsNavigator} />
     </TopTab.Navigator>
   );
@@ -76,23 +78,6 @@ const ResistanceNavigator = () => {
   );
 };
 
-export type WorkoutStackRouteParams = {
-  WorkoutTypes: undefined;
-  WorkoutSubTypes: {
-    type: string;
-  };
-  Workoutlog: {
-    type: string;
-    exercise: string;
-  };
-};
-
-export enum WorkoutStackScreens {
-  WorkoutTypesScreen = 'WorkoutTypes',
-  WorkoutSubTypesScreen = 'WorkoutSubTypes',
-  WorkoutlogScreen = 'Workoutlog',
-}
-
 const WorkoutStackNavigator = createStackNavigator<WorkoutStackRouteParams>();
 const WorkoutNavigator = () => {
   return (
@@ -110,7 +95,7 @@ const WorkoutNavigator = () => {
       <WorkoutStackNavigator.Screen
         name={WorkoutStackScreens.WorkoutlogScreen}
         component={ExerciseTabNavigator}
-        options={exerciseScreenOptions}
+        options={workoutlogScreenOptions}
       />
     </WorkoutStackNavigator.Navigator>
   );

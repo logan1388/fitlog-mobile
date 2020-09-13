@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/Navigator';
+import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/NavigatorTypes';
 import { workoutStyles } from './WorkoutScreen.style';
 
 type WorkoutTypesNavigationProps = StackNavigationProp<WorkoutStackRouteParams, WorkoutStackScreens.WorkoutTypesScreen>;

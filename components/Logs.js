@@ -9,6 +9,8 @@ const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const logs = props.logs;
+  console.log('Logs ', logs);
+  console.log('Exercise ', props.exercise);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -29,15 +31,15 @@ const Logs = props => {
                       />
                     </View>
                   ) : (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  )}
+                      <View style={{ flex: 1 }}>
+                        <Icon
+                          name="comment-outline"
+                          size={24}
+                          color={mode === 'light' ? 'black' : 'darkgrey'}
+                          onPress={() => props.addNotes(item)}
+                        />
+                      </View>
+                    )}
                   <View style={{ flex: 3 }}>
                     <Text style={themeTextStyle}>{item.date}</Text>
                   </View>
@@ -59,61 +61,61 @@ const Logs = props => {
               keyExtractor={item => item._id}
             />
           ) : (
-            <FlatList
-              data={logs}
-              renderItem={({ item }) => (
-                <View style={styles.logs}>
-                  {item.note ? (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-text-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  ) : (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  )}
-                  <View style={{ flex: 1 }}>
-                    {props.bestSet &&
-                    item.weight === props.bestSet.weight &&
-                    item.count === props.bestSet.count &&
-                    item.date === moment(props.bestSet.date).utc().local().format('MM/DD/YY HH:mm') ? (
-                      <View style={{ flexDirection: 'row' }}>
-                        <Icon name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
+              <FlatList
+                data={logs}
+                renderItem={({ item }) => (
+                  <View style={styles.logs}>
+                    {item.note ? (
+                      <View style={{ flex: 1 }}>
+                        <Icon
+                          name="comment-text-outline"
+                          size={24}
+                          color={mode === 'light' ? 'black' : 'darkgrey'}
+                          onPress={() => props.addNotes(item)}
+                        />
                       </View>
-                    ) : null}
+                    ) : (
+                        <View style={{ flex: 1 }}>
+                          <Icon
+                            name="comment-outline"
+                            size={24}
+                            color={mode === 'light' ? 'black' : 'darkgrey'}
+                            onPress={() => props.addNotes(item)}
+                          />
+                        </View>
+                      )}
+                    <View style={{ flex: 1 }}>
+                      {props.bestSet &&
+                        item.weight === props.bestSet.weight &&
+                        item.count === props.bestSet.count &&
+                        item.date === moment(props.bestSet.date).utc().local().format('MM/DD/YY HH:mm') ? (
+                          <View style={{ flexDirection: 'row' }}>
+                            <Icon name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
+                          </View>
+                        ) : null}
+                    </View>
+                    <View style={{ flex: 2.5 }}>
+                      <Text style={themeTextStyle}>{item.date}</Text>
+                    </View>
+                    <View style={{ flex: 1.5 }}>
+                      <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
+                        {item.weight} {item.unit}
+                      </Text>
+                    </View>
+                    <View style={{ flex: 1.5 }}>
+                      <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.count} reps</Text>
+                    </View>
                   </View>
-                  <View style={{ flex: 2.5 }}>
-                    <Text style={themeTextStyle}>{item.date}</Text>
-                  </View>
-                  <View style={{ flex: 1.5 }}>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
-                      {item.weight} {item.unit}
-                    </Text>
-                  </View>
-                  <View style={{ flex: 1.5 }}>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.count} reps</Text>
-                  </View>
-                </View>
-              )}
-              keyExtractor={item => item._id}
-            />
-          )}
+                )}
+                keyExtractor={item => item._id}
+              />
+            )}
         </View>
       ) : (
-        <View style={styles.noDataText}>
-          <Text>Start logging!</Text>
-        </View>
-      )}
+          <View style={styles.noDataText}>
+            <Text>Start logging!</Text>
+          </View>
+        )}
     </SafeAreaView>
   );
 };
