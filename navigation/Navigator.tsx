@@ -3,8 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
-import DashboardScreen, { screenOptions as dashboardScreenOptions } from '../screens/DashboardScreen';
-import WorkoutScreen, { screenOptions as workoutScreenOptions } from '../screens/WorkoutScreen';
+import WorkoutTypesScreen, { screenOptions as workoutTypesScreenOptions } from '../screens/workouts/WorkoutTypesScreen';
+import WorkoutSubTypesScreen, {
+  screenOptions as workoutSubTypesScreenOptions,
+} from '../screens/workouts/WorkoutSubTypesScreen';
 import ExerciseScreen, { screenOptions as exerciseScreenOptions } from '../screens/ExerciseScreen';
 import AuthScreen, { screenOptions as authScreenOptions } from '../screens/user/AuthScreen';
 import ResistanceScreen, { screenOptions as resistanceScreenOptions } from '../screens/resistance/ResistanceScreen';
@@ -40,15 +42,6 @@ const AwardsNavigator = () => {
   );
 };
 
-// const NotesStackNavigator = createStackNavigator();
-// const NotesNavigator = () => {
-//   return (
-//     <NotesStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-//       <NotesStackNavigator.Screen name="Notes" component={NotesScreen} />
-//     </NotesStackNavigator.Navigator>
-//   );
-// };
-
 const TopTab = createMaterialTopTabNavigator();
 const ExerciseTabNavigator = () => {
   return (
@@ -60,24 +53,8 @@ const ExerciseTabNavigator = () => {
         indicatorStyle: { backgroundColor: Colors.headerFontColor },
       }}>
       <TopTab.Screen name="Exercise" component={ExerciseScreen} />
-      {/* <TopTab.Screen name='Notes' component={NotesNavigator}/> */}
       <TopTab.Screen name="Awards" component={AwardsNavigator} />
     </TopTab.Navigator>
-  );
-};
-
-const DashboardStackNavigator = createStackNavigator();
-const DashboardNavigator = () => {
-  return (
-    <DashboardStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <DashboardStackNavigator.Screen name="Dashboard" component={DashboardScreen} options={dashboardScreenOptions} />
-      <DashboardStackNavigator.Screen name="Workout" component={WorkoutScreen} options={workoutScreenOptions} />
-      <DashboardStackNavigator.Screen
-        name="ExerciseScreen"
-        component={ExerciseTabNavigator}
-        options={exerciseScreenOptions}
-      />
-    </DashboardStackNavigator.Navigator>
   );
 };
 
@@ -99,6 +76,46 @@ const ResistanceNavigator = () => {
   );
 };
 
+export type WorkoutStackRouteParams = {
+  WorkoutTypes: undefined;
+  WorkoutSubTypes: {
+    type: string;
+  };
+  Workoutlog: {
+    type: string;
+    exercise: string;
+  };
+};
+
+export enum WorkoutStackScreens {
+  WorkoutTypesScreen = 'WorkoutTypes',
+  WorkoutSubTypesScreen = 'WorkoutSubTypes',
+  WorkoutlogScreen = 'Workoutlog',
+}
+
+const WorkoutStackNavigator = createStackNavigator<WorkoutStackRouteParams>();
+const WorkoutNavigator = () => {
+  return (
+    <WorkoutStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <WorkoutStackNavigator.Screen
+        name={WorkoutStackScreens.WorkoutTypesScreen}
+        component={WorkoutTypesScreen}
+        options={workoutTypesScreenOptions}
+      />
+      <WorkoutStackNavigator.Screen
+        name={WorkoutStackScreens.WorkoutSubTypesScreen}
+        component={WorkoutSubTypesScreen}
+        options={workoutSubTypesScreenOptions}
+      />
+      <WorkoutStackNavigator.Screen
+        name={WorkoutStackScreens.WorkoutlogScreen}
+        component={ExerciseTabNavigator}
+        options={exerciseScreenOptions}
+      />
+    </WorkoutStackNavigator.Navigator>
+  );
+};
+
 const HomeStackNavigator = createStackNavigator();
 const HomeNavigator = () => {
   return (
@@ -107,15 +124,6 @@ const HomeNavigator = () => {
     </HomeStackNavigator.Navigator>
   );
 };
-
-// const PlannerStackNavigator = createStackNavigator();
-// const PlannerNavigator = () => {
-//   return (
-//     <PlannerStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-//       <PlannerStackNavigator.Screen name="Planner" component={Planner} />
-//     </PlannerStackNavigator.Navigator>
-//   );
-// };
 
 const ProfileStackNavigator = createStackNavigator<ProfileStackRouteParams>();
 const ProfileNavigator = () => {
@@ -172,7 +180,7 @@ export const FitbookNavigator = () => {
       }}>
       <Tab.Screen name="Home" component={HomeNavigator} />
       <Tab.Screen name="Resistance" component={ResistanceNavigator} />
-      <Tab.Screen name="Workouts" component={DashboardNavigator} />
+      <Tab.Screen name="Workouts" component={WorkoutNavigator} />
       <Tab.Screen name="Awards" component={AwardsNavigator} />
       <Tab.Screen name="Profile" component={ProfileNavigator} />
     </Tab.Navigator>

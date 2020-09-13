@@ -99,7 +99,7 @@ const ExerciseScreen = props => {
 
 export const screenOptions = navigationData => {
   return {
-    headerTitle: navigationData.route.params.params.exercise,
+    headerTitle: navigationData.route.params.exercise,
   };
 };
 
