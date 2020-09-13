@@ -17,6 +17,12 @@ import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeS
 import Profile from '../screens/profile/ProfileScreen';
 import AwardsScreen from '../screens/AwardsScreen';
 import EditProfile from '../screens/profile/EditProfileScreen';
+import {
+  ResistanceStackRouteParams,
+  ResistanceStackScreens,
+  ProfileStackRouteParams,
+  ProfileStackScreens,
+} from './NavigatorTypes';
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -75,18 +81,6 @@ const DashboardNavigator = () => {
   );
 };
 
-export type ResistanceStackRouteParams = {
-  Resistance: undefined;
-  Resistancelog: {
-    exercise: string;
-  };
-};
-
-export enum ResistanceStackScreens {
-  ResistanceScreen = 'Resistance',
-  ResistancelogScreen = 'Resistancelog',
-}
-
 const ResistanceStackNavigator = createStackNavigator<ResistanceStackRouteParams>();
 const ResistanceNavigator = () => {
   return (
@@ -122,16 +116,6 @@ const HomeNavigator = () => {
 //     </PlannerStackNavigator.Navigator>
 //   );
 // };
-
-export type ProfileStackRouteParams = {
-  Profile: undefined;
-  EditProfile: undefined;
-};
-
-export enum ProfileStackScreens {
-  ProfileScreen = 'Profile',
-  EditProfileScreen = 'EditProfile',
-}
 
 const ProfileStackNavigator = createStackNavigator<ProfileStackRouteParams>();
 const ProfileNavigator = () => {

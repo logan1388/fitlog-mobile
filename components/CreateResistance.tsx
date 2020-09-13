@@ -4,15 +4,15 @@ import { Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Stopwatch } from 'react-native-stopwatch-timer';
+import { Stopwatch as StopWatchDeprecated } from 'react-native-stopwatch-timer';
 import RadioButtons from './RadioButtons';
 import { resistanceStyles } from '../screens/resistance/ResistanceScreen.style';
 import { RootState } from '../store/actionHelpers';
 import { addResistance } from '../store/resistance';
+import { CreateResistanceModel, ResistanceTypes } from '../commonlib/models/ResistanceModel';
 
 interface ResistanceInputProps {
-  category: string;
-  name: string;
+  name: ResistanceTypes;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
@@ -38,6 +38,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
 
   const getFormattedTime = (time: number) => {
     let currentTime = time;
+    console.log('CURRENT TIME', currentTime);
     setTime(currentTime);
   };
   const toggleStopWatch = () => {
@@ -70,18 +71,17 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
   const addLog = () => {
     let timestamp = getTimestamp();
     let id = '5dfecbdd39d8760019968d04';
-    let exerciseLog = {
+    const newResistance: CreateResistanceModel = {
       userId: id,
-      category: props.category,
-      name: props.name,
-      date: timestamp,
+      type: props.name,
+      date: new Date(timestamp),
       weight,
       count,
-      time: time ? time.toString().substr(3, 5) : null,
+      time: time ? time.toString().substr(3, 5) : undefined,
     };
     resetInput();
     props.setModalVisible(!props.modalVisible);
-    dispatch(addResistance(exerciseLog));
+    dispatch(addResistance(newResistance));
   };
 
   React.useEffect(() => {
@@ -133,7 +133,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
               <Text style={styles.timerButtonText}>{stopwatchStart ? 'Stop' : showReset ? 'Resume' : 'Start'}</Text>
               <Icon name="timer" size={24} color="black" />
               {showStopWatch && (
-                <Stopwatch
+                <StopWatchDeprecated
                   laps
                   start={stopwatchStart}
                   reset={stopwatchReset}

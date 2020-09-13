@@ -53,6 +53,42 @@ export default class LocalStorageDB implements IDatabase {
     return parsedData;
   }
 
+  public async GetListByUserId(_userId: string, params?: Record<string, any>): Promise<any[] | ServiceResponse> {
+    const localStorageTable = await AsyncStorage.getItem(this.tableName);
+
+    if (!localStorageTable) {
+      return new ServiceResponse();
+    }
+
+    const parsedTable = JSON.parse(localStorageTable).data;
+    const data = parsedTable;
+
+    if (!data) {
+      return new ServiceResponse();
+    }
+
+    let parsedData: any[] = [];
+
+    Object.keys(data).forEach(key => {
+      parsedData.push(Object.assign({}, data[key], { _id: key }));
+    });
+
+    if (params) {
+      let filteredData: any[] = [];
+      parsedData.forEach(p => {
+        Object.keys(params).forEach(key => {
+          if (p[key] === params[key]) {
+            filteredData.push(p);
+          }
+        });
+      });
+
+      return filteredData;
+    }
+
+    return parsedData;
+  }
+
   public async PostAsync(data: Record<string, any>): Promise<any> {
     let id = data.id;
 
