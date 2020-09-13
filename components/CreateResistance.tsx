@@ -38,7 +38,6 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
 
   const getFormattedTime = (time: number) => {
     let currentTime = time;
-    console.log('CURRENT TIME', currentTime);
     setTime(currentTime);
   };
   const toggleStopWatch = () => {

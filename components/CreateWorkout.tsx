@@ -42,7 +42,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     const exerciseLog: CreateWorkoutModel = {
       userId: id,
       type: props.type,
-      subType: props.subType,
+      subType: props.subType.toLocaleLowerCase(),
       date: new Date(timestamp),
       weight,
       unit,

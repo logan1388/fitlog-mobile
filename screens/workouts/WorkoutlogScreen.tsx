@@ -8,8 +8,7 @@ import BestLog from '../../components/BestLog';
 import Logs from '../../components/Logs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { workoutStyles } from './WorkoutScreen.style';
-import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/NavigatorTypes';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { RootState } from '../../store/actionHelpers';
 import { WorkoutModel, getWorkoutType } from '../../commonlib/models/WorkoutModel';
 import { fetchWorkoutsList } from '../../store/workouts';
@@ -18,20 +17,19 @@ interface WorkoutsReduxState {
   workouts?: WorkoutModel[];
 }
 
-const WorkoutlogScreen = () => {
-  const route = useRoute<RouteProp<WorkoutStackRouteParams, WorkoutStackScreens.WorkoutlogScreen>>();
+const WorkoutlogScreen: React.FC = (props: any) => {
+  // const route = useRoute<RouteProp<WorkoutSubTypeStackRouteParams, WorkoutSubTypeStackScreens.ExerciseScreen>>();
+  const route = useRoute();
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const logs = useSelector<RootState>(state => state.fitlogReducer.logs);
   const maxWt = useSelector<RootState>(state => state.fitlogReducer.maxWeight);
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxReps);
   const bestSet = useSelector<RootState>(state => state.fitlogReducer.bestSet);
-  const type = route.params ? route.params.type : 'Chest';
-  const subType = route.params ? route.params.subType : 'Bench Press';
-  const selectedExercise = {
-    type,
-    subType,
-  };
-  console.log('WorkoutlogScreen ', route.params);
+  const type = route.params ? route.params.type : '';
+  const subType = route.params ? route.params.subType : '';
+
+  console.log('Route params', props);
+
   const userId = '5dfecbdd39d8760019968d04';
   const dispatch = useDispatch();
   const [notesModalVisible, setNotesModalVisible] = useState(false);
@@ -58,8 +56,8 @@ const WorkoutlogScreen = () => {
 
   useEffect(() => {
     setStyles(workoutStyles());
-    dispatch(fetchWorkoutsList(type, selectedExercise, userId));
-  }, [setStyles]);
+    dispatch(fetchWorkoutsList(type, subType, userId));
+  }, [dispatch, setStyles, subType, type]);
 
   const addNotes = (log: WorkoutModel) => {
     setNotes(log.note);

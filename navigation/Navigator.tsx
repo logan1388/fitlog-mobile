@@ -26,7 +26,10 @@ import {
   WorkoutStackScreens,
   ProfileStackRouteParams,
   ProfileStackScreens,
+  WorkoutSubTypeStackRouteParams,
+  WorkoutSubTypeStackScreens,
 } from './NavigatorTypes';
+import { useRoute } from '@react-navigation/native';
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -44,8 +47,10 @@ const AwardsNavigator = () => {
   );
 };
 
-const TopTab = createMaterialTopTabNavigator();
+const TopTab = createMaterialTopTabNavigator<WorkoutSubTypeStackRouteParams>();
 const ExerciseTabNavigator = () => {
+  const route = useRoute();
+  console.log('ExerciseTabNavigator', route);
   return (
     <TopTab.Navigator
       tabBarOptions={{
@@ -54,8 +59,8 @@ const ExerciseTabNavigator = () => {
         style: { backgroundColor: Colors.headerBackground },
         indicatorStyle: { backgroundColor: Colors.headerFontColor },
       }}>
-      <TopTab.Screen name="Exercise" component={WorkoutlogScreen} />
-      <TopTab.Screen name="Awards" component={AwardsNavigator} />
+      <TopTab.Screen name={WorkoutSubTypeStackScreens.ExerciseScreen} component={WorkoutlogScreen} />
+      <TopTab.Screen name={WorkoutSubTypeStackScreens.AwardsScreen} component={AwardsNavigator} />
     </TopTab.Navigator>
   );
 };

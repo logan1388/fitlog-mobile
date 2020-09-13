@@ -1,12 +1,12 @@
 // Copyright FitBook
 
 export enum WorkoutTypes {
-  CHEST = 'CHEST',
-  LEG = 'LEG',
-  SHOULDER = 'SHOULDER',
-  BACK = 'BACK',
-  BICEPS = 'BICEPS',
-  TRICEPS = 'TRICEPS',
+  CHEST = 'chest',
+  LEG = 'leg',
+  SHOULDER = 'shoulder',
+  BACK = 'back',
+  BICEPS = 'biceps',
+  TRICEPS = 'triceps',
 }
 
 // export interface WorkoutSubTypes {

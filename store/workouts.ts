@@ -4,7 +4,7 @@ import { ActionCreator, Dispatch } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from './actionHelpers';
 import produce from 'immer';
-import { WorkoutModel, CreateWorkoutModel, WorkoutTypes, WorkoutSubTypes } from '../commonlib/models/WorkoutModel';
+import { WorkoutModel, CreateWorkoutModel, WorkoutTypes } from '../commonlib/models/WorkoutModel';
 import { Action, ActionsUnion } from './actionHelpers';
 import WorkoutsController, { workoutsController } from '../domainlogic/controllers/workouts';
 import { AppState } from '.';
@@ -44,12 +44,11 @@ export type ThunkActionCreator = ActionCreator<ThunkAction<void, AppState, Worko
 
 export type ThunkActionDispatch = ThunkDispatch<RootState, WorkoutsController, Actions>;
 
-export const fetchWorkoutsList: ThunkActionCreator = (workoutType: WorkoutTypes, WorkoutSubType: WorkoutSubTypes, userId: string) => async (
+export const fetchWorkoutsList: ThunkActionCreator = (type: WorkoutTypes, subType: string, userId: string) => async (
   dispatch: Dispatch
 ) => {
-  console.log(workoutType, ' ', WorkoutSubType);
   dispatch(statusActions.setPending(WorkoutsActionNames.FETCH_WORKOUTS));
-  const r = await workoutsController.getWorkoutsList(workoutType, WorkoutSubType, userId);
+  const r = await workoutsController.getWorkoutsList(type, subType, userId);
   dispatch(statusActions.resetPending(WorkoutsActionNames.FETCH_WORKOUTS));
 
   if (isServiceResponse(r)) {
@@ -70,7 +69,7 @@ export const addWorkout: ThunkActionCreator = (data: CreateWorkoutModel) => asyn
   if (isServiceResponse(r)) {
     dispatch(statusActions.setError(WorkoutsActionNames.ADD_WORKOUT, r));
   } else {
-    dispatch(fetchWorkoutsList(data.type, data.userId));
+    dispatch(fetchWorkoutsList(data.type, data.subType, data.userId));
     dispatch(statusActions.resetError(WorkoutsActionNames.ADD_WORKOUT));
   }
 };
