@@ -42,6 +42,15 @@ export type WorkoutSubTypeStackRouteParams = {
   Awards: undefined;
 };
 
+export interface ExerciseTabNavigatorParams {
+  route: {
+    params: {
+      type: string;
+      subType: string;
+    };
+  };
+}
+
 export type ProfileStackRouteParams = {
   Profile: undefined;
   EditProfile: undefined;

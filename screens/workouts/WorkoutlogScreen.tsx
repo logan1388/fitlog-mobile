@@ -8,27 +8,27 @@ import BestLog from '../../components/BestLog';
 import Logs from '../../components/Logs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { workoutStyles } from './WorkoutScreen.style';
-import { useRoute } from '@react-navigation/native';
 import { RootState } from '../../store/actionHelpers';
 import { WorkoutModel, getWorkoutType } from '../../commonlib/models/WorkoutModel';
-import { fetchWorkoutsList } from '../../store/workouts';
+import { fetchWorkoutsList, resetWorkoutsList } from '../../store/workouts';
+import { StackScreenProps } from '@react-navigation/stack';
 
 interface WorkoutsReduxState {
   workouts?: WorkoutModel[];
 }
 
-const WorkoutlogScreen: React.FC = (props: any) => {
-  // const route = useRoute<RouteProp<WorkoutSubTypeStackRouteParams, WorkoutSubTypeStackScreens.ExerciseScreen>>();
-  const route = useRoute();
+interface WorkoutlogScreenProps {
+  type: string;
+  subType: string;
+}
+
+const WorkoutlogScreen: React.FC<WorkoutlogScreenProps> = props => {
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
-  const logs = useSelector<RootState>(state => state.fitlogReducer.logs);
   const maxWt = useSelector<RootState>(state => state.fitlogReducer.maxWeight);
   const maxRps = useSelector<RootState>(state => state.fitlogReducer.maxReps);
   const bestSet = useSelector<RootState>(state => state.fitlogReducer.bestSet);
-  const type = route.params ? route.params.type : '';
-  const subType = route.params ? route.params.subType : '';
 
-  console.log('Route params', props);
+  const { type, subType } = props;
 
   const userId = '5dfecbdd39d8760019968d04';
   const dispatch = useDispatch();
@@ -57,6 +57,10 @@ const WorkoutlogScreen: React.FC = (props: any) => {
   useEffect(() => {
     setStyles(workoutStyles());
     dispatch(fetchWorkoutsList(type, subType, userId));
+    // Equivalent of componentDidUnmount to reset workout list
+    return () => {
+      dispatch(resetWorkoutsList());
+    };
   }, [dispatch, setStyles, subType, type]);
 
   const addNotes = (log: WorkoutModel) => {
@@ -114,9 +118,9 @@ const WorkoutlogScreen: React.FC = (props: any) => {
   );
 };
 
-export const screenOptions = (navigationData: any) => {
+export const screenOptions = (navigationData: StackScreenProps<any>) => {
   return {
-    headerTitle: navigationData.route.params.subType.toUpperCase(),
+    headerTitle: navigationData.route.params?.subType.toUpperCase(),
   };
 };
 
