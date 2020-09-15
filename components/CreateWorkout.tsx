@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import RadioButtons from './RadioButtons';
@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CreateWorkoutModel, WorkoutTypes } from '../commonlib/models/WorkoutModel';
 import { RootState } from '../store/actionHelpers';
 import { addWorkout } from '../store/workouts';
+import { workoutStyles } from '../screens/workouts/WorkoutScreen.style';
 
 interface WorkoutInputProps {
   type: WorkoutTypes;
@@ -26,6 +27,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     { label: 'lbs', value: 'lbs' },
     { label: 'kgs', value: 'kgs' },
   ];
+  const [styles, setStyles] = useState(workoutStyles());
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
@@ -38,7 +40,6 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   const addLog = () => {
     let timestamp = getTimestamp();
     let id = '5dfecbdd39d8760019968d04';
-
     const exerciseLog: CreateWorkoutModel = {
       userId: id,
       type: props.type,
@@ -54,14 +55,15 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   };
 
   React.useEffect(() => {
+    setStyles(workoutStyles());
     setUnit(unitRadio[0].value);
-  }, [setUnit, unitRadio]);
+  }, [setStyles, setUnit]);
 
   return (
     <TouchableWithoutFeedback>
       <View style={styles.centeredView}>
         <View style={[styles.modalView, themeContainerStyle]}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.inputsContainer}>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Weight</Text>
               <NumericInput
@@ -75,7 +77,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
                 upDownButtonsBackgroundColor="darkgrey"
               />
             </View>
-            <View style={{ marginLeft: 20 }}>
+            <View style={styles.repsInputContainer}>
               <Text style={[styles.label, themeTextStyle]}>Reps</Text>
               <NumericInput
                 initValue={count}
@@ -89,27 +91,20 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
               />
             </View>
           </View>
-          <View style={{ marginTop: 15 }}>
+          <View style={styles.unitInputContainer}>
             <Text style={[styles.label, themeTextStyle]}>Unit</Text>
             <RadioButtons
               options={unitRadio}
               unit={unit}
-              style={{ flexDirection: 'row' }}
+              style={styles.radioButtons}
               setUnit={(value: string) => setUnit(value)}
             />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingVertical: 25,
-            }}>
-            <TouchableOpacity style={styles.button} onPress={() => weight > 0 && count > 0 && addLog()}>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={styles.addButton} onPress={() => weight > 0 && count > 0 && addLog()}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{ ...styles.button, marginLeft: 15 }}
-              onPress={() => props.setModalVisible(!props.modalVisible)}>
+            <TouchableOpacity style={styles.closeButton} onPress={() => props.setModalVisible(!props.modalVisible)}>
               <Icon name="close-circle-outline" size={50} color="tomato" />
             </TouchableOpacity>
           </View>
@@ -118,41 +113,5 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  label: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: 'transparent',
-  },
-  lightContainer: { backgroundColor: 'white' },
-  darkContainer: { backgroundColor: '#2D2D2D' },
-  lightThemeText: { color: '#343a40' },
-  darkThemeText: { color: 'bisque' },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    margin: 15,
-    borderRadius: 10,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingBottom: 15,
-  },
-});
 
 export default WorkoutInput;

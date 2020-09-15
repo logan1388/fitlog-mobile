@@ -43,8 +43,8 @@ const WorkoutlogScreen: React.FC<WorkoutlogScreenProps> = props => {
         ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
         : styles.lightContainer
       : notesModalVisible || logInputModalVisible
-        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
-        : styles.darkContainer;
+      ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+      : styles.darkContainer;
   const themeButtonStyle = mode === 'light' ? '#343a40' : 'bisque';
 
   const workoutsReduxState = useSelector<RootState, WorkoutsReduxState>(state => {

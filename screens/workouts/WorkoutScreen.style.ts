@@ -24,6 +24,23 @@ export const workoutStyles = () =>
       backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
     },
+    inputsContainer: {
+      flexDirection: 'row',
+    },
+    repsInputContainer: {
+      marginLeft: 20,
+    },
+    unitInputContainer: {
+      marginTop: 15,
+    },
+    radioButtons: {
+      flexDirection: 'row',
+    },
+    buttonsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      paddingVertical: 25,
+    },
     button: {
       backgroundColor: 'darkgrey',
       paddingVertical: 25,
@@ -33,6 +50,18 @@ export const workoutStyles = () =>
       textAlign: 'center',
       fontWeight: 'bold',
       fontSize: 16,
+    },
+    label: {
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 10,
+    },
+    addButton: {
+      backgroundColor: 'transparent',
+    },
+    closeButton: {
+      backgroundColor: 'transparent',
+      marginLeft: 15,
     },
     image: { flex: 1 },
     bg: {
@@ -46,6 +75,8 @@ export const workoutStyles = () =>
     },
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },
+    lightThemeText: { color: '#343a40' },
+    darkThemeText: { color: 'bisque' },
     floatingButton: {
       position: 'absolute',
       width: 50,
@@ -54,5 +85,26 @@ export const workoutStyles = () =>
       justifyContent: 'center',
       right: 15,
       bottom: 45,
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalView: {
+      backgroundColor: 'white',
+      margin: 15,
+      borderRadius: 10,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+      paddingBottom: 15,
     },
   });
