@@ -14,6 +14,7 @@ export interface CreateResistanceModel {
   type: ResistanceTypes;
   date: Date;
   weight?: number;
+  unit?: string;
   count?: number;
   time?: string;
   note?: string;
@@ -25,6 +26,7 @@ export interface ResistanceModel {
   type: ResistanceTypes;
   date: Date;
   weight: number;
+  unit: string;
   count: number;
   time: string;
   note: string;

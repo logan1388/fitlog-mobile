@@ -63,6 +63,6 @@ const Resistance: React.FC<ResistanceProps> = props => {
   );
 };
 
-export const screenOptions = { headerTitle: 'Workouts' };
+export const screenOptions = { headerTitle: 'Resistance' };
 
 export default Resistance;
