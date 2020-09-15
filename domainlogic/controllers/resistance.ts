@@ -6,10 +6,12 @@ import Storage from '../../constants/storage';
 import ResistanceService from '../../commonlib/services/resistance';
 import ServiceResponse from '../../commonlib/models/ServiceResponse';
 import LocalStorageDB from '../database/localStorageDB';
+import MongoDb from '../database/mongoDb';
 
 export default class ResistanceController {
   private resistanceSvc: ResistanceService;
   private static readonly TABLE_NAME: string = 'resistance';
+  private static readonly ENDPOINT = '/api/resistance';
 
   constructor() {
     this.resistanceSvc = new ResistanceService(new LocalStorageDB(ResistanceController.TABLE_NAME));
@@ -24,7 +26,7 @@ export default class ResistanceController {
       }
 
       this.resistanceSvc = allowRemoteStorage
-        ? new ResistanceService(new LocalStorageDB(ResistanceController.TABLE_NAME))
+        ? new ResistanceService(new MongoDb(ResistanceController.ENDPOINT))
         : new ResistanceService(new LocalStorageDB(ResistanceController.TABLE_NAME));
     });
   }
