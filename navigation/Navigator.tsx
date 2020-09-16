@@ -15,11 +15,13 @@ import ResistancelogScreen, {
 import WorkoutlogScreen, { screenOptions as workoutlogScreenOptions } from '../screens/workouts/WorkoutlogScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../constants/colors';
-import HomeScreen, { screenOptions as homeScreenOptions } from '../screens/HomeScreen';
+import DashboardScreen, { screenOptions as dashboardScreenOptions } from '../screens/dashboard/DashboardScreen';
 import Profile from '../screens/profile/ProfileScreen';
 import AwardsScreen from '../screens/AwardsScreen';
 import EditProfile from '../screens/profile/EditProfileScreen';
 import {
+  DashboardStackRouteParams,
+  DashboardStackScreens,
   ResistanceStackRouteParams,
   ResistanceStackScreens,
   WorkoutStackRouteParams,
@@ -107,12 +109,16 @@ const WorkoutNavigator = () => {
   );
 };
 
-const HomeStackNavigator = createStackNavigator();
-const HomeNavigator = () => {
+const DashboardStackNavigator = createStackNavigator<DashboardStackRouteParams>();
+const DashboardNavigator = () => {
   return (
-    <HomeStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <HomeStackNavigator.Screen name="Home" component={HomeScreen} options={homeScreenOptions} />
-    </HomeStackNavigator.Navigator>
+    <DashboardStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <DashboardStackNavigator.Screen
+        name={DashboardStackScreens.Dashboard}
+        component={DashboardScreen}
+        options={dashboardScreenOptions}
+      />
+    </DashboardStackNavigator.Navigator>
   );
 };
 
@@ -150,7 +156,7 @@ export const FitbookNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          if (route.name === 'Home') {
+          if (route.name === 'Dashboard') {
             return <Icon name="home" size={25} color={color} />;
           } else if (route.name === 'Resistance') {
             return <Icon name="dumbbell" size={25} color={color} />;
@@ -169,7 +175,7 @@ export const FitbookNavigator = () => {
         style: { backgroundColor: Colors.headerBackground },
         safeAreaInset: { bottom: 'never', top: 'never' },
       }}>
-      <Tab.Screen name="Home" component={HomeNavigator} />
+      <Tab.Screen name="Dashboard" component={DashboardNavigator} />
       <Tab.Screen name="Resistance" component={ResistanceNavigator} />
       <Tab.Screen name="Workouts" component={WorkoutNavigator} />
       <Tab.Screen name="Awards" component={AwardsNavigator} />

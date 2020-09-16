@@ -1,28 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
-import { workoutHistory, workoutSummary, weeklyAwards } from '../store/actions/actions';
+import { Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { workoutHistory, workoutSummary, weeklyAwards } from '../../store/actions/actions';
 import moment from 'moment';
-import Card from '../components/Card';
+import Card from '../../components/Card';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { VictoryPie } from 'victory-native';
-import Colors from '../constants/colors';
+import Colors from '../../constants/colors';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { DashboardStackScreens, DashboardStackRouteParams } from '../../navigation/NavigatorTypes';
+import { dashboardStyles } from './DashboardScreen.style';
 
-const HomeScreen = props => {
+type DashboardNavigationProps = StackNavigationProp<DashboardStackRouteParams, DashboardStackScreens>;
+
+interface DashboardProps {
+  navigation: DashboardNavigationProps;
+}
+
+const DashboardScreen: React.FC<DashboardProps> = props => {
   const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
   const workoutSumm = useSelector(state => state.fitlogReducer.workoutSummary);
   const awardsSumm = useSelector(state => state.fitlogReducer.awardsWeek);
   const mode = useSelector(state => state.fitlogReducer.theme);
+  const [styles, setStyles] = useState(dashboardStyles());
   const dispatch = useDispatch();
   const userId = '5dfecbdd39d8760019968d04';
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(workoutSummary(userId));
     dispatch(workoutHistory(userId));
     dispatch(weeklyAwards(userId));
-  }, [dispatch]);
+    setStyles(dashboardStyles());
+  }, [dispatch, setStyles]);
 
   const graphData = {};
   const data = [];
@@ -108,38 +119,29 @@ const HomeScreen = props => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      {/* <ImageBackground source={BackImg} style={styles.image}> */}
+    <SafeAreaView style={styles.safeAreaViewContainer}>
       <ScrollView style={[styles.container, themeContainerStyle]}>
         <View style={styles.innerContainer}>
           {workoutSumm && workoutSumm.length > 0 ? (
-            <View style={{ width: '100%', alignItems: 'center' }}>
-              <View style={{ width: '100%' }}>
+            <View style={styles.summaryOutsideContainer}>
+              <View style={styles.summaryInsideContainer}>
                 <Text style={[styles.text, themeTextStyle]}>Today's Summary</Text>
                 <Card style={styles.card}>{summary}</Card>
               </View>
             </View>
           ) : (
-            <View
-              style={{
-                width: '100%',
-                alignItems: 'center',
-                paddingHorizontal: 15,
-                marginVertical: 30,
-              }}>
-              <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('Workouts')}>
+            <View style={styles.trackingButtonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => props.navigation.navigate(DashboardStackScreens.Workouts)}>
                 <Text style={styles.buttonText}>Weight Tracking</Text>
               </TouchableOpacity>
             </View>
           )}
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              paddingHorizontal: 15,
-              marginVertical: 30,
-            }}>
-            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('Resistance')}>
+          <View style={styles.trackingButtonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => props.navigation.navigate(DashboardStackScreens.Resistance)}>
               <Text style={styles.buttonText}>Resistance Tracking</Text>
             </TouchableOpacity>
           </View>
@@ -158,64 +160,12 @@ const HomeScreen = props => {
           </View>
         </View>
       </ScrollView>
-      {/* </ImageBackground> */}
     </SafeAreaView>
   );
 };
 
 export const screenOptions = {
   headerTitle: 'FITBOOK',
-  headerTitleStyle: {
-    textAlign: 'center',
-  },
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(238, 238, 238, 0.8)',
-  },
-  image: { flex: 1 },
-  innerContainer: {
-    height: '100%',
-    alignItems: 'center',
-    paddingVertical: 30,
-  },
-  card: {
-    justifyContent: 'space-between',
-    backgroundColor: 'darkgrey',
-    marginHorizontal: 15,
-    maxHeight: 250,
-  },
-  button: {
-    backgroundColor: 'steelblue',
-    paddingVertical: 25,
-    alignItems: 'center',
-    width: '100%',
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  text: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
-    fontSize: 18,
-  },
-  logs: {
-    paddingVertical: 8,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-  },
-  lightContainer: { backgroundColor: 'white' },
-  darkContainer: { backgroundColor: '#2D2D2D' },
-  lightThemeText: { color: '#343a40' },
-  darkThemeText: { color: 'bisque' },
-});
-
-export default HomeScreen;
+export default DashboardScreen;
