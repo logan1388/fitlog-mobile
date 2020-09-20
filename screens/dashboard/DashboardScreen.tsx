@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import { workoutHistory, workoutSummary, weeklyAwards } from '../../store/actions/actions';
-import moment from 'moment';
 import Card from '../../components/Card';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { VictoryPie } from 'victory-native';
@@ -10,6 +9,9 @@ import Colors from '../../constants/colors';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DashboardStackScreens, DashboardStackRouteParams } from '../../navigation/NavigatorTypes';
 import { dashboardStyles } from './DashboardScreen.style';
+import { RootState } from '../../store/actionHelpers';
+import History from '../../components/History';
+import Summary from '../../components/Summary';
 
 type DashboardNavigationProps = StackNavigationProp<DashboardStackRouteParams, DashboardStackScreens>;
 
@@ -18,10 +20,10 @@ interface DashboardProps {
 }
 
 const DashboardScreen: React.FC<DashboardProps> = props => {
-  const workoutHist = useSelector(state => state.fitlogReducer.workoutHistory);
-  const workoutSumm = useSelector(state => state.fitlogReducer.workoutSummary);
-  const awardsSumm = useSelector(state => state.fitlogReducer.awardsWeek);
-  const mode = useSelector(state => state.fitlogReducer.theme);
+  const workoutHist = useSelector<RootState>(state => state.fitlogReducer.workoutHistory);
+  const workoutSumm = useSelector<RootState>(state => state.fitlogReducer.workoutSummary);
+  const awardsSumm = useSelector<RootState>(state => state.fitlogReducer.awardsWeek);
+  const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
   const dispatch = useDispatch();
   const userId = '5dfecbdd39d8760019968d04';
@@ -50,45 +52,6 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
     });
   });
 
-  const history = (
-    <View style={{ width: '100%' }}>
-      <ScrollView>
-        {workoutHist.slice(0, 5).map(item => (
-          <View style={styles.logs} key={item.date}>
-            <View style={{ flex: 2 }}>
-              <Text>{item.category}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'right' }}>{moment(item.date).format('MM/DD/YY')}</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
-  );
-
-  const summary = workoutSumm.length > 0 && (
-    <View style={{ width: '100%' }}>
-      <ScrollView>
-        {workoutSumm.map(item => (
-          <View style={styles.logs} key={item.date}>
-            <View style={{ flex: 2 }}>
-              <Text>{item.name}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'right' }}>
-                {item.weight} {item.unit}
-              </Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'right' }}>{item.count} reps</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
-  );
-
   const hightlights = (
     <View style={{ width: '100%' }}>
       <ScrollView>
@@ -110,10 +73,10 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
             </View>
           ))
         ) : (
-          <View style={{ alignItems: 'center' }}>
-            <Text>Keep pushing hard!</Text>
-          </View>
-        )}
+            <View style={{ alignItems: 'center' }}>
+              <Text>Keep pushing hard!</Text>
+            </View>
+          )}
       </ScrollView>
     </View>
   );
@@ -122,22 +85,7 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
     <SafeAreaView style={styles.safeAreaViewContainer}>
       <ScrollView style={[styles.container, themeContainerStyle]}>
         <View style={styles.innerContainer}>
-          {workoutSumm && workoutSumm.length > 0 ? (
-            <View style={styles.summaryOutsideContainer}>
-              <View style={styles.summaryInsideContainer}>
-                <Text style={[styles.text, themeTextStyle]}>Today's Summary</Text>
-                <Card style={styles.card}>{summary}</Card>
-              </View>
-            </View>
-          ) : (
-            <View style={styles.trackingButtonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => props.navigation.navigate(DashboardStackScreens.Workouts)}>
-                <Text style={styles.buttonText}>Weight Tracking</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          <Summary workoutSummary={workoutSumm} />
           <View style={styles.trackingButtonContainer}>
             <TouchableOpacity
               style={styles.button}
@@ -146,10 +94,7 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
             </TouchableOpacity>
           </View>
           <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
-            <View style={{ width: '100%' }}>
-              <Text style={[styles.text, themeTextStyle]}>Last 5 Workouts</Text>
-              <Card style={styles.card}>{history}</Card>
-            </View>
+            <History />
             <View style={{ width: '100%', marginTop: 20 }}>
               <Text style={[styles.text, themeTextStyle]}>Highlights</Text>
               <Card style={styles.card}>{hightlights}</Card>

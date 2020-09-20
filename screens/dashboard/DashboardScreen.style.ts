@@ -65,4 +65,16 @@ export const dashboardStyles = () =>
     summaryInsideContainer: {
       width: '100%',
     },
+    historyContainer: {
+      width: '100%',
+    },
+    historyTypeContainer: {
+      flex: 2,
+    },
+    historyDateContainer: {
+      flex: 1,
+    },
+    historyDate: {
+      textAlign: 'right',
+    },
   });

@@ -37,6 +37,13 @@ export interface WorkoutModel {
   note: string;
 }
 
+export interface WorkoutHistoryModel {
+  _id: string;
+  userId: string;
+  type: WorkoutTypes;
+  date: Date;
+}
+
 export const getWorkoutType = (param: string): WorkoutTypes => {
   switch (param.toLocaleUpperCase()) {
     case 'CHEST':
