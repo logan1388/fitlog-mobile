@@ -19,7 +19,7 @@ interface WorkoutsState {
 export const getInitialWorkoutsState = (): WorkoutsState => {
   return {
     workouts: [],
-    workoutsHistory: []
+    workoutsHistory: [],
   };
 };
 
@@ -81,9 +81,7 @@ export const addWorkout: ThunkActionCreator = (data: CreateWorkoutModel) => asyn
   }
 };
 
-export const fetchWorkoutsHistory: ThunkActionCreator = (userId: string) => async (
-  dispatch: Dispatch
-) => {
+export const fetchWorkoutsHistory: ThunkActionCreator = (userId: string) => async (dispatch: Dispatch) => {
   dispatch(statusActions.setPending(WorkoutsActionNames.FETCH_WORKOUTS_HISTORY));
   const r = await workoutsController.getWorkoutsHistory(userId);
   dispatch(statusActions.resetPending(WorkoutsActionNames.FETCH_WORKOUTS_HISTORY));
@@ -106,6 +104,12 @@ export const workoutReducer = (state: WorkoutsState = getInitialWorkoutsState(),
       const { workouts } = action.payload;
       return produce(state, draft => {
         draft.workouts = workouts;
+      });
+    }
+    case WorkoutsActionNames.FETCH_WORKOUTS_HISTORY: {
+      const { workoutsHistory } = action.payload;
+      return produce(state, draft => {
+        draft.workoutsHistory = workoutsHistory;
       });
     }
     default:

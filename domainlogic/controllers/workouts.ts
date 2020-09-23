@@ -15,16 +15,18 @@ import MongoDB from '../database/mongoDb';
 
 export default class WorkoutsController {
   private workoutsSvc: WorkoutsService;
+  private workoutsHistorySvc: WorkoutsService;
   private static readonly TABLE_NAME: string = 'workouts';
   private static readonly ENDPOINT = '/api/workout';
 
   constructor() {
     this.workoutsSvc = new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
+    this.workoutsHistorySvc = new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
     this.initialize();
   }
 
   public async initialize() {
-    let allowRemoteStorage = false;
+    let allowRemoteStorage = true;
     AsyncStorage.getItem(Storage.ALLOW_REMOTE_STORAGE).then(value => {
       if (value) {
         allowRemoteStorage = !!value;
@@ -32,6 +34,10 @@ export default class WorkoutsController {
 
       this.workoutsSvc = allowRemoteStorage
         ? new WorkoutsService(new MongoDB(WorkoutsController.ENDPOINT))
+        : new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
+
+      this.workoutsHistorySvc = allowRemoteStorage
+        ? new WorkoutsService(new MongoDB(`${WorkoutsController.ENDPOINT}/workoutHistory`))
         : new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
     });
   }
@@ -56,8 +62,9 @@ export default class WorkoutsController {
   }
 
   public async getWorkoutsHistory(userId: string): Promise<WorkoutHistoryModel[] | ServiceResponse> {
-    const response: WorkoutHistoryModel[] | ServiceResponse = await this.workoutsSvc.getWorkoutsHistoryByUserId(userId);
-    console.log('Get workouts history ', response)
+    const response: WorkoutHistoryModel[] | ServiceResponse = await this.workoutsHistorySvc.getWorkoutsHistoryByUserId(
+      userId
+    );
     return response;
   }
 }

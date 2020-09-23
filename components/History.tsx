@@ -6,7 +6,7 @@ import { dashboardStyles } from '../screens/dashboard/DashboardScreen.style';
 import moment from 'moment';
 import { RootState } from '../store/actionHelpers';
 import Card from './Card';
-import { fetchWorkoutsHistory } from '../store/workouts'
+import { fetchWorkoutsHistory } from '../store/workouts';
 
 interface WorkoutsHistoryReduxState {
   workoutsHistory?: WorkoutHistoryModel[];
@@ -20,11 +20,12 @@ const History = () => {
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
   const workoutsHistoryReduxState = useSelector<RootState, WorkoutsHistoryReduxState>(state => {
-    const workoutsHistory = state.workouts.workoutsHistory;
+    let workoutsHist = state.workouts.workoutsHistory;
+    let workoutsHistory = workoutsHist.slice().sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
     return { workoutsHistory };
   });
 
-  const { workoutsHistory } = workoutsHistoryReduxState;
+  let { workoutsHistory } = workoutsHistoryReduxState;
 
   React.useEffect(() => {
     setStyles(dashboardStyles());
@@ -34,16 +35,17 @@ const History = () => {
   const last5Workouts = (
     <View style={styles.historyContainer}>
       <ScrollView>
-        {workoutsHistory && workoutsHistory.slice(0, 5).map(item => (
-          <View style={styles.logs} key={item._id}>
-            <View style={styles.historyTypeContainer}>
-              <Text>{item.type}</Text>
+        {workoutsHistory &&
+          workoutsHistory.slice(0, 5).map(item => (
+            <View style={styles.logs} key={item._id}>
+              <View style={styles.historyTypeContainer}>
+                <Text>{item.type}</Text>
+              </View>
+              <View style={styles.historyDateContainer}>
+                <Text style={styles.historyDate}>{moment(item.date).format('MM/DD/YY')}</Text>
+              </View>
             </View>
-            <View style={styles.historyDateContainer}>
-              <Text style={styles.historyDate}>{moment(item.date).format('MM/DD/YY')}</Text>
-            </View>
-          </View>
-        ))}
+          ))}
       </ScrollView>
     </View>
   );
