@@ -88,4 +88,33 @@ export const dashboardStyles = () =>
     summaryRepsText: {
       textAlign: 'right',
     },
+    highlightsContainer: {
+      width: '100%'
+    },
+    highlightsRowContainer: {
+      flexDirection: 'row',
+      paddingBottom: 10
+    },
+    highlightsCardContainer: {
+      width: '100%',
+      marginTop: 20
+    },
+    highlightsIconContainer: {
+      flex: 1
+    },
+    highlightsSubTypeContainer: {
+      flex: 3
+    },
+    highlightsWeightContainer: {
+      flex: 1.5
+    },
+    highlightsRepsContainer: {
+      flex: 1.5
+    },
+    highlightsWeightText: {
+      textAlign: 'right'
+    },
+    highlightsRepsText: {
+      textAlign: 'right'
+    }
   });
