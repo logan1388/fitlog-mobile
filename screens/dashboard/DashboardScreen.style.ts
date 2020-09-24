@@ -58,11 +58,7 @@ export const dashboardStyles = () =>
     darkContainer: { backgroundColor: '#2D2D2D' },
     lightThemeText: { color: '#343a40' },
     darkThemeText: { color: 'bisque' },
-    summaryOutsideContainer: {
-      width: '100%',
-      alignItems: 'center',
-    },
-    summaryInsideContainer: {
+    summaryContainer: {
       width: '100%',
     },
     historyContainer: {
@@ -75,6 +71,21 @@ export const dashboardStyles = () =>
       flex: 1,
     },
     historyDate: {
+      textAlign: 'right',
+    },
+    summarySubTypeTextContainer: {
+      flex: 2,
+    },
+    summaryWeightTextContainer: {
+      flex: 1,
+    },
+    summaryRepsTextContainer: {
+      flex: 1,
+    },
+    summaryWeightText: {
+      textAlign: 'right',
+    },
+    summaryRepsText: {
       textAlign: 'right',
     },
   });

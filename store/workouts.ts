@@ -4,7 +4,13 @@ import { ActionCreator, Dispatch } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from './actionHelpers';
 import produce from 'immer';
-import { WorkoutModel, CreateWorkoutModel, WorkoutTypes, WorkoutHistoryModel } from '../commonlib/models/WorkoutModel';
+import {
+  WorkoutModel,
+  CreateWorkoutModel,
+  WorkoutTypes,
+  WorkoutHistoryModel,
+  WorkoutSummaryModel,
+} from '../commonlib/models/WorkoutModel';
 import { Action, ActionsUnion } from './actionHelpers';
 import WorkoutsController, { workoutsController } from '../domainlogic/controllers/workouts';
 import { AppState } from '.';
@@ -14,12 +20,14 @@ import { statusActions } from './status';
 interface WorkoutsState {
   workouts: WorkoutModel[];
   workoutsHistory: WorkoutHistoryModel[];
+  workoutsSummary: WorkoutSummaryModel[];
 }
 
 export const getInitialWorkoutsState = (): WorkoutsState => {
   return {
     workouts: [],
     workoutsHistory: [],
+    workoutsSummary: [],
   };
 };
 
@@ -28,6 +36,7 @@ export enum WorkoutsActionNames {
   RECEIVE_WORKOUTS_LIST = 'RECEIVE_WORKOUTS_LIST',
   ADD_WORKOUT = 'ADD_WORKOUT',
   FETCH_WORKOUTS_HISTORY = 'FETCH_WORKOUTS_HISTORY',
+  FETCH_WORKOUTS_SUMMARY = 'FETCH_WORKOUTS_SUMMARY',
 }
 
 export const workoutActions = {
@@ -42,6 +51,10 @@ export const workoutActions = {
   fetchWorkoutsHistory: (workoutsHistory: WorkoutHistoryModel[]): Action => ({
     type: WorkoutsActionNames.FETCH_WORKOUTS_HISTORY,
     payload: { workoutsHistory },
+  }),
+  fetchWorkoutsSummary: (workoutsSummary: WorkoutSummaryModel[]): Action => ({
+    type: WorkoutsActionNames.FETCH_WORKOUTS_SUMMARY,
+    payload: { workoutsSummary },
   }),
 };
 
@@ -77,6 +90,7 @@ export const addWorkout: ThunkActionCreator = (data: CreateWorkoutModel) => asyn
     dispatch(statusActions.setError(WorkoutsActionNames.ADD_WORKOUT, r));
   } else {
     dispatch(fetchWorkoutsList(data.type, data.subType, data.userId));
+    dispatch(fetchWorkoutsSummary(data.userId));
     dispatch(statusActions.resetError(WorkoutsActionNames.ADD_WORKOUT));
   }
 };
@@ -91,6 +105,19 @@ export const fetchWorkoutsHistory: ThunkActionCreator = (userId: string) => asyn
   } else {
     dispatch(workoutActions.fetchWorkoutsHistory(r));
     dispatch(statusActions.resetError(WorkoutsActionNames.FETCH_WORKOUTS_HISTORY));
+  }
+};
+
+export const fetchWorkoutsSummary: ThunkActionCreator = (userId: string) => async (dispatch: Dispatch) => {
+  dispatch(statusActions.setPending(WorkoutsActionNames.FETCH_WORKOUTS_SUMMARY));
+  const r = await workoutsController.getWorkoutsSummary(userId);
+  dispatch(statusActions.resetPending(WorkoutsActionNames.FETCH_WORKOUTS_SUMMARY));
+
+  if (isServiceResponse(r)) {
+    dispatch(statusActions.setError(WorkoutsActionNames.FETCH_WORKOUTS_SUMMARY, r));
+  } else {
+    dispatch(workoutActions.fetchWorkoutsSummary(r));
+    dispatch(statusActions.resetError(WorkoutsActionNames.FETCH_WORKOUTS_SUMMARY));
   }
 };
 
@@ -110,6 +137,12 @@ export const workoutReducer = (state: WorkoutsState = getInitialWorkoutsState(),
       const { workoutsHistory } = action.payload;
       return produce(state, draft => {
         draft.workoutsHistory = workoutsHistory;
+      });
+    }
+    case WorkoutsActionNames.FETCH_WORKOUTS_SUMMARY: {
+      const { workoutsSummary } = action.payload;
+      return produce(state, draft => {
+        draft.workoutsSummary = workoutsSummary;
       });
     }
     default:

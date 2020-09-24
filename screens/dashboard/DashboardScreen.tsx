@@ -12,6 +12,8 @@ import { dashboardStyles } from './DashboardScreen.style';
 import { RootState } from '../../store/actionHelpers';
 import History from '../../components/History';
 import Summary from '../../components/Summary';
+import { WorkoutSummaryModel } from '../../commonlib/models/WorkoutModel';
+import { fetchWorkoutsSummary } from '../../store/workouts';
 
 type DashboardNavigationProps = StackNavigationProp<DashboardStackRouteParams, DashboardStackScreens>;
 
@@ -19,9 +21,12 @@ interface DashboardProps {
   navigation: DashboardNavigationProps;
 }
 
+interface WorkoutsSummaryReduxState {
+  workoutsSummary?: WorkoutSummaryModel[];
+}
+
 const DashboardScreen: React.FC<DashboardProps> = props => {
   const workoutHist = useSelector<RootState>(state => state.fitlogReducer.workoutHistory);
-  const workoutSumm = useSelector<RootState>(state => state.fitlogReducer.workoutSummary);
   const awardsSumm = useSelector<RootState>(state => state.fitlogReducer.awardsWeek);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
@@ -30,8 +35,17 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
 
+  const workoutsSummaryReduxState = useSelector<RootState, WorkoutsSummaryReduxState>(state => {
+    let workoutsSumm = state.workouts.workoutsSummary;
+    console.log('Workout summary ', workoutsSumm);
+    let workoutsSummary = workoutsSumm.slice().sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+    return { workoutsSummary };
+  });
+
+  let { workoutsSummary } = workoutsSummaryReduxState;
+
   React.useEffect(() => {
-    dispatch(workoutSummary(userId));
+    dispatch(fetchWorkoutsSummary(userId));
     dispatch(workoutHistory(userId));
     dispatch(weeklyAwards(userId));
     setStyles(dashboardStyles());
@@ -85,7 +99,17 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
     <SafeAreaView style={styles.safeAreaViewContainer}>
       <ScrollView style={[styles.container, themeContainerStyle]}>
         <View style={styles.innerContainer}>
-          <Summary workoutSummary={workoutSumm} />
+          {workoutsSummary && workoutsSummary.length > 0 ? (
+            <Summary workoutsSummary={workoutsSummary} />
+          ) : (
+            <View style={styles.trackingButtonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => props.navigation.navigate(DashboardStackScreens.Workouts)}>
+                <Text style={styles.buttonText}>Weight Tracking</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View style={styles.trackingButtonContainer}>
             <TouchableOpacity
               style={styles.button}
