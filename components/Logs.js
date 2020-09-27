@@ -39,7 +39,7 @@ const Logs = props => {
                     </View>
                   )}
                   <View style={{ flex: 3 }}>
-                    <Text style={themeTextStyle}>{item.date}</Text>
+                    <Text style={themeTextStyle}>{moment(item.date).utc().local().format('MM/DD/YY HH:mm')}</Text>
                   </View>
                   <View style={{ flex: 1.5 }}>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
@@ -93,7 +93,7 @@ const Logs = props => {
                     ) : null}
                   </View>
                   <View style={{ flex: 2.5 }}>
-                    <Text style={themeTextStyle}>{item.date}</Text>
+                    <Text style={themeTextStyle}>{moment(item.date).utc().local().format('MM/DD/YY HH:mm')}</Text>
                   </View>
                   <View style={{ flex: 1.5 }}>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>

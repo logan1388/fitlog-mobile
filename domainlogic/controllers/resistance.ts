@@ -19,7 +19,7 @@ export default class ResistanceController {
   }
 
   public async initialize() {
-    let allowRemoteStorage = false;
+    let allowRemoteStorage = true;
     AsyncStorage.getItem(Storage.ALLOW_REMOTE_STORAGE).then(value => {
       if (value) {
         allowRemoteStorage = !!value;

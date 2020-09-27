@@ -60,3 +60,15 @@ export enum ProfileStackScreens {
   ProfileScreen = 'Profile',
   EditProfileScreen = 'EditProfile',
 }
+
+export type DashboardStackRouteParams = {
+  Dashboard: undefined;
+  Workouts: undefined;
+  Resistance: undefined;
+};
+
+export enum DashboardStackScreens {
+  Dashboard = 'Dashboard',
+  Workouts = 'Workouts',
+  Resistance = 'Resistance',
+}
