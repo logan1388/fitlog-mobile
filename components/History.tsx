@@ -20,12 +20,11 @@ const History = () => {
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
   const workoutsHistoryReduxState = useSelector<RootState, WorkoutsHistoryReduxState>(state => {
-    let workoutsHist = state.workouts.workoutsHistory;
-    let workoutsHistory = workoutsHist.slice().sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
+    const workoutsHistory = state.workouts.workoutsHistory;
     return { workoutsHistory };
   });
 
-  let { workoutsHistory } = workoutsHistoryReduxState;
+  const { workoutsHistory } = workoutsHistoryReduxState;
 
   React.useEffect(() => {
     setStyles(dashboardStyles());
@@ -42,7 +41,7 @@ const History = () => {
                 <Text>{item.type}</Text>
               </View>
               <View style={styles.historyDateContainer}>
-                <Text style={styles.historyDate}>{moment(item.date).format('MM/DD/YY')}</Text>
+                <Text style={styles.historyDate}>{moment(item.createdDate).format('MM/DD/YY')}</Text>
               </View>
             </View>
           ))}

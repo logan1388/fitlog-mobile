@@ -9,16 +9,11 @@ export enum WorkoutTypes {
   TRICEPS = 'triceps',
 }
 
-// export interface WorkoutSubTypes {
-//   type: WorkoutTypes;
-//   exercise: string;
-// }
-
 export interface CreateWorkoutModel {
   userId: string;
   type: WorkoutTypes;
   subType: string;
-  date: Date;
+  createdDate: Date;
   weight?: number;
   unit?: string;
   count?: number;
@@ -30,7 +25,7 @@ export interface WorkoutModel {
   userId: string;
   type: WorkoutTypes;
   subType: string;
-  date: Date;
+  createdDate: Date;
   weight: number;
   unit: string;
   count: number;
@@ -41,14 +36,14 @@ export interface WorkoutHistoryModel {
   _id: string;
   userId: string;
   type: WorkoutTypes;
-  date: Date;
+  createdDate: Date;
 }
 
 export interface WorkoutSummaryModel {
   _id: string;
   userId: string;
   subType: string;
-  date: Date;
+  createdDate: Date;
   weight: number;
   unit: string;
   count: number;

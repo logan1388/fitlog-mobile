@@ -50,7 +50,9 @@ export default class LocalStorageDB implements IDatabase {
       parsedData.push(Object.assign({}, data[key], { id: key }));
     });
 
-    return parsedData;
+    const sortedData = parsedData.sort((a, b) => b.createdDate - a.createdDate);
+
+    return sortedData;
   }
 
   public async GetListByUserId(_userId: string, params?: Record<string, any>): Promise<any[] | ServiceResponse> {
@@ -73,17 +75,19 @@ export default class LocalStorageDB implements IDatabase {
       parsedData.push(Object.assign({}, data[key], { _id: key }));
     });
 
+    const sortedData = parsedData.sort((a, b) => b.createdDate - a.createdDate);
+
     if (params) {
       const filters = Object.keys(params);
 
-      const filteredData = parsedData.filter(p => {
+      const filteredData = sortedData.filter(p => {
         return filters.every(key => params[key] === p[key]);
       });
 
       return filteredData;
     }
 
-    return parsedData;
+    return sortedData;
   }
 
   public async PostAsync(data: Record<string, any>): Promise<any> {

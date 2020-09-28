@@ -44,7 +44,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
       userId: id,
       type: props.type,
       subType: props.subType.toLocaleLowerCase(),
-      date: new Date(timestamp),
+      createdDate: new Date(timestamp),
       weight,
       unit,
       count,

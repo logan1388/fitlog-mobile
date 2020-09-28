@@ -73,7 +73,7 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
     const newResistance: CreateResistanceModel = {
       userId: id,
       type: props.name,
-      date: new Date(timestamp),
+      createdDate: new Date(timestamp),
       weight,
       unit,
       count,
