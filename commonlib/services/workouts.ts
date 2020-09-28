@@ -3,7 +3,6 @@
 import IDatabase from '../database/IDatabase';
 import { CreateWorkoutModel, WorkoutHistoryModel, WorkoutSummaryModel, WorkoutModel } from '../models/WorkoutModel';
 import ServiceResponse, { isServiceResponse } from '../models/ServiceResponse';
-import moment from 'moment';
 
 export default class WorkoutsService {
   private db: IDatabase;
@@ -22,16 +21,12 @@ export default class WorkoutsService {
   }
 
   public async getWorkoutsHistoryByUserId(userId: string): Promise<WorkoutHistoryModel[] | ServiceResponse> {
-    let date = new Date(moment().startOf('day').format());
-    const params = {};
-    const r: WorkoutHistoryModel[] | ServiceResponse = await this.db.GetListByUserId(userId, params);
+    const r: WorkoutHistoryModel[] | ServiceResponse = await this.db.GetListByUserId(userId);
     return r;
   }
 
   public async getWorkoutsSummaryByUserId(userId: string): Promise<WorkoutSummaryModel[] | ServiceResponse> {
-    let date = new Date(moment().startOf('day').format());
-    const params = {};
-    const r: WorkoutSummaryModel[] | ServiceResponse = await this.db.GetListByUserId(userId, params);
+    const r: WorkoutSummaryModel[] | ServiceResponse = await this.db.GetListByUserId(userId);
     return r;
   }
 

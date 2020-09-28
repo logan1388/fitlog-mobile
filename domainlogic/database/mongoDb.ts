@@ -16,6 +16,7 @@ export default class MongoDb implements IDatabase {
   public async GetAsync(id: string): Promise<Record<string, any>> {
     try {
       const url = `${MongoDb.prefix}${this.endpoint}/${id}`;
+      console.debug('GetAsync', { url, id });
       const r = await axios.get(url);
 
       if (r.status !== 200) {
@@ -28,7 +29,7 @@ export default class MongoDb implements IDatabase {
 
       return r.data;
     } catch (error) {
-      console.error(error);
+      console.error('GetAsync failed', { error });
       const r = new ServiceResponse();
       r.responseCode = 500;
       r.responseMessage = 'Unable to fetch data from DB';
@@ -40,6 +41,7 @@ export default class MongoDb implements IDatabase {
   public async GetListAsync(): Promise<any[] | ServiceResponse> {
     try {
       const url = `${MongoDb.prefix}${this.endpoint}`;
+      console.debug('GetListAsync', { url });
       const r = await axios.get(url);
 
       if (r.status !== 200) {
@@ -52,7 +54,7 @@ export default class MongoDb implements IDatabase {
 
       return r.data;
     } catch (error) {
-      console.error(error);
+      console.error('GetListAsync failed', { error });
       const r = new ServiceResponse();
       r.responseCode = 500;
       r.responseMessage = 'Unable to fetch data from DB';
@@ -67,11 +69,11 @@ export default class MongoDb implements IDatabase {
     if (params) {
       const filters = Object.keys(params);
       filters.forEach(key => {
-        url = `${url}/${params[key]}`;
+        url = `${url}/${key}/${params[key]}`;
       });
-
-      url = `${url}?userId=${userId}`;
     }
+    url = `${url}?userId=${userId}`;
+    console.debug('GetListByUserId', { url });
 
     try {
       const r = await axios.get(url);
@@ -86,7 +88,7 @@ export default class MongoDb implements IDatabase {
 
       return r.data;
     } catch (error) {
-      console.error(error);
+      console.error('GetListByUserId failed', { error });
       const r = new ServiceResponse();
       r.responseCode = 500;
       r.responseMessage = 'Unable to fetch data from DB';
@@ -98,6 +100,7 @@ export default class MongoDb implements IDatabase {
   public async PostAsync(data: Record<string, any>): Promise<any> {
     try {
       const url = `${MongoDb.prefix}${this.endpoint}`;
+      console.debug('PostAsync', { url });
       const r = await axios.post(url, data);
 
       if (r.status !== 200) {
@@ -110,7 +113,7 @@ export default class MongoDb implements IDatabase {
 
       return r.data;
     } catch (error) {
-      console.error(error);
+      console.error('PostAsync failed', { error });
       const r = new ServiceResponse();
       r.responseCode = 500;
       r.responseMessage = 'Unable to post data from DB';

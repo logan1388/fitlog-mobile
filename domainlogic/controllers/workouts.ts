@@ -29,8 +29,8 @@ export default class WorkoutsController {
   }
 
   public async initialize() {
-    let allowRemoteStorage = false;
     AsyncStorage.getItem(Storage.ALLOW_REMOTE_STORAGE).then(value => {
+      let allowRemoteStorage = false;
       if (value) {
         allowRemoteStorage = !!value;
       }
@@ -40,11 +40,11 @@ export default class WorkoutsController {
         : new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
 
       this.workoutsHistorySvc = allowRemoteStorage
-        ? new WorkoutsService(new MongoDB(`${WorkoutsController.ENDPOINT}/workoutHistory`))
+        ? new WorkoutsService(new MongoDB(`${WorkoutsController.ENDPOINT}/history`))
         : new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
 
       this.workoutsSummarySvc = allowRemoteStorage
-        ? new WorkoutsService(new MongoDB(`${WorkoutsController.ENDPOINT}/workoutSummary`))
+        ? new WorkoutsService(new MongoDB(`${WorkoutsController.ENDPOINT}/summary`))
         : new WorkoutsService(new LocalStorageDB(WorkoutsController.TABLE_NAME));
     });
   }

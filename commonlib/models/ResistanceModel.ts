@@ -12,7 +12,7 @@ export enum ResistanceTypes {
 export interface CreateResistanceModel {
   userId: string;
   type: ResistanceTypes;
-  date: Date;
+  createdDate: Date;
   weight?: number;
   unit?: string;
   count?: number;
@@ -24,7 +24,7 @@ export interface ResistanceModel {
   _id: string;
   userId: string;
   type: ResistanceTypes;
-  date: Date;
+  createdDate: Date;
   weight: number;
   unit: string;
   count: number;
