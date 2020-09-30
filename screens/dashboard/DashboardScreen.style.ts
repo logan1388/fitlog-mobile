@@ -89,32 +89,32 @@ export const dashboardStyles = () =>
       textAlign: 'right',
     },
     highlightsContainer: {
-      width: '100%'
+      width: '100%',
     },
     highlightsRowContainer: {
       flexDirection: 'row',
-      paddingBottom: 10
+      paddingBottom: 10,
     },
     highlightsCardContainer: {
       width: '100%',
-      marginTop: 20
+      marginTop: 20,
     },
     highlightsIconContainer: {
-      flex: 1
+      flex: 1,
     },
     highlightsSubTypeContainer: {
-      flex: 3
+      flex: 3,
     },
     highlightsWeightContainer: {
-      flex: 1.5
+      flex: 1.5,
     },
     highlightsRepsContainer: {
-      flex: 1.5
+      flex: 1.5,
     },
     highlightsWeightText: {
-      textAlign: 'right'
+      textAlign: 'right',
     },
     highlightsRepsText: {
-      textAlign: 'right'
-    }
+      textAlign: 'right',
+    },
   });
