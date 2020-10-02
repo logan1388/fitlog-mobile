@@ -67,9 +67,6 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
     <SafeAreaView style={styles.safeAreaViewContainer}>
       <ScrollView style={[styles.container, themeContainerStyle]}>
         <View style={styles.innerContainer}>
-          <View style={{ marginTop: 15 }}>
-            <DonutGraph graphData={workoutsHistGraphData} />
-          </View>
           {workoutsSummary && workoutsSummary.length > 0 ? (
             <Summary workoutsSummary={workoutsSummary} />
           ) : (
@@ -89,6 +86,9 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
             </TouchableOpacity>
           </View>
           <View style={{ width: '100%', alignItems: 'center' }}>
+            <View style={{ marginTop: 15 }}>
+              <DonutGraph graphData={workoutsHistGraphData} />
+            </View>
             {workoutsHistory && <History workoutsHistory={workoutsHistory} />}
             <Highlights awards={awardsSumm} />
           </View>
