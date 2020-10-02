@@ -95,7 +95,9 @@ const Logs = props => {
                     ) : null}
                   </View>
                   <View style={{ flex: 2.5 }}>
-                    <Text style={themeTextStyle}>{moment(item.createdDate).utc().local().format('MM/DD/YY HH:mm')}</Text>
+                    <Text style={themeTextStyle}>
+                      {moment(item.createdDate).utc().local().format('MM/DD/YY HH:mm')}
+                    </Text>
                   </View>
                   <View style={{ flex: 1.5 }}>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>

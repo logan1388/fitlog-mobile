@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
-import { workoutHistory, weeklyAwards } from '../../store/actions/actions';
-import { VictoryPie } from 'victory-native';
+import { weeklyAwards } from '../../store/actions/actions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DashboardStackScreens, DashboardStackRouteParams } from '../../navigation/NavigatorTypes';
 import { dashboardStyles } from './DashboardScreen.style';
@@ -10,8 +9,9 @@ import { RootState } from '../../store/actionHelpers';
 import History from '../../components/History';
 import Summary from '../../components/Summary';
 import Highlights from '../../components/Highlights';
-import { WorkoutSummaryModel } from '../../commonlib/models/WorkoutModel';
-import { fetchWorkoutsSummary } from '../../store/workouts';
+import { WorkoutSummaryModel, WorkoutHistoryModel, WorkoutTypes, WorkoutHistoryGraphModel } from '../../commonlib/models/WorkoutModel';
+import { fetchWorkoutsSummary, fetchWorkoutsHistory } from '../../store/workouts';
+import DonutGraph from '../../components/graphs/donut-graph';
 
 type DashboardNavigationProps = StackNavigationProp<DashboardStackRouteParams, DashboardStackScreens>;
 
@@ -23,8 +23,11 @@ interface WorkoutsSummaryReduxState {
   workoutsSummary?: WorkoutSummaryModel[];
 }
 
+interface WorkoutsHistoryReduxState {
+  workoutsHistory?: WorkoutHistoryModel[];
+}
+
 const DashboardScreen: React.FC<DashboardProps> = props => {
-  const workoutHist = useSelector<RootState>(state => state.fitlogReducer.workoutHistory);
   const awardsSumm = useSelector<RootState>(state => state.fitlogReducer.awardsWeek);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
@@ -37,30 +40,28 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
     let workoutsSummary = workoutsSumm.slice().sort((a: any, b: any) => new Date(b.date) - new Date(a.date));
     return { workoutsSummary };
   });
-
   let { workoutsSummary } = workoutsSummaryReduxState;
 
+  const workoutsHistoryReduxState = useSelector<RootState, WorkoutsHistoryReduxState>(state => {
+    const workoutsHistory = state.workouts.workoutsHistory;
+    return { workoutsHistory };
+  });
+  const { workoutsHistory } = workoutsHistoryReduxState;
+
   React.useEffect(() => {
+    dispatch(fetchWorkoutsHistory(userId));
     dispatch(fetchWorkoutsSummary(userId));
-    dispatch(workoutHistory(userId));
     dispatch(weeklyAwards(userId));
     setStyles(dashboardStyles());
   }, [dispatch, setStyles]);
 
-  const graphData = {};
-  const data = [];
-  workoutHist.map(hist => {
-    graphData[hist.category] = {
-      count: graphData[hist.category] ? graphData[hist.category].count + 1 : 1,
-    };
-  });
-  Object.keys(graphData).map(key => {
-    data.push({
-      x: key,
-      y: graphData[key].count,
-      label: `${key}\n(${graphData[key].count})`,
-    });
-  });
+  const workoutTypes: WorkoutTypes =
+    workoutsHistory &&
+    workoutsHistory.map(w => w.type).reduce((acc: any, w: any) => ((acc[w] = (acc[w] || 0) + 1), acc), {});
+  const workoutsHistGraphData: WorkoutHistoryGraphModel[] = Object.entries(workoutTypes).map(([k, v]) => ({
+    type: k,
+    frequency: v,
+  }));
 
   return (
     <SafeAreaView style={styles.safeAreaViewContainer}>
@@ -84,12 +85,12 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
               <Text style={styles.buttonText}>Resistance Tracking</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
-            <History />
-            <Highlights awards={awardsSumm} />
+          <View style={{ width: '100%', alignItems: 'center' }}>
             <View style={{ marginTop: 15 }}>
-              <VictoryPie data={data} width={350} colorScale="blue" style={{ labels: { fontSize: 16 } }} />
+              <DonutGraph graphData={workoutsHistGraphData} />
             </View>
+            {workoutsHistory && <History workoutsHistory={workoutsHistory} />}
+            <Highlights awards={awardsSumm} />
           </View>
         </View>
       </ScrollView>

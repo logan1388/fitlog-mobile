@@ -49,6 +49,11 @@ export interface WorkoutSummaryModel {
   count: number;
 }
 
+export interface WorkoutHistoryGraphModel {
+  type: WorkoutTypes;
+  frequency: number;
+}
+
 export const getWorkoutType = (param: string): WorkoutTypes => {
   switch (param.toLocaleUpperCase()) {
     case 'CHEST':

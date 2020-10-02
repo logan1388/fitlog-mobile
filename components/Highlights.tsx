@@ -42,10 +42,10 @@ const Highlights: React.FC<HighlightsProps> = props => {
             </View>
           ))
         ) : (
-            <View style={{ alignItems: 'center' }}>
-              <Text>Keep pushing hard!</Text>
-            </View>
-          )}
+          <View style={{ alignItems: 'center' }}>
+            <Text>Keep pushing hard!</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
