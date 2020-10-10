@@ -59,7 +59,6 @@ const DashboardScreen = () => {
     type: k,
     frequency: v,
   }));
-  console.log('WorkoutHistGraphData ', workoutsHistGraphData);
 
   return (
     <SafeAreaView style={styles.safeAreaViewContainer}>
