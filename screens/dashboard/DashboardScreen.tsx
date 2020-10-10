@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 import { weeklyAwards } from '../../store/actions/actions';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { DashboardStackScreens, DashboardStackRouteParams } from '../../navigation/NavigatorTypes';
 import { dashboardStyles } from './DashboardScreen.style';
 import { RootState } from '../../store/actionHelpers';
 import History from '../../components/History';
 import Summary from '../../components/Summary';
 import Highlights from '../../components/Highlights';
-import { WorkoutSummaryModel, WorkoutHistoryModel, WorkoutTypes, WorkoutHistoryGraphModel } from '../../commonlib/models/WorkoutModel';
+import {
+  WorkoutSummaryModel,
+  WorkoutHistoryModel,
+  WorkoutTypes,
+  WorkoutHistoryGraphModel,
+} from '../../commonlib/models/WorkoutModel';
 import { fetchWorkoutsSummary, fetchWorkoutsHistory } from '../../store/workouts';
 import DonutGraph from '../../components/graphs/donut-graph';
-
-type DashboardNavigationProps = StackNavigationProp<DashboardStackRouteParams, DashboardStackScreens>;
-
-interface DashboardProps {
-  navigation: DashboardNavigationProps;
-}
 
 interface WorkoutsSummaryReduxState {
   workoutsSummary?: WorkoutSummaryModel[];
@@ -27,7 +24,7 @@ interface WorkoutsHistoryReduxState {
   workoutsHistory?: WorkoutHistoryModel[];
 }
 
-const DashboardScreen: React.FC<DashboardProps> = props => {
+const DashboardScreen = () => {
   const awardsSumm = useSelector<RootState>(state => state.fitlogReducer.awardsWeek);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
@@ -62,33 +59,19 @@ const DashboardScreen: React.FC<DashboardProps> = props => {
     type: k,
     frequency: v,
   }));
+  console.log('WorkoutHistGraphData ', workoutsHistGraphData);
 
   return (
     <SafeAreaView style={styles.safeAreaViewContainer}>
       <ScrollView style={[styles.container, themeContainerStyle]}>
         <View style={styles.innerContainer}>
-          {workoutsSummary && workoutsSummary.length > 0 ? (
-            <Summary workoutsSummary={workoutsSummary} />
-          ) : (
-              <View style={styles.trackingButtonContainer}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => props.navigation.navigate(DashboardStackScreens.Workouts)}>
-                  <Text style={styles.buttonText}>Weight Tracking</Text>
-                </TouchableOpacity>
+          {workoutsSummary && workoutsSummary.length > 0 && <Summary workoutsSummary={workoutsSummary} />}
+          <View style={{ width: '100%' }}>
+            {workoutsHistGraphData && workoutsHistGraphData.length > 0 && (
+              <View style={{ marginTop: 15, alignItems: 'center' }}>
+                <DonutGraph graphData={workoutsHistGraphData} />
               </View>
             )}
-          <View style={styles.trackingButtonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => props.navigation.navigate(DashboardStackScreens.Resistance)}>
-              <Text style={styles.buttonText}>Resistance Tracking</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <View style={{ marginTop: 15 }}>
-              <DonutGraph graphData={workoutsHistGraphData} />
-            </View>
             {workoutsHistory && <History workoutsHistory={workoutsHistory} />}
             <Highlights awards={awardsSumm} />
           </View>
