@@ -30,6 +30,12 @@ Ensure a simulator is also installed.
 sudo gem install cocoapods
 ```
 
+### Generate debug.keystore for Android
+
+```
+keytool -genkey -v -keyalg RSA -keysize 2048 -validity 10000 -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android
+```
+
 ### Running iOS
 
 ```

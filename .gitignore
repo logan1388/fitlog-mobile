@@ -19,3 +19,9 @@ Pods/
 # Android
 debug.keystore
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
+.idea
+.gradle
+local.properties
+build/
+*.iml
