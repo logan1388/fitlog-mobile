@@ -1,34 +1,16 @@
 // Copyright FitBook
 
 import { CreateResistanceModel, ResistanceModel, ResistanceTypes } from '../../commonlib/models/ResistanceModel';
-import AsyncStorage from '@react-native-community/async-storage';
-import Storage from '../../constants/storage';
 import ResistanceService from '../../commonlib/services/resistance';
 import ServiceResponse from '../../commonlib/models/ServiceResponse';
-import LocalStorageDB from '../database/localStorageDB';
-import MongoDb from '../database/mongoDb';
+import FirebaseDB from '../database/FirebaseDB';
 
 export default class ResistanceController {
   private resistanceSvc: ResistanceService;
-  private static readonly TABLE_NAME: string = 'resistance';
-  private static readonly ENDPOINT = '/api/resistance';
+  private static readonly TABLE_NAME: string = 'Resistances';
 
   constructor() {
-    this.resistanceSvc = new ResistanceService(new LocalStorageDB(ResistanceController.TABLE_NAME));
-    this.initialize();
-  }
-
-  public async initialize() {
-    let allowRemoteStorage = true;
-    AsyncStorage.getItem(Storage.ALLOW_REMOTE_STORAGE).then(value => {
-      if (value) {
-        allowRemoteStorage = !!value;
-      }
-
-      this.resistanceSvc = allowRemoteStorage
-        ? new ResistanceService(new MongoDb(ResistanceController.ENDPOINT))
-        : new ResistanceService(new LocalStorageDB(ResistanceController.TABLE_NAME));
-    });
+    this.resistanceSvc = new ResistanceService(new FirebaseDB(ResistanceController.TABLE_NAME));
   }
 
   public async createResistance(data: CreateResistanceModel): Promise<ResistanceModel | ServiceResponse> {

@@ -1,6 +1,6 @@
 // Copyright FitBook
 
-import IDatabase from '../database/IDatabase';
+import IDatabase, { IQueryParams, Operators } from '../database/IDatabase';
 import { CreateResistanceModel, ResistanceModel } from '../models/ResistanceModel';
 import ServiceResponse, { isServiceResponse } from '../models/ServiceResponse';
 
@@ -22,10 +22,14 @@ export default class ResistanceService {
     return r;
   }
 
-  public async getResistanceListByUserId(type: string, userId: string): Promise<ResistanceModel[] | ServiceResponse> {
-    const params = { type: type.toLocaleUpperCase() };
+  public async getResistanceListByUserId(type: string): Promise<ResistanceModel[] | ServiceResponse> {
+    const param: IQueryParams = {
+      key: 'type',
+      value: type.toLocaleUpperCase(),
+      operator: Operators.EQUALS,
+    };
 
-    const r: ResistanceModel[] | ServiceResponse = await this.db.GetListByUserId(userId, params);
+    const r: ResistanceModel[] | ServiceResponse = await this.db.GetListAsync([param]);
 
     if (isServiceResponse(r)) {
       return r;

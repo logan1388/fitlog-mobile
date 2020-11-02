@@ -69,9 +69,8 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
 
   const addLog = () => {
     let timestamp = getTimestamp();
-    let id = '5dfecbdd39d8760019968d04';
     const newResistance: CreateResistanceModel = {
-      userId: id,
+      userId: '',
       type: props.name,
       createdDate: new Date(timestamp),
       weight,
