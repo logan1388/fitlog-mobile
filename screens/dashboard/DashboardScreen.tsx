@@ -15,6 +15,7 @@ import {
 } from '../../commonlib/models/WorkoutModel';
 import { fetchWorkoutsSummary, fetchWorkoutsHistory } from '../../store/workouts';
 import DonutGraph from '../../components/graphs/donut-graph';
+import GraphWebView from '../../components/graphs/GraphWebView';
 
 interface WorkoutsSummaryReduxState {
   workoutsSummary?: WorkoutSummaryModel[];
@@ -68,7 +69,8 @@ const DashboardScreen = () => {
           <View style={{ width: '100%' }}>
             {workoutsHistGraphData && workoutsHistGraphData.length > 0 && (
               <View style={{ marginTop: 15, alignItems: 'center' }}>
-                <DonutGraph graphData={workoutsHistGraphData} />
+                {/* <DonutGraph graphData={workoutsHistGraphData} /> */}
+                <GraphWebView />
               </View>
             )}
             {workoutsHistory && <History workoutsHistory={workoutsHistory} />}
