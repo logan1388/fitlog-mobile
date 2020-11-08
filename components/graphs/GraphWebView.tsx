@@ -38,7 +38,6 @@ const GraphWebView: React.FC = () => {
     }
     return (
         <View style={{ flex: 1, height: 250, width: '100%', paddingLeft: 20, paddingRight: 20 }}>
-            <Text>Before</Text>
             <WebView
                 ref={WebViewRef}
                 onLoad={DrawGraph}
@@ -47,7 +46,6 @@ const GraphWebView: React.FC = () => {
                 source={{ html: GraphHtml }}
                 automaticallyAdjustContentInsets={false}
             />
-            <Text>After</Text>
         </View>
     );
 };

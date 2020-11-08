@@ -1,7 +1,7 @@
 export const donutGraph = pieGraphData => {
     console.log('Inside donut-graph');
-    const dims = { width: 300, height: 300, radius: 150 };
-    const cent = { x: (dims.width / 2 + 5), y: (dims.height / 2 + 5) };
+    const dims = { width: 750, height: 500, radius: 300 };
+    const cent = { x: (dims.width / 2), y: 350 };
 
     const svg = d3.select('.canvas-graph')
         .append('svg')
@@ -17,7 +17,7 @@ export const donutGraph = pieGraphData => {
 
     const arcPath = d3.arc()
         .outerRadius(dims.radius)
-        .innerRadius(dims.radius / 2);
+        .innerRadius(dims.radius / 2 + 25);
 
     const color = d3.scaleOrdinal(d3['schemeCategory10']);
     color.domain(pieGraphData.map(d => d.type));
@@ -32,11 +32,14 @@ export const donutGraph = pieGraphData => {
     };
 
     const legendGroup = svg.append('g')
-        .attr('transform', `translate(${dims.width + 40}, 30)`);
+        .attr('transform', `translate(${dims.width - 25}, 100)`)
+        .attr('font-size', '2.5rem');
+
     const legend = d3.legendColor()
         .shape('circle')
         .shapePadding(10)
-        .scale(color);
+        .scale(color)
+        .labelOffset(10)
 
     const paths = graph.selectAll('path')
         .data(pie(pieGraphData));
@@ -51,5 +54,6 @@ export const donutGraph = pieGraphData => {
         .attrTween('d', arcTweenEnter);
 
     legendGroup.call(legend);
+    //legendGroup.call(legendSizeLine);
     //legendGroup.selectAll('text').attr('fill', 'blue')
 }
