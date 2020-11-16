@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 import GraphHtml from './GraphHtml';
 import { lineGraph } from './LineGraph'
+import { graphStyles } from './Graphs.style';
 
 interface linegraphdata {
   weights: string;
@@ -14,8 +15,14 @@ interface linegraphProps {
 }
 
 const LineGraphWebView: React.FC<linegraphProps> = props => {
+  const [styles, setStyles] = useState(graphStyles());
   const lineGraphData = props.linegraphdata;
   const WebViewRef = useRef<WebView>(null);
+
+  React.useEffect(() => {
+    setStyles(graphStyles());
+  }, [setStyles]);
+
 
   const DrawGraph = () => {
     if (WebViewRef) {
@@ -24,19 +31,21 @@ const LineGraphWebView: React.FC<linegraphProps> = props => {
   }
 
   return (
-    <View style={{ flex: 1, width: '100%' }}>
-      {lineGraphData && lineGraphData.length > 1 ?
-        <WebView
-          ref={WebViewRef}
-          onLoad={DrawGraph}
-          originWhitelist={['*']}
-          style={{ marginTop: 0, marginBottom: 0 }}
-          source={{ html: GraphHtml }}
-          automaticallyAdjustContentInsets={false}
-        /> :
-        <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text>Not enough data!</Text>
-        </View>}
+    <View style={styles.outerContainer}>
+      <View style={styles.innerContainer}>
+        {lineGraphData && lineGraphData.length > 1 ?
+          <WebView
+            ref={WebViewRef}
+            onLoad={DrawGraph}
+            originWhitelist={['*']}
+            style={styles.lineGraphWV}
+            source={{ html: GraphHtml }}
+            automaticallyAdjustContentInsets={false}
+          /> :
+          <View style={{ alignItems: 'center', padding: 30 }}>
+            <Text>Not enough data!</Text>
+          </View>}
+      </View>
     </View>
   );
 };
