@@ -1,12 +1,19 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import LineGraphWebView from '../components/graphs/LineGraphWebView';
 
 const GraphScreen = props => {
+  const workouts = useSelector(state => state.workouts.workouts);
+
+  let linegraphdata = workouts.map(w => {
+    return { 'weights': w.weight * w.count, 'date': w.createdDate }
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <LineGraphWebView />
+        <LineGraphWebView linegraphdata={linegraphdata} />
       </View>
     </View>
   );
