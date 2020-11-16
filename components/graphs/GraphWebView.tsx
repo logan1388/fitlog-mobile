@@ -42,7 +42,7 @@ const GraphWebView: React.FC = () => {
                 ref={WebViewRef}
                 onLoad={DrawGraph}
                 originWhitelist={['*']}
-                style={{ marginTop: 0, marginBottom: 0 }}
+                style={{ marginTop: 0, marginBottom: 0, backgroundColor: 'transparent' }}
                 source={{ html: GraphHtml }}
                 automaticallyAdjustContentInsets={false}
             />

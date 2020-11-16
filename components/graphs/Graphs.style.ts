@@ -5,14 +5,18 @@ import { StyleSheet } from 'react-native';
 export const graphStyles = () =>
   StyleSheet.create({
     outerContainer: {
-      flex: 1
+      flex: 1,
     },
     innerContainer: {
-      backgroundColor: 'white',
       height: '100%',
     },
     lineGraphWV: {
       paddingVertical: 30,
       paddingHorizontal: 20,
-    }
+      backgroundColor: 'transparent'
+    },
+    lightContainer: { backgroundColor: 'white' },
+    darkContainer: { backgroundColor: '#2D2D2D' },
+    lightThemeText: { color: 'black' },
+    darkThemeText: { color: 'bisque' },
   });

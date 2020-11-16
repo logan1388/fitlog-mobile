@@ -4,20 +4,27 @@ import { WebView } from 'react-native-webview';
 import GraphHtml from './GraphHtml';
 import { lineGraph } from './LineGraph'
 import { graphStyles } from './Graphs.style';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/actionHelpers';
 
 interface linegraphdata {
-  weights: string;
-  date: string;
+  weights: number;
+  date: Date;
 }
 
 interface linegraphProps {
-  linegraphdata: linegraphdata[]
+  linegraphdata?: linegraphdata[]
 }
 
 const LineGraphWebView: React.FC<linegraphProps> = props => {
+  const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(graphStyles());
   const lineGraphData = props.linegraphdata;
   const WebViewRef = useRef<WebView>(null);
+  const themeContainerStyle =
+    mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+
 
   React.useEffect(() => {
     setStyles(graphStyles());
@@ -26,12 +33,12 @@ const LineGraphWebView: React.FC<linegraphProps> = props => {
 
   const DrawGraph = () => {
     if (WebViewRef) {
-      WebViewRef.current?.injectJavaScript(`window.donutGraph=${lineGraph};window.donutGraph(${JSON.stringify(lineGraphData)}); true;`)
+      WebViewRef.current?.injectJavaScript(`window.donutGraph=${lineGraph};window.donutGraph(${JSON.stringify(lineGraphData)}, ${JSON.stringify(themeContainerStyle)}); true;`)
     }
   }
 
   return (
-    <View style={styles.outerContainer}>
+    <View style={[styles.outerContainer, themeContainerStyle]}>
       <View style={styles.innerContainer}>
         {lineGraphData && lineGraphData.length > 1 ?
           <WebView
@@ -43,7 +50,7 @@ const LineGraphWebView: React.FC<linegraphProps> = props => {
             automaticallyAdjustContentInsets={false}
           /> :
           <View style={{ alignItems: 'center', padding: 30 }}>
-            <Text>Not enough data!</Text>
+            <Text style={themeTextStyle}>Not enough data!</Text>
           </View>}
       </View>
     </View>
