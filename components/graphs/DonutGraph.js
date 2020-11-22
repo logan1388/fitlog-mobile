@@ -3,6 +3,7 @@ export const donutGraph = pieGraphData => {
   const dims = { width: 750, height: 500, radius: 300 };
   const cent = { x: dims.width / 2, y: 350 };
 
+  d3.select('.canvas-graph').selectAll('*').remove();
   const svg = d3
     .select('.canvas-graph')
     .append('svg')
@@ -27,7 +28,7 @@ export const donutGraph = pieGraphData => {
   const arcTweenEnter = d => {
     var i = d3.interpolate(d.endAngle, d.startAngle);
 
-    return function (t) {
+    return function(t) {
       d.startAngle = i(t);
       return arcPath(d);
     };
