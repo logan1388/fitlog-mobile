@@ -15,6 +15,7 @@ import {
 } from '../../commonlib/models/WorkoutModel';
 import { fetchWorkoutsSummary, fetchWorkoutsHistory } from '../../store/workouts';
 import DonutGraphWebView from '../../components/graphs/DonutGraphWebView';
+import FloatingButtons from '../../components/FloatingButtons';
 
 interface WorkoutsSummaryReduxState {
   workoutsSummary?: WorkoutSummaryModel[];
@@ -28,9 +29,17 @@ const DashboardScreen = () => {
   const awardsSumm = useSelector<RootState>(state => state.fitlogReducer.awardsWeek);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
+  const [floatBtn, setFloatBtn] = useState(false);
   const dispatch = useDispatch();
   const userId = '5dfecbdd39d8760019968d04';
-  const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeContainerStyle =
+    mode === 'light'
+      ? floatBtn
+        ? { opacity: 0.2 }
+        : styles.lightContainer
+      : floatBtn
+        ? { opacity: 0.2, backgroundColor: 'black' }
+        : styles.darkContainer;
 
   const workoutsSummaryReduxState = useSelector<RootState, WorkoutsSummaryReduxState>(state => {
     let workoutsSumm = state.workouts.workoutsSummary;
@@ -77,6 +86,7 @@ const DashboardScreen = () => {
           </View>
         </View>
       </ScrollView>
+      <FloatingButtons floatBtn={floatBtn} setFloatBtn={setFloatBtn} />
     </SafeAreaView>
   );
 };
