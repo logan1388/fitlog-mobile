@@ -17,7 +17,7 @@ const GraphScreen = () => {
   const { workouts } = workoutsReduxState;
 
   let linegraphdata = workouts?.map(w => {
-    return { 'weights': w.weight * w.count, 'date': w.createdDate }
+    return { weights: w.weight * w.count, date: w.createdDate };
   });
 
   return (

@@ -13,7 +13,7 @@ export const graphStyles = () =>
     lineGraphWV: {
       paddingVertical: 30,
       paddingHorizontal: 20,
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },
