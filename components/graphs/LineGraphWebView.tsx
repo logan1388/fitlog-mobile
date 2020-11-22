@@ -25,17 +25,18 @@ const LineGraphWebView: React.FC<linegraphProps> = props => {
     mode === 'light' ? styles.lightContainer : styles.darkContainer;
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
 
-
   React.useEffect(() => {
     setStyles(graphStyles());
-  }, [setStyles]);
+    DrawGraph();
+  }, [setStyles, mode, lineGraphData]);
 
 
   const DrawGraph = () => {
+    console.log('DrawGraph');
     if (WebViewRef) {
-      WebViewRef.current?.injectJavaScript(`window.donutGraph=${lineGraph};window.donutGraph(${JSON.stringify(lineGraphData)}, ${JSON.stringify(themeContainerStyle)}); true;`)
+      WebViewRef.current?.injectJavaScript(`window.lineGraph=${lineGraph};window.lineGraph(${JSON.stringify(lineGraphData)}, ${JSON.stringify(mode)}); true;`)
     }
-  }
+  };
 
   return (
     <View style={[styles.outerContainer, themeContainerStyle]}>

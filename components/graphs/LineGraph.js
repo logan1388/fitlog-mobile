@@ -1,8 +1,11 @@
-export const lineGraph = lineGraphData => {
+export const lineGraph = (lineGraphData, mode) => {
   const margin = { top: 75, right: 20, bottom: 50, left: 100 };
   const graphWidth = 900 - margin.left - margin.right;
   const graphHeight = 700 - margin.top - margin.bottom;
 
+  const textColor = mode === 'light' ? 'black' : 'bisque';
+
+  d3.select('.canvas-line').selectAll("*").remove();
   const svg1 = d3.select('.canvas-line')
     .append('svg')
     .attr('width', graphWidth + margin.left + margin.right)
@@ -18,11 +21,13 @@ export const lineGraph = lineGraphData => {
 
   const xAxisGroup = graph.append('g')
     .attr('class', 'x-axis')
+    .attr('stroke', textColor)
     .attr('transform', `translate(0, ${graphHeight})`)
     .style('font-size', '24px');
 
   const yAxisGroup = graph.append('g')
     .attr('class', 'y-axis')
+    .attr('stroke', textColor)
     .style('font-size', '24px');
 
   xAxisGroup.selectAll('text')
@@ -39,7 +44,7 @@ export const lineGraph = lineGraphData => {
   const path = graph.append('path');
   path.data([lineGraphData])
     .attr('fill', 'none')
-    .attr('stroke', 'black')
+    .attr('stroke', textColor)
     .attr('stroke-width', 2)
     .attr('d', line);
 
@@ -67,20 +72,20 @@ export const lineGraph = lineGraphData => {
     .attr('r', 4)
     .attr('cx', d => x(new Date(d.date)))
     .attr('cy', d => y(d.weights))
-    .attr('fill', 'black');
+    .attr('fill', textColor);
 
   graph.selectAll('circle')
     .on('mouseover', (event, d) => {
       d3.select(event.currentTarget)
         .transition().duration(100)
         .attr('r', 8)
-        .attr('fill', 'black')
+        .attr('fill', textColor)
     })
     .on('mouseleave', (event, d) => {
       d3.select(event.currentTarget)
         .transition().duration(100)
         .attr('r', 4)
-        .attr('fill', 'black')
+        .attr('fill', textColor)
     })
 
 };
