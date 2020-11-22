@@ -30,7 +30,7 @@ export default class WorkoutsController {
 
   public async initialize() {
     AsyncStorage.getItem(Storage.ALLOW_REMOTE_STORAGE).then(value => {
-      let allowRemoteStorage = false;
+      let allowRemoteStorage = true;
       if (value) {
         allowRemoteStorage = !!value;
       }

@@ -14,7 +14,7 @@ import {
   WorkoutHistoryGraphModel,
 } from '../../commonlib/models/WorkoutModel';
 import { fetchWorkoutsSummary, fetchWorkoutsHistory } from '../../store/workouts';
-import DonutGraph from '../../components/graphs/donut-graph';
+import DonutGraphWebView from '../../components/graphs/DonutGraphWebView';
 
 interface WorkoutsSummaryReduxState {
   workoutsSummary?: WorkoutSummaryModel[];
@@ -55,10 +55,11 @@ const DashboardScreen = () => {
   const workoutTypes: WorkoutTypes =
     workoutsHistory &&
     workoutsHistory.map(w => w.type).reduce((acc: any, w: any) => ((acc[w] = (acc[w] || 0) + 1), acc), {});
-  const workoutsHistGraphData: WorkoutHistoryGraphModel[] = Object.entries(workoutTypes).map(([k, v]) => ({
+  const donutgraphdata: WorkoutHistoryGraphModel[] = Object.entries(workoutTypes).map(([k, v]) => ({
     type: k,
     frequency: v,
   }));
+  donutgraphdata.sort((a, b) => b.frequency - a.frequency);
 
   return (
     <SafeAreaView style={styles.safeAreaViewContainer}>
@@ -66,9 +67,9 @@ const DashboardScreen = () => {
         <View style={styles.innerContainer}>
           {workoutsSummary && workoutsSummary.length > 0 && <Summary workoutsSummary={workoutsSummary} />}
           <View style={{ width: '100%' }}>
-            {workoutsHistGraphData && workoutsHistGraphData.length > 0 && (
+            {donutgraphdata && donutgraphdata.length > 0 && (
               <View style={{ marginTop: 15, alignItems: 'center' }}>
-                <DonutGraph graphData={workoutsHistGraphData} />
+                <DonutGraphWebView donutgraphdata={donutgraphdata} />
               </View>
             )}
             {workoutsHistory && <History workoutsHistory={workoutsHistory} />}

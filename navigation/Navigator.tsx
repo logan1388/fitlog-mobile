@@ -18,6 +18,7 @@ import Colors from '../constants/colors';
 import DashboardScreen, { screenOptions as dashboardScreenOptions } from '../screens/dashboard/DashboardScreen';
 import Profile from '../screens/profile/ProfileScreen';
 import AwardsScreen from '../screens/AwardsScreen';
+import GraphScreen from '../screens/GraphScreen';
 import EditProfile from '../screens/profile/EditProfileScreen';
 import {
   DashboardStackRouteParams,
@@ -49,6 +50,15 @@ const AwardsNavigator = () => {
   );
 };
 
+const GraphStackNavigator = createStackNavigator();
+const GraphNavigator = () => {
+  return (
+    <GraphStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <GraphStackNavigator.Screen name="Graph" component={GraphScreen} />
+    </GraphStackNavigator.Navigator>
+  );
+};
+
 const TopTab = createMaterialTopTabNavigator<WorkoutSubTypeStackRouteParams>();
 const ExerciseTabNavigator = (exerciseProps: ExerciseTabNavigatorParams) => {
   const { type, subType } = exerciseProps.route.params;
@@ -63,7 +73,7 @@ const ExerciseTabNavigator = (exerciseProps: ExerciseTabNavigatorParams) => {
       <TopTab.Screen name={WorkoutSubTypeStackScreens.ExerciseScreen}>
         {props => <WorkoutlogScreen {...props} type={type} subType={subType} />}
       </TopTab.Screen>
-      <TopTab.Screen name={WorkoutSubTypeStackScreens.AwardsScreen} component={AwardsNavigator} />
+      <TopTab.Screen name={WorkoutSubTypeStackScreens.GraphScreen} component={GraphNavigator} />
     </TopTab.Navigator>
   );
 };

@@ -31,7 +31,7 @@ export enum WorkoutStackScreens {
 
 export enum WorkoutSubTypeStackScreens {
   ExerciseScreen = 'Exercise',
-  AwardsScreen = 'Awards',
+  GraphScreen = 'Graph',
 }
 
 export type WorkoutSubTypeStackRouteParams = {
@@ -39,7 +39,7 @@ export type WorkoutSubTypeStackRouteParams = {
     type: string;
     subType: string;
   };
-  Awards: undefined;
+  Graph: undefined;
 };
 
 export interface ExerciseTabNavigatorParams {

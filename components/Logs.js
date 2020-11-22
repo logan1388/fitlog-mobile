@@ -115,7 +115,7 @@ const Logs = props => {
         </View>
       ) : (
         <View style={styles.noDataText}>
-          <Text>Start logging!</Text>
+          <Text style={themeTextStyle}>Start logging!</Text>
         </View>
       )}
     </SafeAreaView>
