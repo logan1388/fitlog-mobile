@@ -28,7 +28,7 @@ export const donutGraph = pieGraphData => {
   const arcTweenEnter = d => {
     var i = d3.interpolate(d.endAngle, d.startAngle);
 
-    return function(t) {
+    return function (t) {
       d.startAngle = i(t);
       return arcPath(d);
     };
