@@ -126,7 +126,7 @@ export const dashboardStyles = () =>
       position: 'absolute',
       flexDirection: 'row',
       justifyContent: 'flex-end',
-      right: 0
+      right: 0,
     },
     secondaryButton: {
       flexDirection: 'row',

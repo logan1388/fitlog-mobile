@@ -12,7 +12,7 @@ import { addResistance } from '../store/resistance';
 import { CreateResistanceModel, ResistanceTypes } from '../commonlib/models/ResistanceModel';
 
 interface ResistanceInputProps {
-  name: ResistanceTypes;
+  name?: ResistanceTypes;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
@@ -93,6 +93,11 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.centeredView}>
         <View style={[styles.modalView, themeContainerStyle]}>
+          {!props.name && (
+            <View>
+              <Text style={[styles.label, themeTextStyle]}>Type</Text>
+            </View>
+          )}
           <View style={styles.inputContainer}>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Reps</Text>

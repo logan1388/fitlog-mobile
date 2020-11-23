@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, SafeAreaView, ScrollView } from 'react-native';
+import { View, SafeAreaView, ScrollView, Modal } from 'react-native';
 import { weeklyAwards } from '../../store/actions/actions';
 import { dashboardStyles } from './DashboardScreen.style';
 import { RootState } from '../../store/actionHelpers';
@@ -16,6 +16,8 @@ import {
 import { fetchWorkoutsSummary, fetchWorkoutsHistory } from '../../store/workouts';
 import DonutGraphWebView from '../../components/graphs/DonutGraphWebView';
 import FloatingButtons from '../../components/FloatingButtons';
+import CreateWorkout from '../../components/CreateWorkout';
+import CreateResistance from '../../components/CreateResistance';
 
 interface WorkoutsSummaryReduxState {
   workoutsSummary?: WorkoutSummaryModel[];
@@ -30,16 +32,18 @@ const DashboardScreen = () => {
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
   const [floatBtn, setFloatBtn] = useState(false);
+  const [workoutInputModalVisible, setWorkoutInputModalVisible] = useState(false);
+  const [resistanceInputModalVisible, setResistanceInputModalVisible] = useState(false);
   const dispatch = useDispatch();
   const userId = '5dfecbdd39d8760019968d04';
   const themeContainerStyle =
     mode === 'light'
-      ? floatBtn
+      ? floatBtn || workoutInputModalVisible || resistanceInputModalVisible
         ? { opacity: 0.2 }
         : styles.lightContainer
-      : floatBtn
-        ? { opacity: 0.2, backgroundColor: 'black' }
-        : styles.darkContainer;
+      : floatBtn || workoutInputModalVisible || resistanceInputModalVisible
+      ? { opacity: 0.2, backgroundColor: 'black' }
+      : styles.darkContainer;
 
   const workoutsSummaryReduxState = useSelector<RootState, WorkoutsSummaryReduxState>(state => {
     let workoutsSumm = state.workouts.workoutsSummary;
@@ -85,8 +89,32 @@ const DashboardScreen = () => {
             <Highlights awards={awardsSumm} />
           </View>
         </View>
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={workoutInputModalVisible || resistanceInputModalVisible}>
+          {workoutInputModalVisible && (
+            <CreateWorkout
+              modalVisible={workoutInputModalVisible}
+              setModalVisible={(value: boolean) => setWorkoutInputModalVisible(value)}
+            />
+          )}
+          {resistanceInputModalVisible && (
+            <CreateResistance
+              modalVisible={resistanceInputModalVisible}
+              setModalVisible={(value: boolean) => setResistanceInputModalVisible(value)}
+            />
+          )}
+        </Modal>
       </ScrollView>
-      <FloatingButtons floatBtn={floatBtn} setFloatBtn={setFloatBtn} />
+      <FloatingButtons
+        floatBtn={floatBtn}
+        setFloatBtn={setFloatBtn}
+        workoutInputModalVisible={workoutInputModalVisible}
+        setWorkoutInputModalVisible={setWorkoutInputModalVisible}
+        resistanceInputModalVisible={resistanceInputModalVisible}
+        setResistanceInputModalVisible={setResistanceInputModalVisible}
+      />
     </SafeAreaView>
   );
 };

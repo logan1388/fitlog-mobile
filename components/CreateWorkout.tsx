@@ -11,8 +11,8 @@ import { addWorkout } from '../store/workouts';
 import { workoutStyles } from '../screens/workouts/WorkoutScreen.style';
 
 interface WorkoutInputProps {
-  type: WorkoutTypes;
-  subType: string;
+  type?: WorkoutTypes;
+  subType?: string;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
@@ -43,7 +43,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     const exerciseLog: CreateWorkoutModel = {
       userId: id,
       type: props.type,
-      subType: props.subType.toLocaleLowerCase(),
+      subType: props.subType?.toLocaleLowerCase(),
       createdDate: new Date(timestamp),
       weight,
       unit,
@@ -63,6 +63,16 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     <TouchableWithoutFeedback>
       <View style={styles.centeredView}>
         <View style={[styles.modalView, themeContainerStyle]}>
+          {!props.type && (
+            <View>
+              <Text style={[styles.label, themeTextStyle]}>Type</Text>
+            </View>
+          )}
+          {!props.subType && (
+            <View>
+              <Text style={[styles.label, themeTextStyle]}>Sub Type</Text>
+            </View>
+          )}
           <View style={styles.inputsContainer}>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Weight</Text>

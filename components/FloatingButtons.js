@@ -16,7 +16,7 @@ const FloatingButtons = props => {
     Animated.spring(animation, {
       toValue,
       friction: 5,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
     props.setFloatBtn(!floatBtn);
   };
@@ -26,10 +26,10 @@ const FloatingButtons = props => {
       {
         rotate: animation.interpolate({
           inputRange: [0, 1],
-          outputRange: ['0deg', '45deg']
-        })
-      }
-    ]
+          outputRange: ['0deg', '45deg'],
+        }),
+      },
+    ],
   };
 
   const workoutBtnStyle = {
@@ -38,10 +38,10 @@ const FloatingButtons = props => {
       {
         translateY: animation.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -5]
-        })
-      }
-    ]
+          outputRange: [0, -5],
+        }),
+      },
+    ],
   };
 
   const resistanceBtnStyle = {
@@ -50,26 +50,35 @@ const FloatingButtons = props => {
       {
         translateY: animation.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -15]
-        })
-      }
-    ]
+          outputRange: [0, -15],
+        }),
+      },
+    ],
+  };
+
+  const addWorkoutLog = () => {
+    props.setWorkoutInputModalVisible(!props.workoutInputModalVisible);
+    toggleAddMenu();
+  };
+
+  const addResistanceLog = () => {
+    props.setResistanceInputModalVisible(!props.resistanceInputModalVisible);
+    toggleAddMenu();
   };
 
   React.useEffect(() => {
     setStyles(dashboardStyles());
   }, [setStyles]);
 
-
   return (
     <View style={styles.floatingButtonContainer}>
-      <TouchableOpacity onPress={() => console.log('Resistance')}>
+      <TouchableOpacity onPress={addResistanceLog}>
         <Animated.View style={[styles.secondaryButton, resistanceBtnStyle]}>
           <Text>Resistance</Text>
           <Icon name="yoga" size={35} color={themeButtonStyle} style={{ paddingHorizontal: 5 }} />
         </Animated.View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('Workout')}>
+      <TouchableOpacity onPress={addWorkoutLog}>
         <Animated.View style={[styles.secondaryButton, workoutBtnStyle]}>
           <Text>Workout</Text>
           <Icon name="dumbbell" size={35} color={themeButtonStyle} style={{ paddingHorizontal: 5 }} />
@@ -81,7 +90,7 @@ const FloatingButtons = props => {
         </Animated.View>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 export default FloatingButtons;
