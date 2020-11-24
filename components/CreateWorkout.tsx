@@ -42,8 +42,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
       'value': w.toLocaleLowerCase()
     }
   });
-  const [typesDD, setTypesDD] = useState(typesdd);
-  const [typesValue, setTypesValue] = useState(null);
+
   const workouts = useSelector<RootState>(state => state.fitlogReducer.workouts);
   console.log('workouts ', workouts);
   let subtypesdd = workouts.slice().map((w: any) => {
@@ -52,9 +51,6 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
       'value': w.name
     }
   });
-
-  const [subTypesDD, setSubTypesDD] = useState(subtypesdd);
-  const [subTypesValue, setSubTypesValue] = useState(null);
   console.log('Sub types ', subtypesdd);
 
   const resetInput = () => {
@@ -63,8 +59,6 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     setCount(0);
     setType('');
     setSubType('');
-    setTypesValue(null);
-    setSubTypesValue(null);
     props.setModalVisible(false);
   };
 
@@ -90,8 +84,6 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     setUnit(unitRadio[0].value);
     props.type && setType(props.type);
     props.subType && setSubType(props.subType);
-    setTypesDD(typesdd);
-    setSubTypesDD(subtypesdd);
     props.type && dispatch(fetchExercises(props.type));
   }, [setStyles, setUnit, setType, setSubType, props.type, props.subType]);
   let controller;
@@ -105,16 +97,10 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
               items={typesdd}
               placeholder="Select a type"
               controller={instance => controller = instance}
-              onChangeList={(items, callback) => {
-                new Promise((resolve, reject) => resolve(setTypesDD(items)))
-                  .then(() => callback())
-                  .catch(() => { });
-              }}
               disabled={props.type && true}
               defaultValue={props.type}
               onChangeItem={item => {
                 dispatch(fetchExercises(item.value.toLocaleLowerCase()));
-                setTypesValue(item.value);
                 setType(item.value);
               }}
               containerStyle={{ width: 200, height: 45 }}
@@ -125,14 +111,9 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
               items={subtypesdd}
               placeholder="Select a subtype"
               controller={instance => controller = instance}
-              onChangeList={(items, callback) => {
-                new Promise((resolve, reject) => resolve(setSubTypesDD(items)))
-                  .then(() => callback())
-                  .catch(() => { });
-              }}
               disabled={(props.subType && true) || !type}
               defaultValue={props.subType}
-              onChangeItem={item => setSubTypesValue(item.value)}
+              onChangeItem={item => setSubType(item.value)}
               containerStyle={{ width: 200, height: 45 }}
             />
           </View>
