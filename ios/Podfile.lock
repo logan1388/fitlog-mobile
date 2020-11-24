@@ -331,7 +331,7 @@ PODS:
     - React
   - RNDeviceInfo (6.0.2):
     - React
-  - RNFBApp (8.4.7):
+  - RNFBApp (8.4.6):
     - Firebase/CoreOnly (~> 6.34.0)
     - React-Core
   - RNGestureHandler (1.8.0):
@@ -559,7 +559,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDeviceInfo: bdd61e8b070d13a1dd9d022091981075ed4cde16
-  RNFBApp: 804b98033f45c3a3e35b56de8c894f85ef5e4388
+  RNFBApp: 7eacc7da7ab19f96c05e434017d44a9f09410da8
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2

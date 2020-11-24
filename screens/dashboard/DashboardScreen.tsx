@@ -42,8 +42,8 @@ const DashboardScreen = () => {
         ? { opacity: 0.2 }
         : styles.lightContainer
       : floatBtn || workoutInputModalVisible || resistanceInputModalVisible
-      ? { opacity: 0.2, backgroundColor: 'black' }
-      : styles.darkContainer;
+        ? { opacity: 0.2, backgroundColor: 'black' }
+        : styles.darkContainer;
 
   const workoutsSummaryReduxState = useSelector<RootState, WorkoutsSummaryReduxState>(state => {
     let workoutsSumm = state.workouts.workoutsSummary;
@@ -92,19 +92,20 @@ const DashboardScreen = () => {
         <Modal
           animationType="none"
           transparent={true}
-          visible={workoutInputModalVisible || resistanceInputModalVisible}>
-          {workoutInputModalVisible && (
-            <CreateWorkout
-              modalVisible={workoutInputModalVisible}
-              setModalVisible={(value: boolean) => setWorkoutInputModalVisible(value)}
-            />
-          )}
-          {resistanceInputModalVisible && (
-            <CreateResistance
-              modalVisible={resistanceInputModalVisible}
-              setModalVisible={(value: boolean) => setResistanceInputModalVisible(value)}
-            />
-          )}
+          visible={workoutInputModalVisible}>
+          <CreateWorkout
+            modalVisible={workoutInputModalVisible}
+            setModalVisible={setWorkoutInputModalVisible}
+          />
+        </Modal>
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={resistanceInputModalVisible}>
+          <CreateResistance
+            modalVisible={resistanceInputModalVisible}
+            setModalVisible={setResistanceInputModalVisible}
+          />
         </Modal>
       </ScrollView>
       <FloatingButtons
