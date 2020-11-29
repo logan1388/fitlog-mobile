@@ -15,7 +15,7 @@ const FloatingButtons = props => {
     const toValue = floatBtn ? 0 : 1;
     Animated.spring(animation, {
       toValue,
-      friction: 5,
+      duration: 500,
       useNativeDriver: true,
     }).start();
     props.setFloatBtn(!floatBtn);
@@ -49,8 +49,8 @@ const FloatingButtons = props => {
       { scale: animation },
       {
         translateY: animation.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -15],
+          inputRange: [0, 0.5, 1],
+          outputRange: [0, -5, -15],
         }),
       },
     ],

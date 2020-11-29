@@ -30,7 +30,6 @@ const LineGraphWebView: React.FC<linegraphProps> = props => {
   }, [setStyles, mode, lineGraphData]);
 
   const DrawGraph = () => {
-    console.log('DrawGraph');
     if (WebViewRef) {
       WebViewRef.current?.injectJavaScript(
         `window.lineGraph=${lineGraph};window.lineGraph(${JSON.stringify(lineGraphData)}, ${JSON.stringify(

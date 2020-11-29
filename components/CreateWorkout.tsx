@@ -5,12 +5,11 @@ import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import RadioButtons from './RadioButtons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CreateWorkoutModel, WorkoutTypes } from '../commonlib/models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutTypes, SubWorkoutTypes } from '../commonlib/models/WorkoutModel';
 import { RootState } from '../store/actionHelpers';
 import { addWorkout } from '../store/workouts';
 import { workoutStyles } from '../screens/workouts/WorkoutScreen.style';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { fetchExercises } from '../store/actions/actions';
 
 interface WorkoutInputProps {
   type?: WorkoutTypes;
@@ -20,13 +19,12 @@ interface WorkoutInputProps {
 }
 
 const WorkoutInput: React.FC<WorkoutInputProps> = props => {
-  const [type, setType] = useState('');
+  const [type, setType] = useState(props.type ? props.type : '');
   const [subType, setSubType] = useState('');
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState('');
   const [count, setCount] = useState(0);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
-  console.log('Mode ', mode);
   const dispatch = useDispatch();
   let unitRadio = [
     { label: 'lbs', value: 'lbs' },
@@ -38,20 +36,30 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   const workoutTypes: string[] = Object.keys(WorkoutTypes);
   let typesdd = workoutTypes.map((w: any) => {
     return {
-      'label': w.toLocaleLowerCase(),
-      'value': w.toLocaleLowerCase()
-    }
+      label: w.toLocaleLowerCase(),
+      value: w.toLocaleLowerCase(),
+    };
   });
 
-  const workouts = useSelector<RootState>(state => state.fitlogReducer.workouts);
-  console.log('workouts ', workouts);
-  let subtypesdd = workouts.slice().map((w: any) => {
-    return {
-      'label': w.name,
-      'value': w.name
+  const getSubTypes = (type: string) => {
+    for (let sub of SubWorkoutTypes) {
+      if (sub.type === type) {
+        subtypesdd = sub.subtypes.map((t: any) => {
+          return {
+            label: t,
+            value: t,
+          };
+        });
+      }
     }
-  });
-  console.log('Sub types ', subtypesdd);
+  };
+
+  let subtypesdd: { label: any; value: any }[] = [];
+  if (!type) {
+    subtypesdd = [{ label: '', value: '' }];
+  } else {
+    getSubTypes(type);
+  }
 
   const resetInput = () => {
     setWeight(0);
@@ -82,10 +90,8 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   React.useEffect(() => {
     setStyles(workoutStyles());
     setUnit(unitRadio[0].value);
-    props.type && setType(props.type);
     props.subType && setSubType(props.subType);
-    props.type && dispatch(fetchExercises(props.type));
-  }, [setStyles, setUnit, setType, setSubType, props.type, props.subType]);
+  }, [setStyles, setUnit, setSubType, props.subType]);
   let controller;
 
   return (
@@ -96,25 +102,25 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
             <DropDownPicker
               items={typesdd}
               placeholder="Select a type"
-              controller={instance => controller = instance}
+              controller={instance => (controller = instance)}
               disabled={props.type && true}
               defaultValue={props.type}
               onChangeItem={item => {
-                dispatch(fetchExercises(item.value.toLocaleLowerCase()));
+                getSubTypes(item.value);
                 setType(item.value);
               }}
-              containerStyle={{ width: 200, height: 45 }}
+              containerStyle={{ width: 275, height: 45 }}
             />
           </View>
           <View style={{ marginVertical: 10, zIndex: 10 }}>
             <DropDownPicker
               items={subtypesdd}
               placeholder="Select a subtype"
-              controller={instance => controller = instance}
+              controller={instance => (controller = instance)}
               disabled={(props.subType && true) || !type}
               defaultValue={props.subType}
               onChangeItem={item => setSubType(item.value)}
-              containerStyle={{ width: 200, height: 45 }}
+              containerStyle={{ width: 275, height: 45 }}
             />
           </View>
           <View style={styles.inputsContainer}>

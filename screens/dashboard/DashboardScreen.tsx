@@ -42,8 +42,8 @@ const DashboardScreen = () => {
         ? { opacity: 0.2 }
         : styles.lightContainer
       : floatBtn || workoutInputModalVisible || resistanceInputModalVisible
-        ? { opacity: 0.2, backgroundColor: 'black' }
-        : styles.darkContainer;
+      ? { opacity: 0.2, backgroundColor: 'black' }
+      : styles.darkContainer;
 
   const workoutsSummaryReduxState = useSelector<RootState, WorkoutsSummaryReduxState>(state => {
     let workoutsSumm = state.workouts.workoutsSummary;
@@ -89,19 +89,10 @@ const DashboardScreen = () => {
             <Highlights awards={awardsSumm} />
           </View>
         </View>
-        <Modal
-          animationType="none"
-          transparent={true}
-          visible={workoutInputModalVisible}>
-          <CreateWorkout
-            modalVisible={workoutInputModalVisible}
-            setModalVisible={setWorkoutInputModalVisible}
-          />
+        <Modal animationType="none" transparent={true} visible={workoutInputModalVisible}>
+          <CreateWorkout modalVisible={workoutInputModalVisible} setModalVisible={setWorkoutInputModalVisible} />
         </Modal>
-        <Modal
-          animationType="none"
-          transparent={true}
-          visible={resistanceInputModalVisible}>
+        <Modal animationType="none" transparent={true} visible={resistanceInputModalVisible}>
           <CreateResistance
             modalVisible={resistanceInputModalVisible}
             setModalVisible={setResistanceInputModalVisible}
