@@ -5,19 +5,22 @@ import NumericInput from 'react-native-numeric-input';
 import { getTimestamp } from '../utils/getTimeStamp';
 import RadioButtons from './RadioButtons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CreateWorkoutModel, WorkoutTypes } from '../commonlib/models/WorkoutModel';
+import { CreateWorkoutModel, WorkoutTypes, SubWorkoutTypes } from '../commonlib/models/WorkoutModel';
 import { RootState } from '../store/actionHelpers';
 import { addWorkout } from '../store/workouts';
 import { workoutStyles } from '../screens/workouts/WorkoutScreen.style';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 interface WorkoutInputProps {
-  type: WorkoutTypes;
-  subType: string;
+  type?: WorkoutTypes;
+  subType?: string;
   modalVisible: boolean;
   setModalVisible: (value: boolean) => void;
 }
 
 const WorkoutInput: React.FC<WorkoutInputProps> = props => {
+  const [type, setType] = useState(props.type ? props.type : '');
+  const [subType, setSubType] = useState('');
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState('');
   const [count, setCount] = useState(0);
@@ -30,11 +33,41 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   const [styles, setStyles] = useState(workoutStyles());
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const workoutTypes: string[] = Object.keys(WorkoutTypes);
+  let typesdd = workoutTypes.map((w: any) => {
+    return {
+      label: w.toLocaleLowerCase(),
+      value: w.toLocaleLowerCase(),
+    };
+  });
+
+  const getSubTypes = (type: string) => {
+    for (let sub of SubWorkoutTypes) {
+      if (sub.type === type) {
+        subtypesdd = sub.subtypes.map((t: any) => {
+          return {
+            label: t,
+            value: t,
+          };
+        });
+      }
+    }
+  };
+
+  let subtypesdd: { label: any; value: any }[] = [];
+  if (!type) {
+    subtypesdd = [{ label: '', value: '' }];
+  } else {
+    getSubTypes(type);
+  }
 
   const resetInput = () => {
     setWeight(0);
     setUnit(unitRadio[0].value);
     setCount(0);
+    setType('');
+    setSubType('');
+    props.setModalVisible(false);
   };
 
   const addLog = () => {
@@ -42,8 +75,8 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     let id = '5dfecbdd39d8760019968d04';
     const exerciseLog: CreateWorkoutModel = {
       userId: id,
-      type: props.type,
-      subType: props.subType.toLocaleLowerCase(),
+      type: type,
+      subType: subType?.toLocaleLowerCase(),
       createdDate: new Date(timestamp),
       weight,
       unit,
@@ -57,12 +90,39 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   React.useEffect(() => {
     setStyles(workoutStyles());
     setUnit(unitRadio[0].value);
-  }, [setStyles, setUnit]);
+    props.subType && setSubType(props.subType);
+  }, [setStyles, setUnit, setSubType, props.subType]);
+  let controller;
 
   return (
     <TouchableWithoutFeedback>
       <View style={styles.centeredView}>
         <View style={[styles.modalView, themeContainerStyle]}>
+          <View style={{ marginVertical: 10, zIndex: 20 }}>
+            <DropDownPicker
+              items={typesdd}
+              placeholder="Select a type"
+              controller={instance => (controller = instance)}
+              disabled={props.type && true}
+              defaultValue={props.type}
+              onChangeItem={item => {
+                getSubTypes(item.value);
+                setType(item.value);
+              }}
+              containerStyle={{ width: 275, height: 45 }}
+            />
+          </View>
+          <View style={{ marginVertical: 10, zIndex: 10 }}>
+            <DropDownPicker
+              items={subtypesdd}
+              placeholder="Select a subtype"
+              controller={instance => (controller = instance)}
+              disabled={(props.subType && true) || !type}
+              defaultValue={props.subType}
+              onChangeItem={item => setSubType(item.value)}
+              containerStyle={{ width: 275, height: 45 }}
+            />
+          </View>
           <View style={styles.inputsContainer}>
             <View>
               <Text style={[styles.label, themeTextStyle]}>Weight</Text>
@@ -104,7 +164,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
             <TouchableOpacity style={styles.addButton} onPress={() => weight > 0 && count > 0 && addLog()}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={() => props.setModalVisible(!props.modalVisible)}>
+            <TouchableOpacity style={styles.closeButton} onPress={resetInput}>
               <Icon name="close-circle-outline" size={50} color="tomato" />
             </TouchableOpacity>
           </View>

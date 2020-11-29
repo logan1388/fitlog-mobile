@@ -25,7 +25,7 @@ export const dashboardStyles = () =>
     },
     card: {
       justifyContent: 'space-between',
-      backgroundColor: 'darkgrey',
+      backgroundColor: 'whitesmoke',
       marginHorizontal: 15,
       maxHeight: 250,
     },
@@ -116,5 +116,23 @@ export const dashboardStyles = () =>
     },
     highlightsRepsText: {
       textAlign: 'right',
+    },
+    floatingButtonContainer: {
+      position: 'absolute',
+      bottom: 75,
+      right: 15,
+    },
+    floatingButton: {
+      position: 'absolute',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      right: 0,
+    },
+    secondaryButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 5,
+      paddingHorizontal: 5,
+      justifyContent: 'flex-end',
     },
   });
