@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import NumericInput from 'react-native-numeric-input';
+import { View, TouchableOpacity } from 'react-native';
 import { getTimestamp } from '../utils/getTimeStamp';
-import RadioButtons from './RadioButtons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CreateWorkoutModel, WorkoutTypes, SubWorkoutTypes } from '../commonlib/models/WorkoutModel';
 import { RootState } from '../store/actionHelpers';
 import { addWorkout } from '../store/workouts';
 import { workoutStyles } from '../screens/workouts/WorkoutScreen.style';
 import DropDownPicker from 'react-native-dropdown-picker';
+import LogInputs from './LogInputs';
 
 interface WorkoutInputProps {
   type?: WorkoutTypes;
@@ -24,6 +23,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState('');
   const [count, setCount] = useState(0);
+  const [time, setTime] = useState(0);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const dispatch = useDispatch();
   let unitRadio = [
@@ -32,7 +32,6 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   ];
   const [styles, setStyles] = useState(workoutStyles());
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
-  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const workoutTypes: string[] = Object.keys(WorkoutTypes);
   let typesdd = workoutTypes.map((w: any) => {
     return {
@@ -95,9 +94,12 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   let controller;
 
   return (
-    <TouchableWithoutFeedback>
-      <View style={styles.centeredView}>
-        <View style={[styles.modalView, themeContainerStyle]}>
+    <View style={styles.centeredView}>
+      <View style={[styles.modalView, themeContainerStyle]}>
+        <TouchableOpacity onPress={resetInput}>
+          <Icon name="close" size={40} style={{ top: 10, right: 15 }} />
+        </TouchableOpacity>
+        <View style={styles.modalInnerView}>
           <View style={{ marginVertical: 10, zIndex: 20 }}>
             <DropDownPicker
               items={typesdd}
@@ -109,7 +111,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
                 getSubTypes(item.value);
                 setType(item.value);
               }}
-              containerStyle={{ width: 275, height: 45 }}
+              containerStyle={{ width: '100%', height: 45 }}
             />
           </View>
           <View style={{ marginVertical: 10, zIndex: 10 }}>
@@ -120,57 +122,26 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
               disabled={(props.subType && true) || !type}
               defaultValue={props.subType}
               onChangeItem={item => setSubType(item.value)}
-              containerStyle={{ width: 275, height: 45 }}
+              containerStyle={{ width: '100%', height: 45 }}
             />
           </View>
-          <View style={styles.inputsContainer}>
-            <View>
-              <Text style={[styles.label, themeTextStyle]}>Weight</Text>
-              <NumericInput
-                initValue={weight}
-                value={weight}
-                onChange={value => setWeight(value)}
-                type="up-down"
-                totalHeight={60}
-                textColor={mode === 'light' ? 'black' : 'bisque'}
-                borderColor="darkgrey"
-                upDownButtonsBackgroundColor="darkgrey"
-              />
-            </View>
-            <View style={styles.repsInputContainer}>
-              <Text style={[styles.label, themeTextStyle]}>Reps</Text>
-              <NumericInput
-                initValue={count}
-                value={count}
-                onChange={value => setCount(value)}
-                type="up-down"
-                totalHeight={60}
-                textColor={mode === 'light' ? 'black' : 'bisque'}
-                borderColor="darkgrey"
-                upDownButtonsBackgroundColor="darkgrey"
-              />
-            </View>
-          </View>
-          <View style={styles.unitInputContainer}>
-            <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-            <RadioButtons
-              options={unitRadio}
-              unit={unit}
-              style={styles.radioButtons}
-              setUnit={(value: string) => setUnit(value)}
-            />
-          </View>
+          <LogInputs
+            weight={weight}
+            count={count}
+            unit={unit}
+            setWeight={setWeight}
+            setCount={setCount}
+            setUnit={setUnit}
+            setTime={setTime}
+          />
           <View style={styles.buttonsContainer}>
             <TouchableOpacity style={styles.addButton} onPress={() => weight > 0 && count > 0 && addLog()}>
               <Icon name="plus-circle-outline" size={50} color="steelblue" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={resetInput}>
-              <Icon name="close-circle-outline" size={50} color="tomato" />
-            </TouchableOpacity>
           </View>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 

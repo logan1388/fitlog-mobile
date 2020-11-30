@@ -90,8 +90,7 @@ export const resistanceStyles = () =>
       backgroundColor: 'white',
       margin: 15,
       borderRadius: 10,
-      padding: 30,
-      alignItems: 'center',
+      alignItems: 'flex-end',
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -100,7 +99,6 @@ export const resistanceStyles = () =>
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
-      paddingBottom: 15,
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -111,6 +109,8 @@ export const resistanceStyles = () =>
     timerContainer: {
       flexDirection: 'row',
       marginTop: 5,
+      marginBottom: 20,
+      justifyContent: 'center'
     },
     weightInputContainer: {
       marginHorizontal: 20,
@@ -118,4 +118,8 @@ export const resistanceStyles = () =>
     inputContainer: {
       flexDirection: 'row',
     },
+    modalInnerView: {
+      paddingHorizontal: 20,
+      paddingTop: 15,
+    }
   });

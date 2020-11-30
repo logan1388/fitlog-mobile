@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import NumericInput from 'react-native-numeric-input';
+import { View, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { getTimestamp } from '../utils/getTimeStamp';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Stopwatch as StopWatchDeprecated } from 'react-native-stopwatch-timer';
-import RadioButtons from './RadioButtons';
 import { resistanceStyles } from '../screens/resistance/ResistanceScreen.style';
 import { RootState } from '../store/actionHelpers';
 import { addResistance } from '../store/resistance';
 import { CreateResistanceModel, ResistanceTypes } from '../commonlib/models/ResistanceModel';
+import LogInputs from './LogInputs';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 interface ResistanceInputProps {
   name?: ResistanceTypes;
@@ -18,15 +17,12 @@ interface ResistanceInputProps {
 }
 
 const ResistanceInput: React.FC<ResistanceInputProps> = props => {
+  const [type, setType] = useState(props.name ? props.name : '');
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState('');
   const [count, setCount] = useState(0);
   const [time, setTime] = useState(0);
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
-  const [stopwatchStart, setStopWatchStart] = useState(false);
-  const [stopwatchReset, setStopWatchReset] = useState(false);
-  const [showStopWatch, setShowStopWatch] = useState(false);
-  const [showReset, setShowReset] = useState(false);
   const [styles, setStyles] = useState(resistanceStyles());
   const dispatch = useDispatch();
   let unitRadio = [
@@ -34,38 +30,24 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
     { label: 'kgs', value: 'kgs' },
   ];
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
-  const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-
-  const getFormattedTime = (time: number) => {
-    let currentTime = time;
-    setTime(currentTime);
-  };
-  const toggleStopWatch = () => {
-    setStopWatchStart(!stopwatchStart);
-    setShowStopWatch(true);
-    setStopWatchReset(false);
-  };
-  const stopStopWatch = () => {
-    setStopWatchStart(false);
-    setStopWatchReset(false);
-    setShowReset(true);
-  };
-  const resetStopWatch = () => {
-    setStopWatchStart(false);
-    setStopWatchReset(true);
-    setShowStopWatch(false);
-    setShowReset(false);
-    setTime(0);
-  };
 
   const resetInput = () => {
     setWeight(0);
     setCount(0);
-    setShowReset(false);
-    setStopWatchReset(true);
-    setShowStopWatch(false);
     setTime(0);
+    setType('');
+    props.setModalVisible(false);
   };
+
+  const resistanceTypes: string[] = Object.values(ResistanceTypes);
+  let typesdd = resistanceTypes.map((w: any) => {
+    return {
+      label: w.toLocaleLowerCase(),
+      value: w.toLocaleLowerCase(),
+    };
+  });
+  console.log('TypesDD ', typesdd);
+  console.log('Props ', props.name);
 
   const addLog = () => {
     let timestamp = getTimestamp();
@@ -89,80 +71,45 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
     setUnit(unitRadio[0].value);
   }, [setStyles, setUnit]);
 
+  let controller;
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.centeredView}>
         <View style={[styles.modalView, themeContainerStyle]}>
-          {!props.name && (
-            <View>
-              <Text style={[styles.label, themeTextStyle]}>Type</Text>
-            </View>
-          )}
-          <View style={styles.inputContainer}>
-            <View>
-              <Text style={[styles.label, themeTextStyle]}>Reps</Text>
-              <NumericInput
-                initValue={count}
-                value={count}
-                onChange={value => setCount(value)}
-                type="up-down"
-                totalHeight={60}
-                totalWidth={100}
-                textColor={mode === 'light' ? 'black' : 'bisque'}
-                borderColor="darkgrey"
-                upDownButtonsBackgroundColor="darkgrey"
+          <TouchableOpacity onPress={resetInput}>
+            <Icon name="close" size={40} style={{ top: 10, right: 15 }} />
+          </TouchableOpacity>
+          <View style={styles.modalInnerView}>
+            <View style={{ marginVertical: 10, zIndex: 20 }}>
+              <DropDownPicker
+                items={typesdd}
+                placeholder="Select a type"
+                controller={instance => (controller = instance)}
+                disabled={props.name && true}
+                defaultValue={props.name}
+                onChangeItem={item => {
+                  setType(item.value);
+                }}
+                containerStyle={{ width: '100%', height: 45 }}
               />
             </View>
-            <View style={styles.weightInputContainer}>
-              <Text style={[styles.label, themeTextStyle]}>Weight</Text>
-              <NumericInput
-                initValue={weight}
-                value={weight}
-                onChange={value => setWeight(value)}
-                type="up-down"
-                totalHeight={60}
-                totalWidth={100}
-                textColor={mode === 'light' ? 'black' : 'bisque'}
-                borderColor="darkgrey"
-                upDownButtonsBackgroundColor="darkgrey"
-              />
-            </View>
-            <View>
-              <Text style={[styles.label, themeTextStyle]}>Unit</Text>
-              <RadioButtons options={unitRadio} unit={unit} setUnit={(value: string) => setUnit(value)} />
-            </View>
-          </View>
-          <View style={styles.timerContainer}>
-            <TouchableOpacity
-              style={styles.timerButton}
-              onPress={() => (stopwatchStart ? stopStopWatch() : toggleStopWatch())}>
-              <Text style={styles.timerButtonText}>{stopwatchStart ? 'Stop' : showReset ? 'Resume' : 'Start'}</Text>
-              <Icon name="timer" size={24} color="black" />
-              {showStopWatch && (
-                <StopWatchDeprecated
-                  laps
-                  start={stopwatchStart}
-                  reset={stopwatchReset}
-                  options={options}
-                  getTime={getFormattedTime}
-                />
-              )}
-            </TouchableOpacity>
-            {showReset && (
-              <TouchableOpacity style={styles.timerResetButton} onPress={() => resetStopWatch()}>
-                <Text style={styles.timerButtonText}>Reset</Text>
+            <LogInputs
+              weight={weight}
+              count={count}
+              unit={unit}
+              setWeight={setWeight}
+              setCount={setCount}
+              setUnit={setUnit}
+              setTime={setTime}
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => (weight > 0 || count > 0 || time !== 0) && addLog()}>
+                <Icon name="plus-circle-outline" size={50} color="steelblue" />
               </TouchableOpacity>
-            )}
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => (weight > 0 || count > 0 || time !== 0) && addLog()}>
-              <Icon name="plus-circle-outline" size={50} color="steelblue" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={() => props.setModalVisible(!props.modalVisible)}>
-              <Icon name="close-circle-outline" size={50} color="tomato" />
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>

@@ -32,6 +32,7 @@ export const workoutStyles = () =>
     },
     unitInputContainer: {
       marginTop: 15,
+      alignItems: 'center'
     },
     radioButtons: {
       flexDirection: 'row',
@@ -95,8 +96,7 @@ export const workoutStyles = () =>
       backgroundColor: 'white',
       margin: 15,
       borderRadius: 10,
-      padding: 35,
-      alignItems: 'center',
+      alignItems: 'flex-end',
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -105,6 +105,9 @@ export const workoutStyles = () =>
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
-      paddingBottom: 15,
     },
+    modalInnerView: {
+      paddingHorizontal: 20,
+      paddingTop: 15,
+    }
   });
