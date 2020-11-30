@@ -124,10 +124,11 @@ const LogInputs: React.FC<LogInputProps> = props => {
               borderWidth: 1,
               width: '100%',
               height: 90,
+              padding: 5
             },
             themeTextStyle,
           ]}
-          placeholder="Notes"
+          placeholder="Notes (optional)"
           placeholderTextColor={mode === 'light' ? '#343a40' : 'bisque'}
           multiline
           numberOfLines={4}

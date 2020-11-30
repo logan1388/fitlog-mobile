@@ -32,6 +32,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   ];
   const [styles, setStyles] = useState(workoutStyles());
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
+  const themeButtonColor = mode === 'light' ? 'black' : 'bisque';
   const workoutTypes: string[] = Object.keys(WorkoutTypes);
   let typesdd = workoutTypes.map((w: any) => {
     return {
@@ -97,7 +98,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
     <View style={styles.centeredView}>
       <View style={[styles.modalView, themeContainerStyle]}>
         <TouchableOpacity onPress={resetInput}>
-          <Icon name="close" size={40} style={{ top: 10, right: 15 }} />
+          <Icon name="close" size={40} style={{ top: 10, right: 15 }} color={themeButtonColor} />
         </TouchableOpacity>
         <View style={styles.modalInnerView}>
           <View style={{ marginVertical: 10, zIndex: 20 }}>
