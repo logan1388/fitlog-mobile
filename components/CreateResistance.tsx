@@ -46,8 +46,6 @@ const ResistanceInput: React.FC<ResistanceInputProps> = props => {
       value: w.toLocaleLowerCase(),
     };
   });
-  console.log('TypesDD ', typesdd);
-  console.log('Props ', props.name);
 
   const addLog = () => {
     let timestamp = getTimestamp();

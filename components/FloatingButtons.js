@@ -73,13 +73,19 @@ const FloatingButtons = props => {
   return (
     <View style={styles.floatingButtonContainer}>
       <TouchableOpacity onPress={addResistanceLog}>
-        <Animated.View style={[styles.secondaryButton, resistanceBtnStyle, props.floatBtn ? { display: 'flex' } : { display: 'none' }]}>
+        <Animated.View
+          style={[
+            styles.secondaryButton,
+            resistanceBtnStyle,
+            props.floatBtn ? { display: 'flex' } : { display: 'none' },
+          ]}>
           <Text>Resistance</Text>
           <Icon name="yoga" size={35} color={themeButtonStyle} style={{ paddingHorizontal: 5 }} />
         </Animated.View>
       </TouchableOpacity>
       <TouchableOpacity onPress={addWorkoutLog}>
-        <Animated.View style={[styles.secondaryButton, workoutBtnStyle, props.floatBtn ? { display: 'flex' } : { display: 'none' }]}>
+        <Animated.View
+          style={[styles.secondaryButton, workoutBtnStyle, props.floatBtn ? { display: 'flex' } : { display: 'none' }]}>
           <Text>Workout</Text>
           <Icon name="dumbbell" size={35} color={themeButtonStyle} style={{ paddingHorizontal: 5 }} />
         </Animated.View>

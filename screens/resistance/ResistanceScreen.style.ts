@@ -110,7 +110,7 @@ export const resistanceStyles = () =>
       flexDirection: 'row',
       marginTop: 5,
       marginBottom: 20,
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
     weightInputContainer: {
       marginHorizontal: 20,
@@ -121,5 +121,5 @@ export const resistanceStyles = () =>
     modalInnerView: {
       paddingHorizontal: 20,
       paddingTop: 15,
-    }
+    },
   });

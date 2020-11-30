@@ -32,7 +32,7 @@ export const workoutStyles = () =>
     },
     unitInputContainer: {
       marginTop: 15,
-      alignItems: 'center'
+      alignItems: 'center',
     },
     radioButtons: {
       flexDirection: 'row',
@@ -109,5 +109,5 @@ export const workoutStyles = () =>
     modalInnerView: {
       paddingHorizontal: 20,
       paddingTop: 15,
-    }
+    },
   });
