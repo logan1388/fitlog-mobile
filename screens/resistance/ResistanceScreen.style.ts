@@ -32,8 +32,7 @@ export const resistanceStyles = () =>
     logsBg: {
       backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
-      paddingVertical: 20,
-      paddingHorizontal: 20,
+      paddingBottom: 60,
     },
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },

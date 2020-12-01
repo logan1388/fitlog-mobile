@@ -124,7 +124,7 @@ const LogInputs: React.FC<LogInputProps> = props => {
               borderWidth: 1,
               width: '100%',
               height: 90,
-              padding: 5
+              padding: 5,
             },
             themeTextStyle,
           ]}

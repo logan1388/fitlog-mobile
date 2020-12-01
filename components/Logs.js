@@ -9,109 +9,60 @@ const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const logs = props.logs;
+  // logs.map(l => l.date = 1);
+  // console.log('logs ', logs);
+  // var groupBy = function(xs, key) {
+  //   return xs.reduce(function(rv, x) {
+  //     (rv[x[key]] = rv[x[key]] || []).push(x);
+  //     return rv;
+  //   }, {});
+  // };
+  // console.log('New logs ', groupBy(logs, 'createdDate'))
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {logs && logs.length ? (
         <View>
-          {props.resistance ? (
-            <FlatList
-              data={logs}
-              renderItem={({ item }) => (
-                <View style={styles.logs}>
-                  {item.note ? (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-text-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  ) : (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  )}
-                  <View style={{ flex: 3 }}>
-                    <Text style={themeTextStyle}>
-                      {moment(item.createdDate).utc().local().format('MM/DD/YY HH:mm')}
-                    </Text>
-                  </View>
-                  <View style={{ flex: 1.5 }}>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
-                      {item.count ? `${item.count} reps` : '-'}
-                    </Text>
-                  </View>
-                  <View style={{ flex: 1.5 }}>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text>
-                  </View>
-                  <View style={{ flex: 1.5 }}>
+          <View>
+            <Text style={{ padding: 10, fontWeight: 'bold' }}>Recent Entries</Text>
+          </View>
+          <FlatList
+            data={logs}
+            renderItem={({ item }) => (
+              <View style={styles.logs}>
+                <View style={{ flex: 1, backgroundColor: 'lightgrey', paddingVertical: 3, paddingHorizontal: 10 }}>
+                  <Text style={themeTextStyle}>{moment(item.createdDate).utc().local().format('MMM DD, YYYY')}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                  <View style={{ flex: 1 }}></View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ textAlign: 'right' }}>Weight</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
                       {item.weight ? `${item.weight} lbs` : '-'}
                     </Text>
                   </View>
-                </View>
-              )}
-              keyExtractor={item => item._id}
-            />
-          ) : (
-            <FlatList
-              data={logs}
-              renderItem={({ item }) => (
-                <View style={styles.logs}>
-                  {item.note ? (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-text-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  ) : (
-                    <View style={{ flex: 1 }}>
-                      <Icon
-                        name="comment-outline"
-                        size={24}
-                        color={mode === 'light' ? 'black' : 'darkgrey'}
-                        onPress={() => props.addNotes(item)}
-                      />
-                    </View>
-                  )}
                   <View style={{ flex: 1 }}>
-                    {props.bestSet &&
-                    item.weight === props.bestSet.weight &&
-                    item.count === props.bestSet.count &&
-                    item.date === moment(props.bestSet.date).utc().local().format('MM/DD/YY HH:mm') ? (
-                      <View style={{ flexDirection: 'row' }}>
-                        <Icon name="trophy" size={25} color={mode === 'light' ? Colors.buttonColor : 'bisque'} />
-                      </View>
-                    ) : null}
-                  </View>
-                  <View style={{ flex: 2.5 }}>
-                    <Text style={themeTextStyle}>
-                      {moment(item.createdDate).utc().local().format('MM/DD/YY HH:mm')}
-                    </Text>
-                  </View>
-                  <View style={{ flex: 1.5 }}>
+                    <Text style={{ textAlign: 'right' }}>Reps</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
-                      {item.weight} {item.unit}
+                      {item.count ? `${item.count} reps` : '-'}
                     </Text>
                   </View>
-                  <View style={{ flex: 1.5 }}>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.count} reps</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ textAlign: 'right' }}>Time</Text>
+                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ textAlign: 'right' }}>Date</Text>
+                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.date}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Icon name="chevron-right" size={30} color="black" style={{ textAlign: 'right' }} />
                   </View>
                 </View>
-              )}
-              keyExtractor={item => item._id}
-            />
-          )}
+              </View>
+            )}
+            keyExtractor={item => item._id}
+          />
         </View>
       ) : (
         <View style={styles.noDataText}>
@@ -124,12 +75,9 @@ const Logs = props => {
 
 const styles = StyleSheet.create({
   logs: {
-    paddingVertical: 8,
+    paddingVertical: 5,
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: 'darkgrey',
   },
   lightThemeText: { color: 'black' },
   darkThemeText: { color: 'bisque' },
