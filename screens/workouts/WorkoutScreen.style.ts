@@ -19,7 +19,7 @@ export const workoutStyles = () =>
       paddingVertical: 15,
     },
     workoutlogContainer: {
-      paddingBottom: 60,
+      paddingBottom: 45,
       backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
     },

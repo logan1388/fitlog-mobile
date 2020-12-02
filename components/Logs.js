@@ -1,23 +1,38 @@
 import React from 'react';
-import { View, StyleSheet, Text, SafeAreaView, FlatList } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, SectionList } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
-import Colors from '../constants/colors';
 
 const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const logs = props.logs;
-  // logs.map(l => l.date = 1);
-  // console.log('logs ', logs);
-  // var groupBy = function(xs, key) {
-  //   return xs.reduce(function(rv, x) {
-  //     (rv[x[key]] = rv[x[key]] || []).push(x);
-  //     return rv;
-  //   }, {});
-  // };
-  // console.log('New logs ', groupBy(logs, 'createdDate'))
+  let logs = props.logs;
+  logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY') }));
+
+  function groupBy(list, keyGetter) {
+    const map = new Map();
+    list.forEach(item => {
+      const key = keyGetter(item);
+      const collection = map.get(key);
+      if (!collection) {
+        map.set(key, [item]);
+      } else {
+        collection.push(item);
+      }
+    });
+    return map;
+  }
+  const grouped = groupBy(logs, log => log.date);
+
+  const data = logs.map(l => {
+    return {
+      title: l.date,
+      data: grouped.get(l.date),
+    };
+  });
+
+  const newLogs = [...new Map(data.map(item => [item['title'], item])).values()];
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -26,14 +41,12 @@ const Logs = props => {
           <View>
             <Text style={{ padding: 10, fontWeight: 'bold' }}>Recent Entries</Text>
           </View>
-          <FlatList
-            data={logs}
+          <SectionList
+            sections={newLogs}
+            keyExtractor={(item, index) => item + index}
             renderItem={({ item }) => (
-              <View style={styles.logs}>
-                <View style={{ flex: 1, backgroundColor: 'lightgrey', paddingVertical: 3, paddingHorizontal: 10 }}>
-                  <Text style={themeTextStyle}>{moment(item.createdDate).utc().local().format('MMM DD, YYYY')}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+              <View style={[styles.logs, { borderTopWidth: 1 }]}>
+                <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
                   <View style={{ flex: 1 }}></View>
                   <View style={{ flex: 1 }}>
                     <Text style={{ textAlign: 'right' }}>Weight</Text>
@@ -52,16 +65,16 @@ const Logs = props => {
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text>
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ textAlign: 'right' }}>Date</Text>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.date}</Text>
-                  </View>
-                  <View style={{ flex: 1 }}>
                     <Icon name="chevron-right" size={30} color="black" style={{ textAlign: 'right' }} />
                   </View>
                 </View>
               </View>
             )}
-            keyExtractor={item => item._id}
+            renderSectionHeader={({ section: { title } }) => (
+              <View style={{ flex: 1, backgroundColor: 'lightgrey', paddingVertical: 3, paddingHorizontal: 10 }}>
+                <Text style={themeTextStyle}>{title}</Text>
+              </View>
+            )}
           />
         </View>
       ) : (
