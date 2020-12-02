@@ -32,8 +32,7 @@ export const resistanceStyles = () =>
     logsBg: {
       backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
-      paddingVertical: 20,
-      paddingHorizontal: 20,
+      paddingBottom: 60,
     },
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },
@@ -90,8 +89,7 @@ export const resistanceStyles = () =>
       backgroundColor: 'white',
       margin: 15,
       borderRadius: 10,
-      padding: 30,
-      alignItems: 'center',
+      alignItems: 'flex-end',
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -100,7 +98,6 @@ export const resistanceStyles = () =>
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
-      paddingBottom: 15,
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -111,11 +108,17 @@ export const resistanceStyles = () =>
     timerContainer: {
       flexDirection: 'row',
       marginTop: 5,
+      marginBottom: 20,
+      justifyContent: 'center',
     },
     weightInputContainer: {
       marginHorizontal: 20,
     },
     inputContainer: {
       flexDirection: 'row',
+    },
+    modalInnerView: {
+      paddingHorizontal: 20,
+      paddingTop: 15,
     },
   });

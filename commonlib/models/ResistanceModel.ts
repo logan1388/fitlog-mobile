@@ -1,12 +1,12 @@
 // Copyright FitBook
 
 export enum ResistanceTypes {
-  PUSH_UP = 'PUSHUP',
-  PULL_UP = 'PULLUP',
-  DIPS = 'DIPS',
-  BURPEE = 'BURPEE',
-  PLANK = 'PLANK',
-  LUNGES = 'LUNGES',
+  PUSH_UP = 'pushup',
+  PULL_UP = 'pullup',
+  DIPS = 'dips',
+  BURPEE = 'burpee',
+  PLANK = 'plank',
+  LUNGES = 'lunges',
 }
 
 export interface CreateResistanceModel {
