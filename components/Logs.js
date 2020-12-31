@@ -1,12 +1,23 @@
-import React from 'react';
-import { View, StyleSheet, Text, SafeAreaView, SectionList } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, SafeAreaView, SectionList, TouchableOpacity, Modal } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
+import LogDetails from '../components/LogDetails';
 
 const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
+  const [logDetailsModalVisible, setLogDetailsModalVisible] = useState(false);
+  const [log, setLog] = useState({});
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const themeContainerStyle =
+    mode === 'light'
+      ? logDetailsModalVisible
+        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+        : styles.lightContainer
+      : logDetailsModalVisible
+        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
+        : styles.darkContainer;
   let logs = props.logs;
   logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY') }));
 
@@ -23,8 +34,8 @@ const Logs = props => {
     });
     return map;
   }
-  const grouped = groupBy(logs, log => log.date);
 
+  const grouped = groupBy(logs, log => log.date);
   const data = logs.map(l => {
     return {
       title: l.date,
@@ -33,11 +44,18 @@ const Logs = props => {
   });
 
   const newLogs = [...new Map(data.map(item => [item['title'], item])).values()];
+  const getLogDetails = log => {
+    setLogDetailsModalVisible(true);
+    setLog(log);
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {logs && logs.length ? (
         <View>
+          <Modal animationType="none" transparent={true} visible={logDetailsModalVisible}>
+            <LogDetails log={log} setLogDetailsModalVisible={setLogDetailsModalVisible} />
+          </Modal>
           <View>
             <Text style={{ padding: 10, fontWeight: 'bold' }}>Recent Entries</Text>
           </View>
@@ -64,9 +82,9 @@ const Logs = props => {
                     <Text style={{ textAlign: 'right' }}>Time</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text>
                   </View>
-                  <View style={{ flex: 1 }}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => getLogDetails(item)}>
                     <Icon name="chevron-right" size={30} color="black" style={{ textAlign: 'right' }} />
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}
@@ -74,14 +92,12 @@ const Logs = props => {
               <View style={{ flex: 1, backgroundColor: 'lightgrey', paddingVertical: 3, paddingHorizontal: 10 }}>
                 <Text style={themeTextStyle}>{title}</Text>
               </View>
-            )}
-          />
-        </View>
-      ) : (
-        <View style={styles.noDataText}>
-          <Text style={themeTextStyle}>Start logging!</Text>
-        </View>
-      )}
+            )} />
+        </View>) : (
+          <View style={styles.noDataText}>
+            <Text style={themeTextStyle}>Start logging!</Text>
+          </View>
+        )}
     </SafeAreaView>
   );
 };
@@ -92,10 +108,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
+  lightContainer: { backgroundColor: 'white' },
+  darkContainer: { backgroundColor: '#2D2D2D' },
   lightThemeText: { color: 'black' },
   darkThemeText: { color: 'bisque' },
   noDataText: {
     alignItems: 'center',
+  },
+  workoutlogContainer: {
+    backgroundColor: 'rgba(238, 238, 238, 0.8)',
+    height: '100%',
   },
 });
 
