@@ -1,6 +1,13 @@
 const mapping = type => {
   let file = '';
   switch (type.toLowerCase()) {
+    case 'pushup': return require(`../assets/pushup.png`)
+    case 'pullup': return require(`../assets/pullup.png`)
+    case 'dips': return require(`../assets/dips.png`)
+    case 'burpee': return require(`../assets/burpee.png`)
+    case 'plank': return require(`../assets/plank.png`)
+    case 'lunges': return require(`../assets/lunge.png`)
+
     case 'chest': return require(`../assets/benchpress.png`)
     case 'leg': return require(`../assets/legpress.png`)
     case 'shoulder': return require(`../assets/shoulderpress.png`)
@@ -15,8 +22,8 @@ const mapping = type => {
     case 'pull over': return require(`../assets/pullover.png`)
     case 'squat': return require(`../assets/squat.png`)
     case 'squat & press': return require(`../assets/legpress.png`)
-    case 'static lunge': return require(`../assets/staticlunge.png`)
-    case 'walking lunge': return require(`../assets/staticlunge.png`)
+    case 'static lunge': return require(`../assets/lunge.png`)
+    case 'walking lunge': return require(`../assets/lunge.png`)
     case 'leg press': return require(`../assets/legpress.png`)
     case 'hamstring curl': return require(`../assets/hamstring.png`)
     case 'leg extension': return require(`../assets/legextension.png`)

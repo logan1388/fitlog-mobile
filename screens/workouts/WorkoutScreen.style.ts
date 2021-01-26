@@ -10,8 +10,7 @@ export const workoutStyles = () =>
     workoutTypesContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      marginVertical: 10,
-      paddingHorizontal: 10,
+      marginVertical: 5,
     },
     workoutSubTypesContainer: {
       flex: 1,
@@ -78,8 +77,7 @@ export const workoutStyles = () =>
     bg: {
       backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
-      paddingTop: 10,
-      paddingBottom: 15,
+      paddingBottom: 10,
     },
     innerContainer: {
       paddingVertical: 10,

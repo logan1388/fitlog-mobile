@@ -72,7 +72,6 @@ const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
       <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}>
         <View style={styles.bg}>
           <FlatList
-            style={styles.innerContainer}
             data={formatData(workouts, numColumns)}
             renderItem={({ item }) => <Item type={item.category} subType={item.name} empty={item.empty} />}
             keyExtractor={item => item.name}
