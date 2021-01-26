@@ -26,9 +26,11 @@ export interface WorkoutModel {
   type: WorkoutTypes;
   subType: string;
   createdDate: Date;
+  date: string;
   weight: number;
   unit: string;
   count: number;
+  time: string;
   note: string;
 }
 

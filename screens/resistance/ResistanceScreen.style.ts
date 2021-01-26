@@ -10,13 +10,14 @@ export const resistanceStyles = () =>
     insideContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      paddingVertical: 20,
-      paddingHorizontal: 10,
+      marginVertical: 5,
     },
     button: {
       backgroundColor: 'darkgrey',
-      paddingVertical: 25,
+      paddingVertical: 15,
       alignItems: 'center',
+      marginHorizontal: 5,
+      height: 150
     },
     buttonText: {
       textAlign: 'center',
@@ -121,4 +122,11 @@ export const resistanceStyles = () =>
       paddingHorizontal: 20,
       paddingTop: 15,
     },
+    itemInvisible: {
+      backgroundColor: 'transparent'
+    },
+    resistanceIcons: {
+      width: 90,
+      height: 90
+    }
   });
