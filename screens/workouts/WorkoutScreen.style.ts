@@ -16,7 +16,7 @@ export const workoutStyles = () =>
     workoutSubTypesContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      paddingVertical: 15,
+      marginVertical: 5,
     },
     workoutlogContainer: {
       paddingBottom: 45,
@@ -45,6 +45,14 @@ export const workoutStyles = () =>
       backgroundColor: 'darkgrey',
       paddingVertical: 25,
       alignItems: 'center',
+      marginHorizontal: 5,
+    },
+    subtypesButton: {
+      backgroundColor: 'darkgrey',
+      paddingVertical: 15,
+      alignItems: 'center',
+      marginHorizontal: 5,
+      height: 150
     },
     buttonText: {
       textAlign: 'center',
@@ -109,4 +117,11 @@ export const workoutStyles = () =>
       paddingHorizontal: 20,
       paddingTop: 15,
     },
+    itemInvisible: {
+      backgroundColor: 'transparent'
+    },
+    workoutIcons: {
+      width: 90,
+      height: 90
+    }
   });
