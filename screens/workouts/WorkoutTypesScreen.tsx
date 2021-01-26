@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text, View, SafeAreaView, FlatList, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { WorkoutStackRouteParams, WorkoutStackScreens } from '../../navigation/NavigatorTypes';
 import { workoutStyles } from './WorkoutScreen.style';
 import { WorkoutTypes } from '../../commonlib/models/WorkoutModel';
+import mapping from '../../utils/assetmapping';
 
 type WorkoutTypesNavigationProps = StackNavigationProp<WorkoutStackRouteParams, WorkoutStackScreens.WorkoutTypesScreen>;
 
@@ -34,6 +35,7 @@ const WorkoutTypesScreen: React.FC<WorkoutTypesProps> = props => {
               type,
             });
           }}>
+          <Image style={styles.workoutTypeIcons} source={mapping(type)} />
           <Text style={styles.buttonText}>{type}</Text>
         </TouchableOpacity>
       </View>

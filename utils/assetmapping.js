@@ -1,6 +1,13 @@
 const mapping = type => {
   let file = '';
-  switch (type) {
+  switch (type.toLowerCase()) {
+    case 'chest': return require(`../assets/benchpress.png`)
+    case 'leg': return require(`../assets/legpress.png`)
+    case 'shoulder': return require(`../assets/shoulderpress.png`)
+    case 'back': return require(`../assets/deadlift.jpg`)
+    case 'biceps': return require(`../assets/bicepscurl.png`)
+    case 'triceps': return require(`../assets/kickback.png`)
+
     case 'bench press': return require(`../assets/benchpress.png`)
     case 'incline press': return require(`../assets/inclinepress.png`)
     case 'decline press': return require(`../assets/declinepress.png`)
@@ -16,7 +23,7 @@ const mapping = type => {
     case 'shoulder press': return require(`../assets/shoulderpress.png`)
     case 'reverse fly': return require(`../assets/pecdeck.png`)
     case 'side rise': return require(`../assets/siderise.png`)
-    case 'deadlift': return require(`../assets/deadlift.png`)
+    case 'deadlift': return require(`../assets/deadlift.jpg`)
     case 't-bar row': return require(`../assets/t-bar-row.png`)
     case 'cable row': return require(`../assets/cable-row1.png`)
     case 'biceps curl': return require(`../assets/bicepscurl.png`)

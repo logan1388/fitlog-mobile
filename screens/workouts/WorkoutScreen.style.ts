@@ -10,7 +10,7 @@ export const workoutStyles = () =>
     workoutTypesContainer: {
       flex: 1,
       justifyContent: 'space-between',
-      paddingVertical: 20,
+      marginVertical: 10,
       paddingHorizontal: 10,
     },
     workoutSubTypesContainer: {
@@ -43,9 +43,11 @@ export const workoutStyles = () =>
     },
     button: {
       backgroundColor: 'darkgrey',
-      paddingVertical: 25,
+      paddingVertical: 15,
+      paddingHorizontal: 25,
       alignItems: 'center',
       marginHorizontal: 5,
+      flexDirection: 'row'
     },
     subtypesButton: {
       backgroundColor: 'darkgrey',
@@ -55,6 +57,7 @@ export const workoutStyles = () =>
       height: 150
     },
     buttonText: {
+      flex: 1,
       textAlign: 'center',
       fontWeight: 'bold',
       fontSize: 16,
@@ -75,7 +78,8 @@ export const workoutStyles = () =>
     bg: {
       backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
-      paddingBottom: 20,
+      paddingTop: 10,
+      paddingBottom: 15,
     },
     innerContainer: {
       paddingVertical: 10,
@@ -120,7 +124,11 @@ export const workoutStyles = () =>
     itemInvisible: {
       backgroundColor: 'transparent'
     },
-    workoutIcons: {
+    workoutTypeIcons: {
+      width: 100,
+      height: 90
+    },
+    workoutSubTypeIcons: {
       width: 90,
       height: 90
     }

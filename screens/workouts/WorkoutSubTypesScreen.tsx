@@ -59,7 +59,7 @@ const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
                 subType,
               });
             }}>
-            <Image style={styles.workoutIcons} source={mapping(subType)} />
+            <Image style={styles.workoutSubTypeIcons} source={mapping(subType)} />
             <Text style={styles.buttonText}>{subType}</Text>
           </TouchableOpacity>
         ) : null}
