@@ -36,10 +36,9 @@ import {
 
 const defaultStackNavOptions = {
   headerStyle: {
-    backgroundColor: 'transparent',
-    borderBottomWidth: 0
+    backgroundColor: '#343a40',
   },
-  headerTintColor: 'black',
+  headerTintColor: 'snow',
 };
 
 const AwardsStackNavigator = createStackNavigator();

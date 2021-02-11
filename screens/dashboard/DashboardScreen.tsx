@@ -112,8 +112,8 @@ const DashboardScreen = () => {
 };
 
 export const screenOptions = {
-  headerTitle: '',
-  headerShown: false
+  headerTitle: 'Fitbook',
+  headerShown: true
 };
 
 export default DashboardScreen;

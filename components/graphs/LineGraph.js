@@ -3,7 +3,7 @@ export const lineGraph = (lineGraphData, mode) => {
   const graphWidth = 900 - margin.left - margin.right;
   const graphHeight = 700 - margin.top - margin.bottom;
 
-  const textColor = mode === 'light' ? 'black' : 'bisque';
+  const textColor = mode === 'light' ? 'black' : 'snow';
 
   d3.select('.canvas-line').selectAll('*').remove();
   const svg1 = d3
@@ -37,10 +37,10 @@ export const lineGraph = (lineGraphData, mode) => {
 
   const line = d3
     .line()
-    .x(function (d) {
+    .x(function(d) {
       return x(new Date(d.date));
     })
-    .y(function (d) {
+    .y(function(d) {
       return y(d.weights);
     });
 

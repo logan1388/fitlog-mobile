@@ -18,5 +18,5 @@ export const graphStyles = () =>
     lightContainer: { backgroundColor: 'white' },
     darkContainer: { backgroundColor: '#2D2D2D' },
     lightThemeText: { color: 'black' },
-    darkThemeText: { color: 'bisque' },
+    darkThemeText: { color: 'snow' },
   });
