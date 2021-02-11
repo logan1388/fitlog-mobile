@@ -42,8 +42,8 @@ const DashboardScreen = () => {
         ? { opacity: 0.2 }
         : styles.lightContainer
       : floatBtn || workoutInputModalVisible || resistanceInputModalVisible
-      ? { opacity: 0.2, backgroundColor: 'black' }
-      : styles.darkContainer;
+        ? { opacity: 0.2, backgroundColor: 'black' }
+        : styles.darkContainer;
 
   const workoutsSummaryReduxState = useSelector<RootState, WorkoutsSummaryReduxState>(state => {
     let workoutsSumm = state.workouts.workoutsSummary;
@@ -112,7 +112,8 @@ const DashboardScreen = () => {
 };
 
 export const screenOptions = {
-  headerTitle: 'FITBOOK',
+  headerTitle: '',
+  headerShown: false
 };
 
 export default DashboardScreen;

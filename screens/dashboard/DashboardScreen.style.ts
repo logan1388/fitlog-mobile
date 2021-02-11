@@ -54,10 +54,10 @@ export const dashboardStyles = () =>
       borderBottomWidth: 1,
       borderBottomColor: 'black',
     },
-    lightContainer: { backgroundColor: 'white' },
+    lightContainer: { backgroundColor: 'transparent' },
     darkContainer: { backgroundColor: '#2D2D2D' },
     lightThemeText: { color: '#343a40' },
-    darkThemeText: { color: 'bisque' },
+    darkThemeText: { color: 'snow' },
     summaryContainer: {
       width: '100%',
     },

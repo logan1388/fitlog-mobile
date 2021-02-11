@@ -80,7 +80,7 @@ export const resistanceStyles = () =>
       paddingHorizontal: 10,
     },
     lightThemeText: { color: '#343a40' },
-    darkThemeText: { color: 'bisque' },
+    darkThemeText: { color: 'snow' },
     centeredView: {
       flex: 1,
       justifyContent: 'center',

@@ -70,7 +70,7 @@ const LogInputs: React.FC<LogInputProps> = props => {
             type="up-down"
             totalHeight={55}
             totalWidth={100}
-            textColor={mode === 'light' ? 'black' : 'bisque'}
+            textColor={mode === 'light' ? 'black' : 'snow'}
             borderColor="darkgrey"
             upDownButtonsBackgroundColor="darkgrey"
           />
@@ -84,7 +84,7 @@ const LogInputs: React.FC<LogInputProps> = props => {
             type="up-down"
             totalHeight={55}
             totalWidth={100}
-            textColor={mode === 'light' ? 'black' : 'bisque'}
+            textColor={mode === 'light' ? 'black' : 'snow'}
             borderColor="darkgrey"
             upDownButtonsBackgroundColor="darkgrey"
           />
@@ -129,7 +129,7 @@ const LogInputs: React.FC<LogInputProps> = props => {
             themeTextStyle,
           ]}
           placeholder="Notes (optional)"
-          placeholderTextColor={mode === 'light' ? '#343a40' : 'bisque'}
+          placeholderTextColor={mode === 'light' ? '#343a40' : 'snow'}
           multiline
           numberOfLines={4}
           maxLength={100}

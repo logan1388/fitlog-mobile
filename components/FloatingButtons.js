@@ -8,7 +8,7 @@ const FloatingButtons = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const [styles, setStyles] = useState(dashboardStyles());
   const animation = useRef(new Animated.Value(0)).current;
-  const themeButtonStyle = mode === 'light' ? '#343a40' : 'deepskyblue';
+  const themeButtonStyle = mode === 'light' ? '#343a40' : 'slategrey';
   const floatBtn = props.floatBtn;
 
   const toggleAddMenu = () => {

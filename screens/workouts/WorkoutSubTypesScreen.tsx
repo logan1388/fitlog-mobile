@@ -69,16 +69,16 @@ const WorkoutSubTypesScreen: React.FC<WorkoutProps> = props => {
 
   return (
     <SafeAreaView style={styles.outerContainer}>
-      <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}>
-        <View style={styles.bg}>
-          <FlatList
-            data={formatData(workouts, numColumns)}
-            renderItem={({ item }) => <Item type={item.category} subType={item.name} empty={item.empty} />}
-            keyExtractor={item => item.name}
-            numColumns={numColumns}
-          />
-        </View>
-      </ImageBackground>
+      {/* <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}> */}
+      <View style={styles.bg}>
+        <FlatList
+          data={formatData(workouts, numColumns)}
+          renderItem={({ item }) => <Item type={item.category} subType={item.name} empty={item.empty} />}
+          keyExtractor={item => item.name}
+          numColumns={numColumns}
+        />
+      </View>
+      {/* </ImageBackground> */}
     </SafeAreaView>
   );
 };

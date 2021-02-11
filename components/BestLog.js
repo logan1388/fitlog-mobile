@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import MaxCard from '../components/MaxCard';
+import Card from '../components/Card';
 
 const BestLog = props => {
   return (
@@ -10,11 +10,13 @@ const BestLog = props => {
     //   {props.maxRps && <MaxCard title="Reps" {...props.maxRps} />}
     //   {props.maxTime && <MaxCard title="Time" {...props.maxTime} />}
     // </View>
-    <View style={{ backgroundColor: 'lightskyblue', padding: 30 }}>
-      <Text style={{ margin: 10 }}>Best Set</Text>
-      <Text style={{ margin: 10 }}>Max Weight</Text>
-      <Text style={{ margin: 10 }}>Max Rep</Text>
-    </View>
+    <Card style={{ margin: 10, backgroundColor: 'steelblue' }}>
+      <View>
+        <Text style={{ margin: 10 }}>Best Set</Text>
+        <Text style={{ margin: 10 }}>Max Weight</Text>
+        <Text style={{ margin: 10 }}>Max Rep</Text>
+      </View>
+    </Card>
   );
 };
 

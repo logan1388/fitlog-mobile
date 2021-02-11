@@ -75,7 +75,6 @@ export const workoutStyles = () =>
     },
     image: { flex: 1 },
     bg: {
-      backgroundColor: 'rgba(238, 238, 238, 0.8)',
       height: '100%',
       paddingBottom: 10,
     },

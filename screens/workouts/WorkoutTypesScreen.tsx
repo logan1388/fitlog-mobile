@@ -44,11 +44,11 @@ const WorkoutTypesScreen: React.FC<WorkoutTypesProps> = props => {
 
   return (
     <SafeAreaView style={styles.outerContainer}>
-      <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}>
-        <View style={styles.bg}>
-          <FlatList data={workoutTypes} renderItem={({ item }) => <Item type={item} />} keyExtractor={item => item} />
-        </View>
-      </ImageBackground>
+      {/* <ImageBackground source={require('../../assets/FITLOG.jpg')} style={styles.image}> */}
+      <View style={styles.bg}>
+        <FlatList data={workoutTypes} renderItem={({ item }) => <Item type={item} />} keyExtractor={item => item} />
+      </View>
+      {/* </ImageBackground> */}
     </SafeAreaView>
   );
 };

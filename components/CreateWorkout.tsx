@@ -32,7 +32,7 @@ const WorkoutInput: React.FC<WorkoutInputProps> = props => {
   ];
   const [styles, setStyles] = useState(workoutStyles());
   const themeContainerStyle = mode === 'light' ? styles.lightContainer : styles.darkContainer;
-  const themeButtonColor = mode === 'light' ? 'black' : 'bisque';
+  const themeButtonColor = mode === 'light' ? 'black' : 'snow';
   const workoutTypes: string[] = Object.keys(WorkoutTypes);
   let typesdd = workoutTypes.map((w: any) => {
     return {

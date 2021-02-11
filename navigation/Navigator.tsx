@@ -36,9 +36,10 @@ import {
 
 const defaultStackNavOptions = {
   headerStyle: {
-    backgroundColor: '#343a40',
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0
   },
-  headerTintColor: 'bisque',
+  headerTintColor: 'black',
 };
 
 const AwardsStackNavigator = createStackNavigator();
@@ -180,7 +181,7 @@ export const FitbookNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: Colors.headerFontColor,
+        activeTintColor: 'steelblue',
         inactiveTintColor: Colors.buttonColor,
         style: { backgroundColor: Colors.headerBackground },
         safeAreaInset: { bottom: 'never', top: 'never' },

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   lightThemeText: { color: 'black' },
-  darkThemeText: { color: 'bisque' },
+  darkThemeText: { color: 'snow' },
   lightThemeButton: { borderColor: 'black' },
   darkThemeButton: { borderColor: 'darkgrey' },
   lightThemeCircle: { backgroundColor: 'black' },

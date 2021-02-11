@@ -1,5 +1,5 @@
 export default {
   buttonColor: 'darkgrey',
-  headerFontColor: 'bisque',
+  headerFontColor: 'snow',
   headerBackground: '#343a40',
 };

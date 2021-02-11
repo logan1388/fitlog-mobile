@@ -13,7 +13,7 @@ interface LogDetailsProps {
 const LogDetails: React.FC<LogDetailsProps> = props => {
   const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeButtonColor = mode === 'light' ? 'black' : 'bisque';
+  const themeButtonColor = mode === 'light' ? 'black' : 'black';
 
   return (
     <View style={[styles.centeredView]}>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   lightContainer: { backgroundColor: 'white' },
   darkContainer: { backgroundColor: '#2D2D2D' },
   lightThemeText: { color: 'black' },
-  darkThemeText: { color: 'bisque' },
+  darkThemeText: { color: 'black' },
   centeredView: {
     flex: 1,
     justifyContent: 'center',

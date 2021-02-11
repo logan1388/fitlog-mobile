@@ -1,7 +1,9 @@
-export const donutGraph = pieGraphData => {
+export const donutGraph = (pieGraphData, mode) => {
   console.log('Inside donut-graph');
   const dims = { width: 750, height: 500, radius: 300 };
   const cent = { x: dims.width / 2, y: 350 };
+
+  const textColor = mode === 'light' ? 'black' : 'white';
 
   d3.select('.canvas-graph').selectAll('*').remove();
   const svg = d3
@@ -28,7 +30,7 @@ export const donutGraph = pieGraphData => {
   const arcTweenEnter = d => {
     var i = d3.interpolate(d.endAngle, d.startAngle);
 
-    return function (t) {
+    return function(t) {
       d.startAngle = i(t);
       return arcPath(d);
     };
@@ -37,7 +39,8 @@ export const donutGraph = pieGraphData => {
   const legendGroup = svg
     .append('g')
     .attr('transform', `translate(${dims.width - 25}, 100)`)
-    .attr('font-size', '2.5rem');
+    .attr('font-size', '2.5rem')
+    .attr('stroke', textColor);
 
   const legend = d3.legendColor().shape('circle').shapePadding(10).scale(color).labelOffset(10);
 

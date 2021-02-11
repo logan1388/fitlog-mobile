@@ -50,46 +50,46 @@ const Logs = props => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={[{ flex: 1 }]}>
       {logs && logs.length ? (
         <View>
           <Modal animationType="none" transparent={true} visible={logDetailsModalVisible}>
             <LogDetails log={log} setLogDetailsModalVisible={setLogDetailsModalVisible} />
           </Modal>
           <View>
-            <Text style={{ padding: 10, fontWeight: 'bold' }}>Recent Entries</Text>
+            <Text style={[{ padding: 10, fontWeight: 'bold' }, themeTextStyle]}>Recent Entries</Text>
           </View>
           <SectionList
             sections={newLogs}
             keyExtractor={(item, index) => item + index}
             renderItem={({ item }) => (
-              <View style={[styles.logs, { borderTopWidth: 1 }]}>
+              <View style={[styles.logs, { borderTopWidth: 1, borderColor: 'slategrey' }]}>
                 <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
                   <View style={{ flex: 1 }}></View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ textAlign: 'right' }}>Weight</Text>
+                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>Weight</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
                       {item.weight ? `${item.weight} lbs` : '-'}
                     </Text>
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ textAlign: 'right' }}>Reps</Text>
+                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>Reps</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>
                       {item.count ? `${item.count} reps` : '-'}
                     </Text>
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ textAlign: 'right' }}>Time</Text>
+                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>Time</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text>
                   </View>
                   <TouchableOpacity style={{ flex: 1 }} onPress={() => getLogDetails(item)}>
-                    <Icon name="chevron-right" size={30} color="black" style={{ textAlign: 'right' }} />
+                    <Icon name="chevron-right" size={30} color="black" style={[{ textAlign: 'right' }, themeTextStyle]} />
                   </TouchableOpacity>
                 </View>
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (
-              <View style={{ flex: 1, backgroundColor: 'lightgrey', paddingVertical: 3, paddingHorizontal: 10 }}>
+              <View style={{ flex: 1, backgroundColor: 'slategrey', paddingVertical: 3, paddingHorizontal: 10 }}>
                 <Text style={themeTextStyle}>{title}</Text>
               </View>
             )} />
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   lightContainer: { backgroundColor: 'white' },
   darkContainer: { backgroundColor: '#2D2D2D' },
   lightThemeText: { color: 'black' },
-  darkThemeText: { color: 'bisque' },
+  darkThemeText: { color: 'snow' },
   noDataText: {
     alignItems: 'center',
   },

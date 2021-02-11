@@ -4,6 +4,8 @@ import { WebView } from 'react-native-webview';
 import GraphHtml from './GraphHtml';
 import { donutGraph } from './DonutGraph';
 import { WorkoutTypes } from '../../commonlib/models/WorkoutModel';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/actionHelpers';
 
 interface donutgraphdata {
   type: WorkoutTypes;
@@ -15,6 +17,7 @@ interface donutgraphProps {
 }
 
 const DonutGraphWebView: React.FC<donutgraphProps> = props => {
+  const mode = useSelector<RootState>(state => state.fitlogReducer.theme);
   const WebViewRef = useRef<WebView>(null);
   const donutGraphData = props.donutgraphdata;
 
@@ -25,7 +28,9 @@ const DonutGraphWebView: React.FC<donutgraphProps> = props => {
   const DrawGraph = () => {
     if (WebViewRef) {
       WebViewRef.current?.injectJavaScript(
-        `window.donutGraph=${donutGraph};window.donutGraph(${JSON.stringify(donutGraphData)}); true;`
+        `window.donutGraph=${donutGraph};window.donutGraph(${JSON.stringify(donutGraphData)}, ${JSON.stringify(
+          mode
+        )}); true;`
       );
     }
   };
