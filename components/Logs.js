@@ -76,7 +76,8 @@ const Logs = props => {
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? notesVisible : '-'}</Text>
                   </View>
                   <TouchableOpacity style={{ flex: 1 }} onPress={() => onLogClick(item)}>
-                    <Icon name="chevron-right" size={30} color="black" style={[{ textAlign: 'right' }, themeTextStyle]} />
+                    {notesVisible && item._id === activeLogId ? <Icon name="chevron-down" size={30} color="black" style={[{ textAlign: 'right' }, themeTextStyle]} />
+                      : <Icon name="chevron-right" size={30} color="black" style={[{ textAlign: 'right' }, themeTextStyle]} />}
                   </TouchableOpacity>
                 </View>
                 {notesVisible && item._id === activeLogId && <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
