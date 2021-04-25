@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, SectionList, TouchableOpacity, Modal } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, SectionList, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
-import LogDetails from '../components/LogDetails';
 
 const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const [notesVisible, setNotesVisible] = useState(false);
   const [activeLogId, setActiveLogId] = useState("");
-
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   let logs = props.logs;
-  logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY'), notesVisible: false }));
+  logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY') }));
 
   function groupBy(list, keyGetter) {
     const map = new Map();
@@ -33,21 +31,17 @@ const Logs = props => {
     return {
       title: l.date,
       data: grouped.get(l.date),
-      notesVisible: false
     };
   });
 
   let newLogs = [...new Map(data.map(item => [item['title'], item])).values()];
 
   const onLogClick = log => {
-    log.notesVisible = !notesVisible;
-    console.log('Inside onLogClick log', log);
     if (log._id === activeLogId) {
       setNotesVisible(!notesVisible);
     } else {
       setNotesVisible(true);
     }
-
     setActiveLogId(log._id);
   }
 
@@ -60,7 +54,7 @@ const Logs = props => {
           </View>
           <SectionList
             sections={newLogs}
-            keyExtractor={(item, index) => item._id}
+            keyExtractor={item => item._id}
             renderItem={({ item }) => (
               <View style={[styles.logs, { borderTopWidth: 1, borderColor: 'slategrey' }]}>
                 <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
@@ -91,7 +85,7 @@ const Logs = props => {
                     <Text style={[themeTextStyle]}>Notes</Text>
                   </View>
                   <View style={{ flex: 7 }}>
-                    <Text style={[themeTextStyle]}>{item.notesVisible}</Text>
+                    <Text style={[themeTextStyle]}>Sample Note</Text>
                   </View>
                 </View>}
               </View>
