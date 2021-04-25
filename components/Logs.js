@@ -9,6 +9,8 @@ const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
   const [logDetailsModalVisible, setLogDetailsModalVisible] = useState(false);
   const [log, setLog] = useState({});
+  const [notesVisible, setNotesVisible] = useState(false);
+  const [notes, setNotes] = useState('');
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const themeContainerStyle =
     mode === 'light'
@@ -19,7 +21,7 @@ const Logs = props => {
         ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
         : styles.darkContainer;
   let logs = props.logs;
-  logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY') }));
+  logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY'), notesVisible: false }));
 
   function groupBy(list, keyGetter) {
     const map = new Map();
@@ -40,13 +42,19 @@ const Logs = props => {
     return {
       title: l.date,
       data: grouped.get(l.date),
+      notesVisible: false
     };
   });
 
-  const newLogs = [...new Map(data.map(item => [item['title'], item])).values()];
+  let newLogs = [...new Map(data.map(item => [item['title'], item])).values()];
+
   const getLogDetails = log => {
-    setLogDetailsModalVisible(true);
+    log.notesVisible = !notesVisible;
+    console.log('Inside getlogdetails log', log);
     setLog(log);
+    //newLogs.forEach(l => l.notesVisible = l.data._id === log._id ? true : false);
+    newLogs.forEach(l => l.data.forEach(lg => lg.notesVisible = ((lg._id === log._id) && log.notesVisible) ? true : false))
+    setNotesVisible(!notesVisible);
   }
 
   return (
@@ -80,12 +88,21 @@ const Logs = props => {
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>Time</Text>
-                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? item.time : '-'}</Text>
+                    <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? notesVisible : '-'}</Text>
                   </View>
                   <TouchableOpacity style={{ flex: 1 }} onPress={() => getLogDetails(item)}>
                     <Icon name="chevron-right" size={30} color="black" style={[{ textAlign: 'right' }, themeTextStyle]} />
                   </TouchableOpacity>
                 </View>
+                {notesVisible && log._id == item._id && <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
+                  <View style={{ flex: 1 }}></View>
+                  <View style={{ flex: 2 }}>
+                    <Text style={[themeTextStyle]}>Notes</Text>
+                  </View>
+                  <View style={{ flex: 7 }}>
+                    <Text style={[themeTextStyle]}>{item.notesVisible}</Text>
+                  </View>
+                </View>}
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (
@@ -94,10 +111,10 @@ const Logs = props => {
               </View>
             )} />
         </View>) : (
-          <View style={styles.noDataText}>
-            <Text style={themeTextStyle}>Start logging!</Text>
-          </View>
-        )}
+        <View style={styles.noDataText}>
+          <Text style={themeTextStyle}>Start logging!</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
