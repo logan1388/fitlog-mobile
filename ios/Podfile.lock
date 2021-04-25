@@ -263,7 +263,7 @@ PODS:
     - React
   - react-native-uuid-generator (6.1.1):
     - React
-  - react-native-webview (10.10.0):
+  - react-native-webview (11.0.0):
     - React-Core
   - React-RCTActionSheet (0.63.2):
     - React-Core/RCTActionSheetHeaders (= 0.63.2)
@@ -545,7 +545,7 @@ SPEC CHECKSUMS:
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
   react-native-uuid-generator: 82ffa2a1cac94242ebed52c4dedc5044d3412717
-  react-native-webview: 73e409ecc987c189772bda27ba7f0e2f3dcd2e81
+  react-native-webview: 6b7950628616679d81bdd75747e50cf6de9b5a5f
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
   React-RCTAnimation: 9a883bbe1e9d2e158d4fb53765ed64c8dc2200c6
   React-RCTBlob: 39cf0ece1927996c4466510e25d2105f67010e13
@@ -570,4 +570,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: eab46123c08d779ced4777f2fd3c1ce873666771
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

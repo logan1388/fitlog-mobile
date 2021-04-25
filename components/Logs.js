@@ -7,19 +7,10 @@ import LogDetails from '../components/LogDetails';
 
 const Logs = props => {
   const mode = useSelector(state => state.fitlogReducer.theme);
-  const [logDetailsModalVisible, setLogDetailsModalVisible] = useState(false);
-  const [log, setLog] = useState({});
   const [notesVisible, setNotesVisible] = useState(false);
-  const [notes, setNotes] = useState('');
+  const [activeLogId, setActiveLogId] = useState("");
+
   const themeTextStyle = mode === 'light' ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle =
-    mode === 'light'
-      ? logDetailsModalVisible
-        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
-        : styles.lightContainer
-      : logDetailsModalVisible
-        ? { backgroundColor: 'rgba(0, 0, 0, 0.2)' }
-        : styles.darkContainer;
   let logs = props.logs;
   logs = logs.map(l => ({ ...l, date: moment(l.createdDate).utc().local().format('MMM DD, YYYY'), notesVisible: false }));
 
@@ -48,28 +39,28 @@ const Logs = props => {
 
   let newLogs = [...new Map(data.map(item => [item['title'], item])).values()];
 
-  const getLogDetails = log => {
+  const onLogClick = log => {
     log.notesVisible = !notesVisible;
-    console.log('Inside getlogdetails log', log);
-    setLog(log);
-    //newLogs.forEach(l => l.notesVisible = l.data._id === log._id ? true : false);
-    newLogs.forEach(l => l.data.forEach(lg => lg.notesVisible = ((lg._id === log._id) && log.notesVisible) ? true : false))
-    setNotesVisible(!notesVisible);
+    console.log('Inside onLogClick log', log);
+    if (log._id === activeLogId) {
+      setNotesVisible(!notesVisible);
+    } else {
+      setNotesVisible(true);
+    }
+
+    setActiveLogId(log._id);
   }
 
   return (
     <SafeAreaView style={[{ flex: 1 }]}>
-      {logs && logs.length ? (
+      {logs && logs.length > 0 ? (
         <View>
-          <Modal animationType="none" transparent={true} visible={logDetailsModalVisible}>
-            <LogDetails log={log} setLogDetailsModalVisible={setLogDetailsModalVisible} />
-          </Modal>
           <View>
             <Text style={[{ padding: 10, fontWeight: 'bold' }, themeTextStyle]}>Recent Entries</Text>
           </View>
           <SectionList
             sections={newLogs}
-            keyExtractor={(item, index) => item + index}
+            keyExtractor={(item, index) => item._id}
             renderItem={({ item }) => (
               <View style={[styles.logs, { borderTopWidth: 1, borderColor: 'slategrey' }]}>
                 <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
@@ -90,11 +81,11 @@ const Logs = props => {
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>Time</Text>
                     <Text style={[{ textAlign: 'right' }, themeTextStyle]}>{item.time != 0 ? notesVisible : '-'}</Text>
                   </View>
-                  <TouchableOpacity style={{ flex: 1 }} onPress={() => getLogDetails(item)}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => onLogClick(item)}>
                     <Icon name="chevron-right" size={30} color="black" style={[{ textAlign: 'right' }, themeTextStyle]} />
                   </TouchableOpacity>
                 </View>
-                {notesVisible && log._id == item._id && <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
+                {notesVisible && item._id === activeLogId && <View style={{ flexDirection: 'row', paddingBottom: 5 }}>
                   <View style={{ flex: 1 }}></View>
                   <View style={{ flex: 2 }}>
                     <Text style={[themeTextStyle]}>Notes</Text>
